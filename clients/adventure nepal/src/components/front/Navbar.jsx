@@ -10,8 +10,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-
 
 // Fake auth hook for demo
 const useAuth = () => {
@@ -28,7 +26,7 @@ export function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b  bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       {/* Top Bar */}
       <div className="border-b bg-primary/5">
         <div className="mx-auto max-w-7xl px-4 py-2 flex justify-between text-sm">
@@ -68,9 +66,9 @@ export function Navbar() {
             <Link
               key={idx}
               to={href}
-              className="text-sm font-medium hover:text-primary transition-colors"
+              className="text-base font-medium hover:text-primary transition-colors"
             >
-              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages","Trekking Packages","Blogs", "Hotels", "About Us", "Contact"][idx]}
+              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages","Hotels","About Us", "Contact"][idx]}
             </Link>
           ))}
         </div>
@@ -80,7 +78,7 @@ export function Navbar() {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="hidden sm:flex gap-2 bg-transparent">
+                <Button variant="outline" size="sm" className="hidden sm:flex gap-2 bg-transparent text-base">
                   <User className="h-4 w-4" />
                   {user?.name}
                 </Button>
@@ -103,7 +101,7 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <Link to="/login">
-              <Button size="sm" className="hidden sm:flex bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button size="sm" className="hidden sm:flex bg-accent hover:bg-accent/90 text-accent-foreground text-base">
                 Login
               </Button>
             </Link>
@@ -128,26 +126,26 @@ export function Navbar() {
             <Link
               key={idx}
               to={href}
-              className="text-sm font-medium hover:text-primary transition-colors py-2"
+              className="text-base font-medium hover:text-primary transition-colors py-2"
             >
-              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages", "Hotels", "About Us", "Contact"][idx]}
+              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages","Hotels","About Us", "Contact"][idx]}
             </Link>
           ))}
 
           {isAuthenticated ? (
             <>
-              <Link to="/dashboard" className="text-sm font-medium hover:text-primary transition-colors py-2">
+              <Link to="/dashboard" className="text-base font-medium hover:text-primary transition-colors py-2">
                 My Dashboard
               </Link>
               <button
                 onClick={logout}
-                className="text-sm font-medium hover:text-primary transition-colors py-2 text-left"
+                className="text-base font-medium hover:text-primary transition-colors py-2 text-left"
               >
                 Logout
               </button>
             </>
           ) : (
-            <Link to="/login" className="text-sm font-medium hover:text-primary transition-colors py-2">
+            <Link to="/login" className="text-base font-medium hover:text-primary transition-colors py-2">
               Login
             </Link>
           )}

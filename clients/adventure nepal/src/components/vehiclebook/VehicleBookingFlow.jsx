@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle2 } from "lucide-react"
 
@@ -8,9 +8,11 @@ import VehicleSelection from "./VehicleSelection"
 import TripDetails from "./TripDetails"
 import CustomerInfoForm from "./CustomerInfoForm"
 import VehicleBookingConfirmation from "./VehicleBookingConfirmation"
+import Loader from "@/components/Loader"
 
 export default function VehicleBookingFlow() {
   const [currentStep, setCurrentStep] = useState("vehicle")
+  const [loading, setLoading] = useState(false)
   const [bookingId, setBookingId] = useState("")
   const [bookingData, setBookingData] = useState({
     vehicleType: "",
@@ -25,15 +27,21 @@ export default function VehicleBookingFlow() {
     dailyRate: 0,
     totalPrice: 0,
   })
+  useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}, [currentStep])
 
   const updateBookingData = (data) => {
     setBookingData((prev) => ({ ...prev, ...data }))
   }
 
-  const handleCustomerSubmit = (customerData) => {
+  const handleCustomerSubmit = async (customerData) => {
+    setLoading(true)
+    await new Promise((res) => setTimeout(res, 1000)) // simulate API
     updateBookingData(customerData)
     setBookingId(Math.floor(Math.random() * 1000000).toString())
     setCurrentStep("confirmation")
+    setLoading(false)
   }
 
   const steps = [
@@ -53,90 +61,101 @@ export default function VehicleBookingFlow() {
     return "upcoming"
   }
 
+  // Helper for back navigation with loader
+  const handleBack = async (step) => {
+    setLoading(true)
+    await new Promise((res) => setTimeout(res, 300)) // simulate loading
+    setCurrentStep(step)
+    setLoading(false)
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
+      {/* Loader overlay */}
+      {loading && <Loader />}
+
       {/* ================= Progress Steps ================= */}
-      {/* ================= Progress Steps ================= */}
-{currentStep !== "confirmation" && (
-  <Card className="bg-card text-card-foreground">
-    <CardContent className="p-4 sm:p-6">
-      <div className="flex items-center justify-between">
-        {steps.map((step, index) => {
-          const status = getStepStatus(step.id)
+      {currentStep !== "confirmation" && (
+        <Card className="bg-card text-card-foreground">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between">
+              {steps.map((step, index) => {
+                const status = getStepStatus(step.id)
 
-          return (
-            <div key={step.id} className="flex items-center flex-1">
-              {/* Step Circle + Label */}
-              <div className="flex flex-col items-center gap-1 sm:gap-2">
-                <div
-                  className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full font-semibold transition-colors
-                    ${
-                      status === "completed" || status === "current"
-                        ? "bg-green-500 text-white" // ✅ completed/current steps green
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                >
-                  {status === "completed" ? (
-                    <CheckCircle2 className="h-5 w-5 text-white" /> // ✅ green check
-                  ) : (
-                    index + 1
-                  )}
-                </div>
+                return (
+                  <div key={step.id} className="flex items-center flex-1">
+                    {/* Step Circle + Label */}
+                    <div className="flex flex-col items-center gap-1 sm:gap-2">
+                      <div
+                        className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full font-semibold transition-colors
+                          ${
+                            status === "completed" || status === "current"
+                              ? "bg-green-500 text-white"
+                              : "bg-muted text-muted-foreground"
+                          }`}
+                      >
+                        {status === "completed" ? (
+                          <CheckCircle2 className="h-5 w-5 text-white" />
+                        ) : (
+                          index + 1
+                        )}
+                      </div>
 
-                {/* Label */}
-                <p
-                  className={`text-[11px] sm:text-sm font-medium text-center leading-tight
-                    ${
-                      status === "upcoming"
-                        ? "text-muted-foreground"
-                        : "text-foreground"
-                    }`}
-                >
-                  {step.label}
-                </p>
-              </div>
+                      {/* Label */}
+                      <p
+                        className={`text-[11px] sm:text-sm font-medium text-center leading-tight
+                          ${
+                            status === "upcoming"
+                              ? "text-muted-foreground"
+                              : "text-foreground"
+                          }`}
+                      >
+                        {step.label}
+                      </p>
+                    </div>
 
-              {/* Arrow Line */}
-              {index < steps.length - 1 && (
-                <div className="flex-1 flex items-center justify-center px-2 sm:px-4">
-                  <div
-                    className={`relative w-full h-0.5 rounded transition-colors
-                      ${
-                        status === "completed"
-                          ? "bg-green-500" // ✅ green line for completed
-                          : "bg-muted"
-                      }`}
-                  >
-                    {/* Arrow Head */}
-                    <span
-                      className={`absolute right-0 -top-1 w-0 h-0
-                        border-t-4 border-b-4 border-l-6
-                        border-t-transparent border-b-transparent
-                        ${
-                          status === "completed"
-                            ? "border-l-green-500" // ✅ green arrow
-                            : "border-l-muted"
-                        }`}
-                    />
+                    {/* Arrow Line */}
+                    {index < steps.length - 1 && (
+                      <div className="flex-1 flex items-center justify-center px-2 sm:px-4">
+                        <div
+                          className={`relative w-full h-0.5 rounded transition-colors
+                            ${
+                              status === "completed"
+                                ? "bg-green-500"
+                                : "bg-muted"
+                            }`}
+                        >
+                          <span
+                            className={`absolute right-0 -top-1 w-0 h-0
+                              border-t-4 border-b-4 border-l-6
+                              border-t-transparent border-b-transparent
+                              ${
+                                status === "completed"
+                                  ? "border-l-green-500"
+                                  : "border-l-muted"
+                              }`}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
+                )
+              })}
             </div>
-          )
-        })}
-      </div>
-    </CardContent>
-  </Card>
-)}
-
+          </CardContent>
+        </Card>
+      )}
 
       {/* ================= Step Content ================= */}
       {currentStep === "vehicle" && (
         <VehicleSelection
           initialData={bookingData}
-          onNext={(data) => {
+          onNext={async (data) => {
+            setLoading(true)
+            await new Promise((res) => setTimeout(res, 500))
             updateBookingData(data)
             setCurrentStep("details")
+            setLoading(false)
           }}
         />
       )}
@@ -144,17 +163,20 @@ export default function VehicleBookingFlow() {
       {currentStep === "details" && (
         <TripDetails
           bookingData={bookingData}
-          onBack={() => setCurrentStep("vehicle")}
-          onNext={(data) => {
+          onBack={() => handleBack("vehicle")}
+          onNext={async (data) => {
+            setLoading(true)
+            await new Promise((res) => setTimeout(res, 500))
             updateBookingData(data)
             setCurrentStep("customer")
+            setLoading(false)
           }}
         />
       )}
 
       {currentStep === "customer" && (
         <CustomerInfoForm
-          onBack={() => setCurrentStep("details")}
+          onBack={() => handleBack("details")}
           onSubmit={handleCustomerSubmit}
         />
       )}
