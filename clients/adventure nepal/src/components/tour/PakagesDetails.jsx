@@ -531,7 +531,7 @@ export default function PackagesDetails() {
                 <div className="text-center pb-4 border-b">
                   <div className="flex items-baseline justify-center gap-2">
                     <span className="text-4xl font-bold text-emerald-600">
-                      ${tour.price}
+                      Rs {tour.price}
                     </span>
                   </div>
                   <span className="text-sm text-muted-foreground">
