@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import { useParams } from "react-router-dom"
 import { tours } from "../../data/toursData"
 import { Card, CardContent } from "@/components/ui/card"
@@ -26,7 +26,12 @@ import {
   ChevronUp,
 } from "lucide-react"
 
+
+
 export default function PackagesDetails() {
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
   const { slug } = useParams()
   const tour = tours.find((t) => t.slug === slug)
 
