@@ -104,9 +104,7 @@ export const tours = [
     rating: 4.6,
     reviews: 30,
     images: [
-      "https://www.nepaltrekkinginfo.com/wp-content/uploads/2020/07/pokhara-lake.jpg",
-      "https://www.pokharainfo.com/wp-content/uploads/2021/06/pokhara-valley.jpg",
-      "https://images.unsplash.com/photo-1601758123927-927bb3ef76b6?w=1200",
+      "https://admin.buddhaair.com/photos/3/PKR%20with%20Plane.jpg",
     ],
     price: 200,
     maxAltitude: "822m",
