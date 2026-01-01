@@ -12,7 +12,7 @@ const sectionVariants = {
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 1, ease: "easeOut" } // slower and smoother
+    transition: { duration: 0.5, ease: "easeOut" } // slower and smoother
   },
 };
 
