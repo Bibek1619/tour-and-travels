@@ -118,7 +118,7 @@ export const tours = [
         "Situated in the Pokhara Valley, surrounded by hills and the Annapurna mountains, Pokhara provides panoramic views of snow-capped peaks and lush green landscapes. Lakes like Phewa and Begnas dot the valley.",
       culture:
         "Pokhara city is culturally rich, home to Gurung and Magar communities. Visitors can enjoy local cuisine, handicrafts, and traditional festivals.",
-      loManthang: "N/A",
+    
       skyeCaves: "Visit Gupteshwor Cave and Bat Cave.",
       trekking: "Easy sightseeing tours with optional short hikes around lakes and hills.",
       bestTime: "September to November and March to May.",
