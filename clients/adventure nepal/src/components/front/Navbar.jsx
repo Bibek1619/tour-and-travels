@@ -1,29 +1,22 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; // ✅ named import
+import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Mail, User, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { Menu, X, Phone, Mail, User } from "lucide-react";
 
-// Fake auth hook for demo
-const useAuth = () => {
-  const [user, setUser] = useState({ name: "Bibek" });
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-
-  const logout = () => setIsAuthenticated(false);
-
-  return { user, isAuthenticated, logout };
-};
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/seat-booking", label: "Seat Booking" },
+    { href: "/vehicle-booking", label: "Vehicle Booking" },
+    { href: "/tours", label: "Tour Packages" },
+    { href: "/hotels", label: "Hotels" },
+    { href: "/about", label: "About Us" },
+    { href: "/contact", label: "Contact" },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -62,50 +55,29 @@ export function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-6">
-          {["/", "/seat-booking", "/vehicle-booking", "/tours", "/hotels", "/about", "/contact"].map((href, idx) => (
+          {navLinks.map((link, idx) => (
             <Link
               key={idx}
-              to={href}
+              to={link.href}
               className="text-base font-medium hover:text-primary transition-colors"
             >
-              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages","Hotels","About Us", "Contact"][idx]}
+              {link.label}
             </Link>
           ))}
         </div>
 
-        {/* Auth Buttons */}
-        <div className="flex items-center gap-2">
-          {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="hidden sm:flex gap-2 bg-transparent text-base">
-                  <User className="h-4 w-4" />
-                  {user?.name}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard">My Bookings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-destructive flex items-center gap-2">
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link to="/login">
-              <Button size="sm" className="hidden sm:flex bg-accent hover:bg-accent/90 text-accent-foreground text-base">
-                Login
-              </Button>
-            </Link>
-          )}
+        {/* User Icon & Mobile Menu Toggle */}
+        <div className="flex items-center gap-2 relative">
+          {/* User Icon Dropdown */}
+        
+            <button
+              onClick={() => Navigate("/login")}
+              className="p-2 rounded-full hover:bg-green-100"
+            >
+              <User className="h-5 w-6" />
+            </button>
+
+           
 
           {/* Mobile menu toggle */}
           <Button
@@ -122,35 +94,21 @@ export function Navbar() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t mt-4 pt-4 pb-4 px-4 flex flex-col gap-3">
-          {["/", "/seat-booking", "/vehicle-booking", "/tours", "/hotels", "/about", "/contact"].map((href, idx) => (
+          {navLinks.map((link, idx) => (
             <Link
               key={idx}
-              to={href}
+              to={link.href}
               className="text-base font-medium hover:text-primary transition-colors py-2"
             >
-              {["Home", "Seat Booking", "Vehicle Booking", "Tour Packages","Hotels","About Us", "Contact"][idx]}
+              {link.label}
             </Link>
           ))}
-
-          {isAuthenticated ? (
-            <>
-              <Link to="/dashboard" className="text-base font-medium hover:text-primary transition-colors py-2">
-                My Dashboard
-              </Link>
-              <button
-                onClick={logout}
-                className="text-base font-medium hover:text-primary transition-colors py-2 text-left"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link to="/login" className="text-base font-medium hover:text-primary transition-colors py-2">
-              Login
-            </Link>
-          )}
         </div>
       )}
+
+
+
+
     </header>
   );
 }
