@@ -23,12 +23,17 @@ app.use(
 app.use(express.json());
 
 // ✅ Test route
-const authRoutes = require("./routes/authRoutes");
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 app.use("/api/auth", authRoutes);
 
 
 // 3️⃣ Start server
 const port = process.env.PORT || 3000;
+console.log("PORT from env:", process.env.PORT);
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
