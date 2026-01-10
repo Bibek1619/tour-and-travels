@@ -9,6 +9,8 @@ const TourPackagesPage = lazy(() => import("@/pages/TourPakagesPage"));
 const PakagesDetailsPage = lazy(() => import("@/pages/PakagesDetailsPage"));
 const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
 
+
+
 function App() {
   return (
     <Router>
