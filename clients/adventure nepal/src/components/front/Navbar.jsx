@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, User } from "lucide-react";
+import UserDropdown from "./UserDropdown";
 
 
 export function Navbar() {
@@ -70,12 +71,13 @@ export function Navbar() {
         <div className="flex items-center gap-2 relative">
           {/* User Icon Dropdown */}
         
-            <button
+            {/* <button
               onClick={() => Navigate("/login")}
               className="p-2 rounded-full hover:bg-green-100"
             >
               <User className="h-5 w-6" />
-            </button>
+            </button> */}
+          <UserDropdown />
 
            
 
