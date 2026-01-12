@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import MainLayout from "@/layouts/MainLayout";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,26 +22,25 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    // 🔹 UI-only fake login
     setTimeout(() => {
       setIsLoading(false);
-      toast.success("Signed in successfully (UI only)");
-      navigate("/"); // 👉 redirect after login
+      toast.success("Signed in successfully");
+      navigate("/");
     }, 1200);
   };
 
   return (
-    <MainLayout>
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md shadow-2xl border border-border rounded-2xl bg-card">
-        <CardContent className="p-6">
-          <h2 className="text-center text-2xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-red-400 text-transparent bg-clip-text">
+    <div className="flex items-center justify-center bg-background px-4">
+      <Card className="w-full max-w-md rounded-xl border bg-card shadow-lg">
+        <CardContent className="p-6 space-y-6">
+          {/* Title */}
+          <h2 className="text-center text-2xl font-semibold text-foreground">
             Sign In
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
-            <div>
+            <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -53,14 +51,13 @@ export default function Login() {
                   setFormData({ ...formData, email: e.target.value })
                 }
                 required
-                className="mt-1"
               />
             </div>
 
             {/* Password */}
-            <div>
+            <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <div className="relative mt-1">
+              <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -72,47 +69,45 @@ export default function Login() {
                   required
                   className="pr-12"
                 />
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
                   onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-accent"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
                   ) : (
                     <Eye className="h-4 w-4" />
                   )}
-                </Button>
+                </button>
               </div>
             </div>
 
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded-lg bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold"
+              className="w-full bg-green-500 text-accent-foreground hover:bg-green-600"
               disabled={isLoading}
             >
-              {isLoading ? "Signing In..." : "Sign In"}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
           {/* Links */}
-          <div className="mt-6 text-center space-y-2">
+          <div className="space-y-2 text-center text-sm">
             <button
               type="button"
-              className="text-sm text-accent hover:underline"
-              onClick={() => toast("Forgot password UI only")}
+              className="text-muted-foreground hover:text-accent"
+              onClick={() => toast("Forgot password (UI only)")}
             >
               Forgot your password?
             </button>
 
-            <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
+            <p className="text-muted-foreground">
+              Don’t have an account?{" "}
               <button
                 type="button"
-                className="text-accent font-medium hover:underline"
+                className="text-red-500 font-medium hover:underline"
                 onClick={() => navigate("/register")}
               >
                 Sign Up
@@ -122,6 +117,5 @@ export default function Login() {
         </CardContent>
       </Card>
     </div>
-    </MainLayout>
   );
 }

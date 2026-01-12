@@ -34,11 +34,11 @@ export default function SignupForm() {
   };
 
   return (
-    <MainLayout>
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+
+    <div className=" flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md shadow-2xl border border-border rounded-2xl bg-card">
         <CardContent className="p-6">
-          <h2 className="text-center text-2xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-red-400 text-transparent bg-clip-text">
+          <h2 className="text-center text-2xl font-bold mb-6 bg-gradient-to-r from-green-500 to-green-400 text-transparent bg-clip-text">
             Create Account
           </h2>
 
@@ -109,7 +109,7 @@ export default function SignupForm() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded-lg bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold"
+              className="w-full rounded-lg bg-gradient-to-r from-green-500 to-green-300 hover:from-green-600 hover:to-green-400 text-white font-semibold"
               disabled={isLoading}
             >
               {isLoading ? "Creating account..." : "Sign Up"}
@@ -130,6 +130,6 @@ export default function SignupForm() {
         </CardContent>
       </Card>
     </div>
-    </MainLayout>
+  
   );
 }
