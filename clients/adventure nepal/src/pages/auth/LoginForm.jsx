@@ -8,32 +8,52 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { loginApi } from "@/api/authApi";
+import { loginSuccess } from "@/redux/slices/authSlice";
+
+import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
+  // 🔐 Login Mutation
+  const loginMutation = useMutation({
+    mutationFn: loginApi,
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      dispatch(loginSuccess(data));
       toast.success("Signed in successfully");
       navigate("/");
-    }, 1200);
+    },
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message || "Invalid email or password"
+      );
+    },
+  });
+
+  // 🧠 Submit Handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    loginMutation.mutate({
+      email: formData.email.trim(),
+      password: formData.password,
+    });
   };
 
   return (
-    <div className="flex items-center justify-center bg-background px-4">
+    <div className="flex items-center justify-center bg-background px-4 ">
       <Card className="w-full max-w-md rounded-xl border bg-card shadow-lg">
         <CardContent className="p-6 space-y-6">
-          {/* Title */}
           <h2 className="text-center text-2xl font-semibold text-foreground">
             Sign In
           </h2>
@@ -87,9 +107,9 @@ export default function Login() {
             <Button
               type="submit"
               className="w-full bg-green-500 text-accent-foreground hover:bg-green-600"
-              disabled={isLoading}
+              disabled={loginMutation.isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {loginMutation.isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
@@ -98,7 +118,7 @@ export default function Login() {
             <button
               type="button"
               className="text-muted-foreground hover:text-accent"
-              onClick={() => toast("Forgot password (UI only)")}
+              onClick={() => toast("Forgot password coming soon")}
             >
               Forgot your password?
             </button>

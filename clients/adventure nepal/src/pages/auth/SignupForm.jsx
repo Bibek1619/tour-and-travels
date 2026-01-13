@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import MainLayout from "@/layouts/MainLayout";
+
+import { useMutation } from "@tanstack/react-query";
+import { registerApi } from "@/api/authApi";
 
 export default function SignupForm() {
   const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,22 +21,33 @@ export default function SignupForm() {
     password: "",
   });
 
+  // ✅ React Query handles loading, success & error
+  const registerMutation = useMutation({
+    mutationFn: registerApi,
+    onSuccess: () => {
+      toast.success("Account created successfully");
+      navigate("/login");
+    },
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message || "Registration failed"
+      );
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // 🔹 UI-only fake submit
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Account created (UI only)");
-      navigate("/login"); // 👉 redirect to login page
-    }, 1200);
+    registerMutation.mutate({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      password: formData.password,
+    });
   };
 
   return (
-
-    <div className=" flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md shadow-2xl border border-border rounded-2xl bg-card">
+    <div className="flex items-center justify-center bg-background px-4 ">
+      <Card className="w-full max-w-md shadow-2xl border rounded-2xl bg-card">
         <CardContent className="p-6">
           <h2 className="text-center text-2xl font-bold mb-6 bg-gradient-to-r from-green-500 to-green-400 text-transparent bg-clip-text">
             Create Account
@@ -110,13 +121,14 @@ export default function SignupForm() {
             <Button
               type="submit"
               className="w-full rounded-lg bg-gradient-to-r from-green-500 to-green-300 hover:from-green-600 hover:to-green-400 text-white font-semibold"
-              disabled={isLoading}
+              disabled={registerMutation.isLoading}
             >
-              {isLoading ? "Creating account..." : "Sign Up"}
+              {registerMutation.isLoading
+                ? "Creating account..."
+                : "Sign Up"}
             </Button>
           </form>
 
-          {/* Switch to login */}
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <button
@@ -130,6 +142,5 @@ export default function SignupForm() {
         </CardContent>
       </Card>
     </div>
-  
   );
 }
