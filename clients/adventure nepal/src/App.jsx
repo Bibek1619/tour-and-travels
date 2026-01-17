@@ -11,6 +11,7 @@ const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
 const SignupForm = lazy(() => import("@/pages/auth/SignupForm"));
 const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
+const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 
 
 
@@ -32,6 +33,11 @@ function App() {
       <Route path="/login" element={<Auth />}>
         <Route index element={<Login />} />
       </Route>
+      
+        <Route path="/verify-code" element={<Auth />}>
+    <Route index element={<VerifyCode />} />
+  </Route>
+
 
         </Routes>
       </Suspense>
