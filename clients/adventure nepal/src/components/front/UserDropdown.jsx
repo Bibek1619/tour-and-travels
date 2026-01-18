@@ -10,21 +10,27 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/redux/slices/authSlice"; // adjust path
+
 const UserDropdown = () => {
   const navigate = useNavigate();
-  const isLoggedIn = false; // UI only (replace later)
+  const dispatch = useDispatch();
+
+  // ✅ Get auth info from Redux
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   // 🔹 Logged OUT UI
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="link"
             aria-label="User menu"
-            className="hover:bg-amber-500 cursor-pointer w-11 h-11"
+            className="hover:bg-green-100 cursor-pointer w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full"
           >
-            <User style={{ width: 28, height: 28 }} />
+            <User className="w-5 h-5 sm:w-6 sm:h-6" />
           </Button>
         </DropdownMenuTrigger>
 
@@ -48,10 +54,12 @@ const UserDropdown = () => {
         <Button
           variant="link"
           aria-label="User menu"
-          className="hover:bg-amber-500 cursor-pointer px-3 py-2 rounded-md text-sm"
+          className="hover:bg-green-100 cursor-pointer px-2 sm:px-3 py-2 rounded-md flex items-center gap-1 sm:gap-2"
         >
-          <User className="w-6 h-6 mr-1" />
-          Bibek
+        <User  className="text-red-700" size={34} />
+
+          {/* Show username only on sm+ screens */}
+          <span className="hidden sm:inline font-medium">{user?.name || "User"}</span>
         </Button>
       </DropdownMenuTrigger>
 
@@ -69,7 +77,10 @@ const UserDropdown = () => {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            dispatch(logout());       // clear Redux state
+            navigate("/login");        // redirect to login
+          }}
           className="text-destructive font-medium hover:bg-destructive/10 cursor-pointer"
         >
           Logout

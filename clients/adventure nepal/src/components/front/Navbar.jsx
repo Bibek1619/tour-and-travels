@@ -3,11 +3,13 @@ import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, User } from "lucide-react";
 import UserDropdown from "./UserDropdown";
-
+import { useSelector } from "react-redux";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  const {isAuthenticated,user}=useSelector(state=>state.auth)
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -77,6 +79,8 @@ export function Navbar() {
             >
               <User className="h-5 w-6" />
             </button> */}
+          
+          
           <UserDropdown />
 
            
