@@ -24,9 +24,10 @@ export default function SignupForm() {
   // ✅ React Query handles loading, success & error
   const registerMutation = useMutation({
     mutationFn: registerApi,
-    onSuccess: () => {
-      toast.success("Account created successfully");
-      navigate("/login");
+    onSuccess: (data,variables) => {
+      ContentVisibilityAutoStateChangeEvent.log('sucess',data,variables)
+      toast.success("verification code is send to your email cheack it out");
+      navigate("/verify-code",{state:{email:variables.email}});
     },
     onError: (error) => {
       toast.error(
@@ -37,6 +38,7 @@ export default function SignupForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
 
     registerMutation.mutate({
       name: formData.name.trim(),
@@ -121,9 +123,9 @@ export default function SignupForm() {
             <Button
               type="submit"
               className="w-full rounded-lg bg-gradient-to-r from-green-500 to-green-300 hover:from-green-600 hover:to-green-400 text-white font-semibold"
-              disabled={registerMutation.isLoading}
+              disabled={registerMutation.isPending}
             >
-              {registerMutation.isLoading
+              {registerMutation.isPending
                 ? "Creating account..."
                 : "Sign Up"}
             </Button>

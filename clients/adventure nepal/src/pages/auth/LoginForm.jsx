@@ -51,7 +51,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-background px-4 ">
+    <div className="flex items-center justify-center bg-background px-4 z">
       <Card className="w-full max-w-md rounded-xl border bg-card shadow-lg">
         <CardContent className="p-6 space-y-6">
           <h2 className="text-center text-2xl font-semibold text-foreground">
@@ -106,9 +106,14 @@ export default function Login() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-green-500 text-accent-foreground hover:bg-green-600"
+            className="w-full bg-gradient-to-r from-green-500 to-green-400 text-accent-foreground 
+           hover:from-green-600 hover:to-green-500"
+
               disabled={loginMutation.isLoading}
             >
+               {loginMutation.isPending && (
+    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  )}
               {loginMutation.isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
