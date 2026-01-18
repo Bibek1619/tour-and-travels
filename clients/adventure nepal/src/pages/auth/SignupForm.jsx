@@ -22,19 +22,18 @@ export default function SignupForm() {
   });
 
   // ✅ React Query handles loading, success & error
-  const registerMutation = useMutation({
-    mutationFn: registerApi,
-    onSuccess: (data,variables) => {
-      ContentVisibilityAutoStateChangeEvent.log('sucess',data,variables)
-      toast.success("verification code is send to your email cheack it out");
-      navigate("/verify-code",{state:{email:variables.email}});
-    },
-    onError: (error) => {
-      toast.error(
-        error?.response?.data?.message || "Registration failed"
-      );
-    },
-  });
+ const registerMutation = useMutation({
+  mutationFn: registerApi,
+  onSuccess: (data, variables) => {
+    console.log("SUCCESS", data, variables); // ✅ log for debugging
+    toast.success("Verification code is sent to your email, check it out");
+    navigate("/verify-code", { state: { email: variables.email } });
+  },
+  onError: (error) => {
+    toast.error(error?.response?.data?.message || "Registration failed");
+  },
+});
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
