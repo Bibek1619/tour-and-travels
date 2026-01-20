@@ -19,9 +19,9 @@ export default function VerifyCode() {
   const verifyMutation = useMutation({
     mutationFn: verifyCodeApi,
     onSuccess: () => {
-      toast.success("Email verified successfully");
+      toast.success("account is created sucessfully .please login ");
       setTimeout(() => {
-        navigate("/"); // Navigate to home page after showing toast
+        navigate("/login"); 
       }, 1500);
     },
     onError: (error) => {
