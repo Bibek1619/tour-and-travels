@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, User } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const {isAuthenticated,user}=useSelector(state=>state.auth)
+  const location=useLocation();
+
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -58,15 +61,20 @@ export function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link, idx) => (
-            <Link
-              key={idx}
-              to={link.href}
-              className="text-base font-medium hover:text-primary transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+         {navLinks.map((link, idx) => (
+  <Link
+    key={idx}
+    to={link.href}
+    className={`text-base font-medium transition-colors
+      ${
+        location.pathname === link.href
+          ? "text-green-500"
+          : "hover:text-green-500"
+      }`}
+  >
+    {link.label}
+  </Link>
+))}
         </div>
 
         {/* User Icon & Mobile Menu Toggle */}
@@ -104,7 +112,7 @@ export function Navbar() {
             <Link
               key={idx}
               to={link.href}
-              className="text-base font-medium hover:text-primary transition-colors py-2"
+              className="text-base font-medium hover:text-green-500 transition-colors duration-500 ease-in-out py-2"
             >
               {link.label}
             </Link>
