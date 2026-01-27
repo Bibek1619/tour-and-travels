@@ -71,38 +71,51 @@ export default function Auth() {
         </div>
       </div>
 
-      {/* RIGHT — Form Section (40%) */}
-      <div className="col-span-1 lg:col-span-2 flex items-center justify-center p-6 sm:p-8 lg:p-12 ">
-        <div className="w-full max-w-md">
+  {/* RIGHT — Form Section (40%) */}
+<div className="col-span-1 lg:col-span-2 relative flex items-center justify-center p-6 sm:p-8 lg:p-12">
 
-          {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-            <div className="p-2 rounded-xl bg-white text-black">
-              <Mountain className="w-6 h-6" />
-            </div>
-            <h1 className="text-2xl font-bold text-black">
-              Adventure Nepal
-            </h1>
-          </div>
+  {/* Mobile Background Image */}
+  <div className="absolute inset-0 lg:hidden">
+    <img
+      src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop"
+      alt="Adventure Nepal"
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-black/50" />
+  </div>
 
-          {/* Login / Register */}
-          <Outlet />
+  {/* Content */}
+  <div className="relative z-10 w-full max-w-md bg-background/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-lg">
 
-          {/* Mobile Footer */}
-          <div className="mt-8 text-center space-y-4 text-sm text-muted-foreground">
-            <div className="flex justify-center gap-6">
-              <a href="#" className="hover:text-accent">Privacy</a>
-              <span>•</span>
-              <a href="#" className="hover:text-accent">Terms</a>
-              <span>•</span>
-              <a href="#" className="hover:text-accent">Help</a>
-            </div>
-            <p className="lg:hidden text-xs">
-              © 2026 Adventure Nepal
-            </p>
-          </div>
-        </div>
+    {/* Mobile Logo */}
+    <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+      <div className="p-2 rounded-xl bg-white text-black">
+        <Mountain className="w-6 h-6" />
       </div>
+      <h1 className="text-2xl font-bold text-black">
+        Adventure Nepal
+      </h1>
+    </div>
+
+    {/* Login / Register */}
+    <Outlet />
+
+    {/* Mobile Footer */}
+    <div className="mt-8 text-center space-y-4 text-sm text-muted-foreground">
+      <div className="flex justify-center gap-6">
+        <a href="#" className="hover:text-accent">Privacy</a>
+        <span>•</span>
+        <a href="#" className="hover:text-accent">Terms</a>
+        <span>•</span>
+        <a href="#" className="hover:text-accent">Help</a>
+      </div>
+      <p className="lg:hidden text-xs">
+        © 2026 Adventure Nepal
+      </p>
+    </div>
+  </div>
+</div>
+
     </div>
   );
 }
