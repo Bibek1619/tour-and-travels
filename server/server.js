@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const veichleRoute=require("./routes/veichleRoute");
 
 // 2️⃣ Connect to MongoDB
 connectDB();
@@ -28,6 +29,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+
+
+//veichle routes
+app.use("/api/vehicles",veichleRoute);
 
 
 // 3️⃣ Start server
