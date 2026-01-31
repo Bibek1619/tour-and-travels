@@ -31,7 +31,14 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       dispatch(loginSuccess(data));
       toast.success("Signed in successfully");
+      console.log(data.user.role);
+
+
+      if (data.user.role==="admin"){
+        navigate("/admin/dashboard");
+      }else{
       navigate("/");
+      }
     },
     onError: (error) => {
       toast.error(
