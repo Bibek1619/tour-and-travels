@@ -9,15 +9,15 @@ const sendVerificationEmail = async (email, code) => {
     service: "gmail",
     auth: {
       user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASSWORD
-    }
+      pass: process.env.GMAIL_PASSWORD,
+    },
   });
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
     subject: "Verify your email",
-    text: `Your verification code is: ${code}`
+    text: `Your verification code is: ${code}`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -30,13 +30,16 @@ exports.register = async (req, res) => {
 
     // Check if user exists
     let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "Email already registered" });
+    if (user)
+      return res.status(400).json({ message: "Email already registered" });
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Generate verification code (6-digit)
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
 
     // Save user
     user = await User.create({
@@ -44,13 +47,15 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       verificationCode,
-      verificationCodeExpiry: Date.now() + 10 * 60 * 1000 // 10 mins
+      verificationCodeExpiry: Date.now() + 10 * 60 * 1000, // 10 mins
     });
 
     // Send email
     await sendVerificationEmail(email, verificationCode);
 
-    res.status(201).json({ message: "User registered, check your email for code" });
+    res
+      .status(201)
+      .json({ message: "User registered, check your email for code" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -65,7 +70,8 @@ exports.verifyCode = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });
 
-    if (user.isVerified) return res.status(400).json({ message: "User already verified" });
+    if (user.isVerified)
+      return res.status(400).json({ message: "User already verified" });
 
     if (user.verificationCode !== code)
       return res.status(400).json({ message: "Invalid code" });
@@ -92,21 +98,29 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "This email is not register" });
+    if (!user)
+      return res.status(400).json({ message: "This email is not register" });
 
-    if (!user.isVerified) return res.status(400).json({ message: "Email not verified" });
+    if (!user.isVerified)
+      return res.status(400).json({ message: "Email not verified" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Incorrect password" });
 
     // Generate JWT
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "30d" }
+      { expiresIn: "30d" },
     );
 
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+    res.json({
+      token,
+      user: { id: user._id, name: user.name, email: user.email,
+        role:user.role
+       },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
