@@ -13,6 +13,7 @@ const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
 const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
+const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
 
 
 
@@ -40,6 +41,7 @@ function App() {
   </Route>
     
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/add-vehicle" element={<AddVeichle />} />
 
 
         </Routes>
