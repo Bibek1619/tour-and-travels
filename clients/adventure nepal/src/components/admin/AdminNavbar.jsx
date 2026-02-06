@@ -9,7 +9,7 @@ const AdminNavbar = () => {
     <div className="w-full bg-white border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Left */}
-        <h1 className="text-xl font-bold text-green-600">
+        <h1 className="text-xl font-bold text-green-600 ">
           Admin Dashboard
         </h1>
 
