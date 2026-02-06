@@ -35,7 +35,7 @@ const vehicleSchema = new mongoose.Schema(
       required: true, // "Royal Enfield Bullet 350"
     },
 
-    image: {
+    images: {
       type: String,
       required: true,
     },
