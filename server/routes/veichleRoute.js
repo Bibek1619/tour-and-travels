@@ -10,7 +10,7 @@ const {
 } = require("../controllers/vehicleController");
 
 const upload=require("../middleware/upload");
-const {protect}= require("../middleware/authMiddleware");
+const {protect,adminOnly}= require("../middleware/authMiddleware");
 
 /* ======================================================
    PUBLIC ROUTES
@@ -30,6 +30,8 @@ router.get("/:id", getVehicleById);
 router.post(
   "/",
   protect,
+  adminOnly,
+
   upload.array("images", 5), // max 5 images
   createVehicle
 );
@@ -38,11 +40,13 @@ router.post(
 router.put(
   "/:id",
   protect,
+  adminOnly,
   upload.array("images", 5),
   updateVehicle
 );
 
 // Delete vehicle
-router.delete("/:id", protect, deleteVehicle);
+router.delete("/:id", protect,adminOnly 
+  ,deleteVehicle);
 
 module.exports = router;
