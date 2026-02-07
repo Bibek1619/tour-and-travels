@@ -12,9 +12,6 @@ const {
 const upload=require("../middleware/upload");
 const {protect,adminOnly}= require("../middleware/authMiddleware");
 
-/* ======================================================
-   PUBLIC ROUTES
-====================================================== */
 
 // Get all vehicles
 router.get("/", getVehicles);

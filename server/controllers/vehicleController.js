@@ -2,18 +2,37 @@ const Vehicle = require("../models/Vehicle");
 const fs = require("fs");
 const path = require("path");
 
-/* ======================================================
-   ➕ CREATE VEHICLE
-====================================================== */
+
 exports.createVehicle = async (req, res) => {
   try {
-    const images = req.files?.map(
-      (file) =>
-        `${req.protocol}://${req.get("host")}/images/${file.filename}`
-    ) || [];
+
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No images received",
+      });
+    }
+
+    const images = req.files.map(
+      (file) => `/images/${file.filename}`
+    );
 
     const vehicle = await Vehicle.create({
-      ...req.body,
+      category: req.body.category,
+      fuelType: req.body.fuelType,
+      brand: req.body.brand,
+      model: req.body.model,
+      name: req.body.name,
+      dailyRate: Number(req.body.dailyRate),
+      capacity: Number(req.body.capacity),
+      luggage: req.body.luggage,
+      features: req.body.features
+        ? Array.isArray(req.body.features)
+          ? req.body.features
+          : [req.body.features]
+        : [],
+      bestFor: req.body.bestFor,
       images,
     });
 
@@ -22,17 +41,16 @@ exports.createVehicle = async (req, res) => {
       vehicle,
     });
   } catch (error) {
-    console.error("❌ Create vehicle error:", error);
-    res.status(500).json({
+    console.error("CREATE ERROR:", error);
+    res.status(400).json({
       success: false,
-      message: "Server Error",
+      error: error.message,
     });
   }
 };
 
-/* ======================================================
-   📥 GET ALL VEHICLES
-====================================================== */
+
+
 exports.getVehicles = async (req, res) => {
   try {
     const vehicles = await Vehicle.find().sort({ createdAt: -1 });

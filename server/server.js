@@ -39,6 +39,9 @@ app.use("/api/vehicles",veichleRoute);
 //admin routes
 app.use("/api/admin",adminRoutes);
 
+app.use("/images", express.static("public/images"));
+
+
 
 // 3️⃣ Start server
 const port = process.env.PORT || 3000;
