@@ -6,6 +6,10 @@ import {  Card,CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { createVehicleApi } from '@/api/VehicleApi';
+
 
 
 
@@ -36,18 +40,35 @@ const CreateVehicle = () => {
         
     };
 
-    const handleSubmit =(e)=>{
-      e.preventDefault();
-      const payload = {
-      ...formData,
-      dailyRate: Number(formData.dailyRate),
-      capacity: Number(formData.capacity),
-      features: formData.features
-        .split(",")
-        .map((f) => f.trim()),
-    };
+  const handleSubmit = (e) => {
+  e.preventDefault();
 
-    }
+  const payload = {
+    ...formData,
+    dailyRate: Number(formData.dailyRate),
+    capacity: Number(formData.capacity),
+    features: formData.features
+      .split(",")
+      .map((f) => f.trim()),
+    images: [formData.image], // backend expects array
+  };
+
+  createVehicleMutation.mutate(payload);
+};
+
+    const createVehicleMutation = useMutation({
+  mutationFn: createVehicleApi,
+  onSuccess: () => {
+    toast.success("Vehicle created successfully");
+  },
+  onError: (error) => {
+    toast.error(
+      error?.response?.data?.message || "Failed to create vehicle"
+    );
+  },
+});
+
+
   return (
   <Card>
       <CardContent className="p-6 space-y-6">
@@ -211,9 +232,13 @@ const CreateVehicle = () => {
           </div>
 
           {/* Submit */}
-          <Button className="w-full bg-green-600 hover:bg-green-700">
-            Create Vehicle
-          </Button>
+        <Button
+  className="w-full bg-green-600 hover:bg-green-700"
+  disabled={createVehicleMutation.isLoading}
+>
+  {createVehicleMutation.isLoading ? "Creating..." : "Create Vehicle"}
+</Button>
+
         </form>
       </CardContent>
     </Card>
