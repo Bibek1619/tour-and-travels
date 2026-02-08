@@ -18,6 +18,8 @@ exports.createVehicle = async (req, res) => {
       (file) => `/images/${file.filename}`
     );
 
+    const availableCount=Number(req.body.availableCount || 1);
+
     const vehicle = await Vehicle.create({
       category: req.body.category,
       fuelType: req.body.fuelType,
@@ -34,6 +36,8 @@ exports.createVehicle = async (req, res) => {
         : [],
       bestFor: req.body.bestFor,
       images,
+      availableCount,
+      isAvailable: availableCount > 0, // Set availability based on count
     });
 
     res.status(201).json({
