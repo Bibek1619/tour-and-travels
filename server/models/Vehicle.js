@@ -59,6 +59,12 @@ const vehicleSchema = new mongoose.Schema(
     bestFor: {
       type: String,
     },
+    availableCount: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 1,
+    },
 
     // ⭐ Ratings
     rating: {
