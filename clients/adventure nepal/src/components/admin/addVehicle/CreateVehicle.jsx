@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { createVehicleApi } from '@/api/VehicleApi';
 
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -40,26 +41,45 @@ const CreateVehicle = () => {
         
     };
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
   e.preventDefault();
+  console.log('formdara',formData)
 
-  const payload = {
-    ...formData,
-    dailyRate: Number(formData.dailyRate),
-    capacity: Number(formData.capacity),
-    features: formData.features
-      .split(",")
-      .map((f) => f.trim()),
-    images: [formData.image], // backend expects array
-  };
+  const form = new FormData();
+  form.append("category", formData.category);
+  form.append("fuelType", formData.fuelType);
+  form.append("brand", formData.brand);
+  form.append("model", formData.model);
+  form.append("name", formData.name);
+  form.append("dailyRate", formData.dailyRate);
+  form.append("capacity", formData.capacity);
+  form.append("luggage", formData.luggage);
+  form.append("bestFor", formData.bestFor);
+  form.append("availableCount", formData.availableCount);
+  form.append("isAvailable", formData.isAvailable);
+  
+  // Features as comma-separated
+  formData.features
+    .split(",")
+    .map((f) => f.trim())
+    .forEach((f) => form.append("features", f));
 
-  createVehicleMutation.mutate(payload);
+  // Append image file
+  form.append("images", formData.image);
+
+  createVehicleMutation.mutate(form);
 };
+
 
     const createVehicleMutation = useMutation({
   mutationFn: createVehicleApi,
   onSuccess: () => {
     toast.success("Vehicle created successfully");
+
+
+    setTimeout(()=>{
+      navigate("/admin/dashboard")
+    },1000)
   },
   onError: (error) => {
     toast.error(
@@ -67,6 +87,7 @@ const CreateVehicle = () => {
     );
   },
 });
+const navigate=useNavigate();
 
 
   return (
@@ -150,16 +171,18 @@ const CreateVehicle = () => {
           </div>
 
           {/* Image */}
-          <div>
-            <Label>Image URL</Label>
-            <Input
-              name="image"
-              placeholder="https://..."
-              value={formData.image}
-              onChange={handleChange}
-              required
-            />
-          </div>
+       {/* Image Upload */}
+<div>
+  <Label>Upload Image</Label>
+  <Input
+    type="file"
+    name="image"
+    accept="image/*"
+    onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+    required
+  />
+</div>
+
 
           {/* Rate & Capacity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,6 +242,17 @@ const CreateVehicle = () => {
               onChange={handleChange}
             />
           </div>
+          <div>
+            <Label>Available Count</Label>
+            <Input
+  type="number"
+  name="availableCount"
+  placeholder="Available vehicles"
+  onChange={handleChange}
+  required
+/>
+
+          </div>
 
           {/* Availability */}
           <div className="flex items-center gap-2">
@@ -233,6 +267,7 @@ const CreateVehicle = () => {
 
           {/* Submit */}
         <Button
+        type="submit"
   className="w-full bg-green-600 hover:bg-green-700"
   disabled={createVehicleMutation.isLoading}
 >
