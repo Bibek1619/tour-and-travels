@@ -13,10 +13,12 @@ exports.createVehicle = async (req, res) => {
         message: "No images received",
       });
     }
+const images = req.files.map(
+  (file) =>
+    `${req.protocol}://${req.get("host")}/images/${file.filename}`
+);
 
-    const images = req.files.map(
-      (file) => `/images/${file.filename}`
-    );
+
 
     const availableCount=Number(req.body.availableCount || 1);
 
