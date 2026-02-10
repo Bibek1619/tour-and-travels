@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loader from "@/components/Loader";
+import  {Toaster} from "react-hot-toast";
 
 // Lazy load pages
 const Home = lazy(() => import("@/pages/Home"));
@@ -21,6 +22,7 @@ const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
 function App() {
   return (
     <Router>
+      <Toaster position="bottom-right" reverseOrder={false} />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
