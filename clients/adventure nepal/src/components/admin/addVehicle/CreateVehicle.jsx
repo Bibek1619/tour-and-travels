@@ -74,12 +74,13 @@ const CreateVehicle = () => {
     const createVehicleMutation = useMutation({
   mutationFn: createVehicleApi,
   onSuccess: () => {
-    toast.success("Vehicle created successfully");
+    
+   toast.success("Vehicle created successfully");
 
-
-    setTimeout(()=>{
+   
       navigate("/admin/dashboard")
-    },1000)
+   
+ 
   },
   onError: (error) => {
     toast.error(
@@ -187,7 +188,7 @@ const navigate=useNavigate();
           {/* Rate & Capacity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Daily Rate (₹)</Label>
+              <Label>Daily Rate (Rs)</Label>
               <Input
                 type="number"
                 name="dailyRate"
@@ -269,9 +270,9 @@ const navigate=useNavigate();
         <Button
         type="submit"
   className="w-full bg-green-600 hover:bg-green-700"
-  disabled={createVehicleMutation.isLoading}
+  disabled={createVehicleMutation.isPending}
 >
-  {createVehicleMutation.isLoading ? "Creating..." : "Create Vehicle"}
+  {createVehicleMutation.isPending ? "Creating..." : "Create Vehicle"}
 </Button>
 
         </form>
