@@ -5,15 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Users, Luggage, Check } from "lucide-react"
+import Loader from "../Loader"
+  import { useQuery } from "@tanstack/react-query";
+import { getAllVehiclesApi } from "@/api/VehicleApi";
 
 export default function VehicleSelection({ onNext, initialData }) {
   const [selectedVehicle, setSelectedVehicle] = useState(
-    initialData?.vehicleType || ""
+    initialData?.vehicleId|| ""
   )
 
-  const vehicles = [
+
+
+  /*const vehicles = [
     {
-      type: "car",
+      category: "car",
+      fuelType:"petrol",
+      brand:"toyota",
+      model:"corolla",
       name: "Sedan Car",
       image:
         "https://english.onlinekhabar.com/wp-content/uploads/2024/01/Screenshot-2024-01-31-161452.png",
@@ -27,6 +35,8 @@ export default function VehicleSelection({ onNext, initialData }) {
         "Professional driver",
       ],
       bestFor: "City tours, Short trips",
+      availableCount:10,
+      rating:3.5,
     },
     {
       type: "scorpio",
@@ -76,10 +86,25 @@ export default function VehicleSelection({ onNext, initialData }) {
       ],
       bestFor: "Large groups, Corporate events",
     },
-  ]
+  ] */
+ const {data,isPending}=useQuery({
+  queryKey:["vehicles"],
+  queryFn:getAllVehiclesApi
+ })
+if (isPending) return <Loader/>
+const vehicles =
+  data?.vehicles?.filter(
+    (v) => v.isAvailable && v.availableCount > 0
+  ) || [];
+  console.log("Vehicles from API:", data?.vehicles)
+ console.log(vehicles?.[0]?.images?.[0])
+
+
+
+
 
   const handleNext = () => {
-    const vehicle = vehicles.find((v) => v.type === selectedVehicle)
+    const vehicle = vehicles.find((v) => v._id === selectedVehicle)
     if (vehicle) {
       onNext({
         vehicleType: vehicle.type,
@@ -89,6 +114,7 @@ export default function VehicleSelection({ onNext, initialData }) {
     }
   }
 
+  
   return (
     <div className="space-y-6">
       <Card>
@@ -101,13 +127,16 @@ export default function VehicleSelection({ onNext, initialData }) {
         <CardContent>
           {/* VEHICLE GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+
+           
+
             {vehicles.map((vehicle) => (
               <Card
-                key={vehicle.type}
-                onClick={() => setSelectedVehicle(vehicle.type)}
+                key={vehicle._id}
+                onClick={() => setSelectedVehicle(vehicle._id)}
                 className={`cursor-pointer transition-all hover:shadow-lg bg-blue-50
                   ${
-                    selectedVehicle === vehicle.type
+                    selectedVehicle === vehicle._id
                       ? "border-4 border-green-500"
                       : "border border-border"
                   }
@@ -116,11 +145,11 @@ export default function VehicleSelection({ onNext, initialData }) {
                 {/* IMAGE */}
                 <div className="relative h-44 sm:h-52 md:h-60 overflow-hidden rounded-t-lg">
                   <img
-                    src={vehicle.image}
+                    src={vehicle.images?.[0]}
                     alt={vehicle.name}
                     className="w-full h-full object-cover"
                   />
-                  {selectedVehicle === vehicle.type && (
+                  {selectedVehicle === vehicle._id && (
                     <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-2">
                       <Check className="h-5 w-5" />
                     </div>
@@ -129,7 +158,6 @@ export default function VehicleSelection({ onNext, initialData }) {
 
                 {/* CONTENT */}
                 <CardContent className="p-3 sm:p-4 space-y-3">
-                  {/* TITLE & PRICE */}
                   <div className="flex justify-between items-start gap-2">
                     <div>
                       <h3 className="font-semibold text-base sm:text-lg">
@@ -147,11 +175,10 @@ export default function VehicleSelection({ onNext, initialData }) {
                     </div>
                   </div>
 
-                  {/* CAPACITY */}
                   <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-green-500" />
-                      <span>{vehicle.capacity}</span>
+                      <span>{vehicle.capacity} passengers</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Luggage className="h-4 w-4 text-green-500" />
@@ -159,7 +186,6 @@ export default function VehicleSelection({ onNext, initialData }) {
                     </div>
                   </div>
 
-                  {/* FEATURES */}
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Features:</p>
                     <ul className="grid grid-cols-2 sm:grid-cols-1 gap-x-3 gap-y-1">
@@ -179,19 +205,13 @@ export default function VehicleSelection({ onNext, initialData }) {
             ))}
           </div>
 
-          {/* CONTINUE BUTTON */}
+          {/* CONTINUE */}
           <div className="flex justify-end mt-6">
             <Button
               onClick={handleNext}
               disabled={!selectedVehicle}
               size="lg"
-              className="
-                min-w-[200px]
-                text-base font-semibold text-white
-                bg-gradient-to-r from-green-500 via-green-600 to-green-700
-                hover:from-green-600 hover:via-green-700 hover:to-green-800
-                focus:ring-4 focus:ring-green-500/50
-              "
+              className="min-w-[200px] bg-gradient-to-r from-green-500 to-green-700"
             >
               Continue to Trip Details
             </Button>
