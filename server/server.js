@@ -3,10 +3,12 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const veichleRoute=require("./routes/veichleRoute");
 const adminRoutes=require("./routes/adminRoutes");
+
 
 // 2️⃣ Connect to MongoDB
 connectDB();
@@ -38,8 +40,10 @@ app.use("/api/vehicles",veichleRoute);
 
 //admin routes
 app.use("/api/admin",adminRoutes);
+const path = require("path");
 
-app.use("/images", express.static("public/images"));
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 
 
 
