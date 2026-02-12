@@ -1,20 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Users, Luggage, Check } from "lucide-react"
-import Loader from "../Loader"
-  import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Users, Luggage, Check } from "lucide-react";
+import Loader from "../Loader";
+import { useQuery } from "@tanstack/react-query";
 import { getAllVehiclesApi } from "@/api/VehicleApi";
 
 export default function VehicleSelection({ onNext, initialData }) {
   const [selectedVehicle, setSelectedVehicle] = useState(
-    initialData?.vehicleId|| ""
-  )
-
-
+    initialData?.vehicleId || "",
+  );
 
   /*const vehicles = [
     {
@@ -87,34 +85,29 @@ export default function VehicleSelection({ onNext, initialData }) {
       bestFor: "Large groups, Corporate events",
     },
   ] */
- const {data,isPending}=useQuery({
-  queryKey:["vehicles"],
-  queryFn:getAllVehiclesApi
- })
-if (isPending) return <Loader/>
-const vehicles =
-  data?.vehicles?.filter(
-    (v) => v.isAvailable && v.availableCount > 0
-  ) || [];
-  console.log("Vehicles from API:", data?.vehicles)
- console.log(vehicles?.[0]?.images?.[0])
-
-
-
-
+  const { data, isPending } = useQuery({
+    queryKey: ["vehicles"],
+    queryFn: getAllVehiclesApi,
+  });
+  if (isPending) return <Loader />;
+  const vehicles =
+    data?.vehicles?.filter((v) => v.isAvailable && v.availableCount > 0) || [];
+  console.log(
+    "Final URL:",
+    `http://localhost:5000${vehicles?.[0]?.images?.[0]}`,
+  );
 
   const handleNext = () => {
-    const vehicle = vehicles.find((v) => v._id === selectedVehicle)
+    const vehicle = vehicles.find((v) => v._id === selectedVehicle);
     if (vehicle) {
       onNext({
         vehicleType: vehicle.type,
         vehicleName: vehicle.name,
         dailyRate: vehicle.dailyRate,
-      })
+      });
     }
-  }
+  };
 
-  
   return (
     <div className="space-y-6">
       <Card>
@@ -127,9 +120,6 @@ const vehicles =
         <CardContent>
           {/* VEHICLE GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-
-           
-
             {vehicles.map((vehicle) => (
               <Card
                 key={vehicle._id}
@@ -144,11 +134,18 @@ const vehicles =
               >
                 {/* IMAGE */}
                 <div className="relative h-44 sm:h-52 md:h-60 overflow-hidden rounded-t-lg">
-                  <img
-                    src={vehicle.images?.[0]}
-                    alt={vehicle.name}
-                    className="w-full h-full object-cover"
-                  />
+                 <img
+  src={
+    vehicle?.images?.[0]
+      ? vehicle.images[0].startsWith("http")
+        ? vehicle.images[0]
+        : `http://localhost:5000${vehicle.images[0]}`
+      : "/placeholder.jpg"
+  }
+  alt={vehicle?.name || "vehicle"}
+  className="w-full h-full object-cover"
+/>
+
                   {selectedVehicle === vehicle._id && (
                     <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-2">
                       <Check className="h-5 w-5" />
@@ -219,5 +216,5 @@ const vehicles =
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
