@@ -20,7 +20,7 @@ const tourPackageSchema = new mongoose.Schema({
   location: String,
   difficulty: String,
   durationDays: Number,
-  groupSize: String,
+ 
 
   price: Number,
   maxAltitude: String,
