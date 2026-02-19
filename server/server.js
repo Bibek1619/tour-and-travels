@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const veichleRoute=require("./routes/veichleRoute");
 const adminRoutes=require("./routes/adminRoutes");
+const tourPackageRoutes=require("./routes/tourRoutes");
 
 
 
@@ -38,10 +39,12 @@ app.use("/api/auth", authRoutes);
 //veichle routes
 app.use("/api/vehicles",veichleRoute);
 
+app.use("/api/tours", tourPackageRoutes);
 
 //admin routes
 app.use("/api/admin",adminRoutes);
 const path = require("path");
+
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
