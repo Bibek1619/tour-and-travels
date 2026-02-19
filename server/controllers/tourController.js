@@ -1,4 +1,4 @@
-const tourPackage =reuire("../models/tourPackage.js")
+const tourPackage =require("../models/tourPackage.js")
 
 exports.createTourPackage=async (req,res)=>
 {
