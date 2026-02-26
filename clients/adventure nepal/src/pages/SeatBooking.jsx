@@ -14,11 +14,12 @@ const SeatBooking = () => {
             Seat Booking
           </h1>
           <p className="text-gray-500 text-center">
-            We are currently working on this feature. Stay tuned!
+            We are currently working on this feature. Stay tuned lets go!
           </p>
         </div>
     </MainLayout>
   );
+
 };
 
 export default SeatBooking;
