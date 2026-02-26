@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/upload"); // your multer file
 const {
   createTourPackage,
   getAllTourPackages,
-  getTourPackageById,
+  getTourBySlug,
   updateTourPackage,
   deleteTourPackage,
-} = require("../controllers/tourController");
+} = require("../controllers/tourPackageController");
 
-router.post("/", createTourPackage);
+router.post("/", upload.array("images", 10), createTourPackage);
 router.get("/", getAllTourPackages);
-router.get("/:id", getTourPackageById);
-router.put("/:id", updateTourPackage);
+router.get("/:slug", getTourBySlug);
+router.put("/:id", upload.array("images", 10), updateTourPackage);
 router.delete("/:id", deleteTourPackage);
 
 module.exports = router;
