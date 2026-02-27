@@ -5,7 +5,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { CheckCircle2, ChevronLeft, Banknote, Building2, Smartphone, CreditCard, Shield } from "lucide-react"
 
-// Dummy UI components (replace with your own styled components)
+
 const Badge = ({ children }) => <span className="px-2 py-1 bg-gray-200 rounded">{children}</span>
 const Separator = () => <hr className="my-4" />
 

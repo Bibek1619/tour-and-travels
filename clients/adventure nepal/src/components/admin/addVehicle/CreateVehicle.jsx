@@ -68,6 +68,7 @@ const CreateVehicle = () => {
   form.append("images", formData.image);
 
   createVehicleMutation.mutate(form);
+
 };
 
 
@@ -75,6 +76,7 @@ const CreateVehicle = () => {
   mutationFn: createVehicleApi,
   onSuccess: () => {
     
+
    toast.success("Vehicle created successfully");
 
    
