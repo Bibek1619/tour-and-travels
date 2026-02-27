@@ -7,7 +7,7 @@ const {
   getTourBySlug,
   updateTourPackage,
   deleteTourPackage,
-} = require("../controllers/tourPackageController");
+} = require("../controllers/tourController");
 
 router.post("/", upload.array("images", 10), createTourPackage);
 router.get("/", getAllTourPackages);
