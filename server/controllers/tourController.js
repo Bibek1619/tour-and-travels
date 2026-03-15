@@ -1,4 +1,4 @@
-const TourPackages=
+const TourPackage=
 require("../models/tourPackage")
 const slugify = require("slugify");
 
@@ -7,24 +7,53 @@ const slugify = require("slugify");
 // =====================================================
 exports.createTourPackage = async (req, res) => {
   try {
-    // Generate slug automatically
+
     const slug = slugify(req.body.title, {
       lower: true,
       strict: true,
     });
 
-    // Handle images (if using multer)
+    // Handle images
     let images = [];
     if (req.files && req.files.length > 0) {
-      images = req.files.map(
-        (file) => `/uploads/${file.filename}`
-      );
+      images = req.files.map((file) => `/uploads/${file.filename}`);
+    }
+
+    // Parse highlights array
+    let highlights = [];
+    if (req.body.highlights) {
+      highlights = Array.isArray(req.body.highlights)
+        ? req.body.highlights
+        : [req.body.highlights];
+    }
+
+    // Parse itinerary
+    let itinerary = [];
+    if (req.body["itinerary[]"] || req.body.itinerary) {
+      const raw = req.body["itinerary[]"] || req.body.itinerary;
+
+      const arr = Array.isArray(raw) ? raw : [raw];
+
+      itinerary = arr.map((item) => JSON.parse(item));
     }
 
     const tour = await TourPackage.create({
-      ...req.body,
+      title: req.body.title,
       slug,
-      images,
+      category: req.body.category,
+      location: req.body.location,
+      difficulty: req.body.difficulty,
+      durationDays: Number(req.body.durationDays),
+      price: Number(req.body.price),
+      maxAltitude: req.body.maxAltitude,
+      bestSeason: req.body.bestSeason,
+      shortOverview: req.body.shortOverview,
+      status: req.body.status || "draft",
+
+      highlights,
+      itinerary,
+
+      images: images.length ? images : [],
     });
 
     res.status(201).json({
@@ -32,7 +61,10 @@ exports.createTourPackage = async (req, res) => {
       message: "Tour package created successfully",
       data: tour,
     });
+
   } catch (error) {
+    console.error(error);
+
     res.status(400).json({
       success: false,
       message: error.message,
