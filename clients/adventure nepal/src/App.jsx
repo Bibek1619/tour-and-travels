@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loader from "@/components/Loader";
 import  {Toaster} from "react-hot-toast";
+import AddTour from "./pages/admin/AddTour";
 
 // Lazy load pages
 const Home = lazy(() => import("@/pages/Home"));
@@ -43,7 +44,8 @@ function App() {
   </Route>
     
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/admin/add-vehicle" element={<AddVeichle />} />
+      <Route path="/admin/dashboard/add-vehicle" element={<AddVeichle />} />
+      <Route path="/admin/dashboard/add-tour" element={<AddTour/>}/>
 
 
         </Routes>
