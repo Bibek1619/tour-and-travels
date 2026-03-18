@@ -15,7 +15,7 @@ const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
 const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
-const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));\n\nconst About = lazy(() => import("@/pages/about/About"));
+const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));const About = lazy(() => import("@/pages/about/About"));
 
 
 
