@@ -348,7 +348,7 @@ const About = () => {
             <Button
               size="lg"
               variant="outline"
-              className="text-white border-white hover:bg-white hover:text-green-700 text-lg px-12 py-6 font-semibold"
+              className="text-green-700 border-white hover:bg-white hover:text-green-700 text-lg px-12 py-6 font-semibold"
             >
               Contact Us
             </Button>
