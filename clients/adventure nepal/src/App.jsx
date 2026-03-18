@@ -15,7 +15,7 @@ const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
 const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
-const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
+const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));const About = lazy(() => import("@/pages/about/About"));
 
 
 
@@ -45,10 +45,7 @@ function App() {
     
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/dashboard/add-vehicle" element={<AddVeichle />} />
-      <Route path="/admin/dashboard/add-tour" element={<AddTour/>}/>
-
-
-        </Routes>
+<Route path="/admin/dashboard/add-tour" element={<AddTour/>}/>\n\n          <Route path="/about" element={<About />} />\n        </Routes>
       </Suspense>
     </Router>
   );
