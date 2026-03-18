@@ -1,9 +1,11 @@
-# About Page Creation Plan
+# About & Contact Page Creation
 
 ## Steps:
 
-- [x] 1. Create `clients/adventure nepal/src/pages/about/About.jsx` with comprehensive About page content (hero, mission, stats, team, testimonials, CTA).
-- [x] 2. Update `clients/adventure nepal/src/App.jsx` to add lazy import and Route for `/about`.
-- [ ] 3. Test by running dev server and navigating to `/about`.
+- [x] 1. About page created and routed
+- [x] 2. App.jsx updated for About route
+- [x] 3. Create `clients/adventure nepal/src/pages/contact/Contact.jsx` with hero, info, map, form, social, FAQ
+- [x] 4. Update `App.jsx` for Contact route
+- [ ] 5. Commit/push to blackboxai/about-page, update PR
 
-## Followup: Run `cd clients/adventure nepal && npm run dev` to test.
+## Followup: `cd "clients/adventure nepal" & npm run dev`, visit /contact.
