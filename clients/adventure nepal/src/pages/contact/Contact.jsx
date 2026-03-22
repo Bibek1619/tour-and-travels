@@ -1,448 +1,259 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/front/Navbar";
 import { Footer } from "@/components/front/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Facebook,
-  Instagram,
-  Twitter,
-  Youtube,
-  Send,
-  ChevronDown,
-  MessageCircle,
+  MapPin, Phone, Mail, Clock,
+  Facebook, Instagram, Twitter, Youtube,
+  Send, ChevronDown, ArrowUpRight,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
 const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Visit Us",
-    detail: "Thamel Marg, Kathmandu 44600, Nepal",
-    link: "https://maps.google.com/?q=Thamel,Kathmandu",
-  },
-  {
-    icon: Phone,
-    title: "Call Us",
-    detail: "+977 9841 234 567",
-    link: "tel:+9779841234567",
-  },
-  {
-    icon: Mail,
-    title: "Email Us",
-    detail: "info@adventurenepal.com.np",
-    link: "mailto:info@adventurenepal.com.np",
-  },
-  {
-    icon: Clock,
-    title: "Office Hours",
-    detail: "Mon - Fri: 9AM - 7PM | Sat: 10AM - 5PM | Sun: Closed",
-  },
+  { icon: MapPin, label: "Address", value: "Thamel Marg, Kathmandu 44600, Nepal", link: "https://maps.google.com/?q=Thamel,Kathmandu" },
+  { icon: Phone, label: "Phone", value: "+977 9841 234 567", link: "tel:+9779841234567" },
+  { icon: Mail, label: "Email", value: "info@adventurenepal.com.np", link: "mailto:info@adventurenepal.com.np" },
+  { icon: Clock, label: "Hours", value: "Mon–Fri 9AM–7PM · Sat 10AM–5PM · Sun Closed" },
 ];
 
-const faq = [
-  {
-    question: "How do I book a tour?",
-    answer:
-      "Contact us via form, phone, or email. We'll customize your perfect itinerary within 24 hours.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer:
-      "Bank transfer, credit/debit cards (Visa/Mastercard), IME Pay, Khalti, and cash on arrival for smaller bookings.",
-  },
-  {
-    question: "Do you offer private tours?",
-    answer:
-      "Yes! All our tours can be customized for private groups, couples, or solo travelers.",
-  },
-  {
-    question: "What about travel insurance?",
-    answer:
-      "We recommend comprehensive travel insurance. We can help arrange it or provide guidance.",
-  },
+const faqs = [
+  { q: "How do I book a tour?", a: "Contact us via form, phone, or email. We'll customize your itinerary within 24 hours." },
+  { q: "What payment methods do you accept?", a: "Bank transfer, Visa/Mastercard, IME Pay, Khalti, and cash on arrival for smaller bookings." },
+  { q: "Do you offer private tours?", a: "Yes — all tours can be tailored for private groups, couples, or solo travelers." },
+  { q: "What about travel insurance?", a: "We strongly recommend comprehensive travel insurance and can help you arrange it." },
 ];
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [expandedFaq, setExpandedFaq] = useState(null);
+const socials = [
+  { icon: Facebook, label: "Facebook", href: "https://facebook.com/adventurenepal" },
+  { icon: Instagram, label: "Instagram", href: "https://instagram.com/adventurenepal" },
+  { icon: Twitter, label: "Twitter / X", href: "https://twitter.com/adventurenepal" },
+  { icon: Youtube, label: "YouTube", href: "https://youtube.com/adventurenepal" },
+];
+
+export default function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setSending(true);
+    await new Promise((r) => setTimeout(r, 1500));
     toast.success("Message sent! We'll reply within 24 hours.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setIsSubmitting(false);
-  };
-
-  const toggleFaq = (index) => {
-    setExpandedFaq(expandedFaq === index ? null : index);
+    setForm({ name: "", email: "", subject: "", message: "" });
+    setSending(false);
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white text-gray-900">
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-emerald-600 via-green-600 to-emerald-700 text-white py-32 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20" />
+      {/* HERO */}
+      <section className="bg-emerald-700 text-white px-6 md:px-16 py-24">
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto text-center"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-5xl mx-auto"
         >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-white/80 to-gray-200 bg-clip-text text-transparent drop-shadow-2xl">
-              Get In Touch
-            </h1>
-            <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-              Ready to start your adventure? Send us a message and let's plan
-              your perfect Nepal journey together.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-white text-emerald-700 hover:bg-gray-100 shadow-2xl text-lg px-12 py-8 font-bold"
-              >
-                Send Message
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/80 hover:bg-white/10 text-lg px-12 py-8 font-bold"
-              >
-                Call Us Now
-              </Button>
-            </div>
-          </motion.div>
+          <p className="text-emerald-300 text-sm tracking-widest uppercase mb-4">Contact Us</p>
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-5 max-w-xl">
+            Let's plan your Nepal adventure
+          </h1>
+          <p className="text-emerald-100 text-lg max-w-md leading-relaxed">
+            Reach out and we'll get back to you within 24 hours.
+          </p>
         </motion.div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-24">
-        {/* Contact Info & Map */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid lg:grid-cols-2 gap-12 mb-24 items-start"
-        >
-          {/* Contact Info */}
-          <div className="space-y-8">
-            {contactInfo.map((info, index) => (
+      <div className="max-w-5xl mx-auto px-6 md:px-8">
+
+        {/* CONTACT INFO + MAP */}
+        <section className="grid md:grid-cols-2 gap-12 py-20 border-b border-gray-100">
+          <div className="space-y-6">
+            {contactInfo.map((item, i) => (
               <motion.div
-                key={info.title}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -5 }}
+                key={item.label}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className="flex items-start gap-4"
               >
-                <Card className="group border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-r from-white to-gray-50/50 hover:-translate-y-2 cursor-pointer overflow-hidden">
-                  <CardContent className="p-8 pt-10 pb-10">
-                    <div className="w-20 h-20 bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">
-                      <info.icon className="h-10 w-10 text-white" />
-                    </div>
-                    <CardTitle className="text-2xl font-bold mb-3 group-hover:text-emerald-600 transition-colors text-center">
-                      {info.title}
-                    </CardTitle>
-                    <p className="text-xl font-medium text-muted-foreground mb-4 text-center leading-relaxed">
-                      {info.detail}
-                    </p>
-                    {info.link && (
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-center h-12"
-                        asChild
-                      >
-                        <a
-                          href={info.link}
-                          className="gap-2 text-lg font-semibold hover:text-emerald-600"
-                        >
-                          {info.icon === Phone ? "Call Now" : "Send Email"}
-                        </a>
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
+                <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                  <item.icon className="w-4 h-4 text-emerald-700" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">{item.label}</p>
+                  {item.link ? (
+                    <a href={item.link} className="text-gray-900 font-medium text-sm hover:text-emerald-700 transition-colors">
+                      {item.value}
+                    </a>
+                  ) : (
+                    <p className="text-gray-900 font-medium text-sm">{item.value}</p>
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Google Map */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="rounded-3xl shadow-2xl overflow-hidden border-0"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-xl overflow-hidden border border-gray-100 h-72 md:h-auto"
           >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.361482345678!2d85.324!3d27.717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb197Thamel%2C%20Kathmandu%2044600!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2sus!4v1690000000000"
-              width="100%"
-              height="450"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
+              width="100%" height="100%"
+              style={{ border: 0, minHeight: 280 }}
+              allowFullScreen="" loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="w-full h-[450px] md:h-[500px]"
               title="Adventure Nepal Location"
             />
           </motion.div>
-        </motion.section>
+        </section>
 
-        {/* Contact Form */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
-        >
-          <Card className="border-0 shadow-2xl bg-gradient-to-b from-white via-white/80 to-gray-50/60 backdrop-blur-xl overflow-hidden">
-            <CardHeader className="text-center pb-4">
-              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-4">
-                Send Us A Message
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                We'd love to hear from you. Send us a message and we'll respond
-                as soon as possible.
-              </p>
-            </CardHeader>
-            <CardContent className="p-12 pt-0">
-              <form
-                onSubmit={handleSubmit}
-                className="grid md:grid-cols-2 gap-8"
-              >
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-lg font-semibold">
-                      Full Name
-                    </Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="Your full name"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      className="h-14 text-lg py-6 px-6 border-2 border-gray-200 hover:border-emerald-300 focus:border-emerald-500 focus-visible:ring-emerald-500 shadow-sm transition-all duration-200"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-lg font-semibold">
-                      Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      className="h-14 text-lg py-6 px-6 border-2 border-gray-200 hover:border-emerald-300 focus:border-emerald-500 focus-visible:ring-emerald-500 shadow-sm transition-all duration-200"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="space-y-4 md:mt-8 md:ml-8">
-                  <div className="space-y-2">
-                    <Label htmlFor="subject" className="text-lg font-semibold">
-                      Subject
-                    </Label>
-                    <Input
-                      id="subject"
-                      type="text"
-                      placeholder="Tour inquiry, booking, general question..."
-                      value={formData.subject}
-                      onChange={(e) =>
-                        setFormData({ ...formData, subject: e.target.value })
-                      }
-                      className="h-14 text-lg py-6 px-6 border-2 border-gray-200 hover:border-emerald-300 focus:border-emerald-500 focus-visible:ring-emerald-500 shadow-sm transition-all duration-200"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="text-lg font-semibold">
-                      Message
-                    </Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us about your dream adventure..."
-                      value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                      rows={5}
-                      className="text-lg py-6 px-6 border-2 border-gray-200 hover:border-emerald-300 focus:border-emerald-500 focus-visible:ring-emerald-500 shadow-sm transition-all duration-200 resize-none"
-                      required
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full h-16 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 md:col-span-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Send className="h-6 w-6 mr-2 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-6 w-6 mr-2" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </motion.section>
+        {/* CONTACT FORM */}
+        <section className="py-20 border-b border-gray-100">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-2xl font-bold mb-1">Send us a message</h2>
+            <p className="text-gray-500 text-sm mb-10">We'll respond within 24 hours.</p>
 
-        {/* Social & FAQ */}
-        <motion.section
-          className="grid lg:grid-cols-2 gap-16 mt-32"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {/* Social */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-emerald-50 to-green-50">
-            <CardHeader className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-emerald-500 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
-                <MessageCircle className="h-12 w-12 text-white" />
-              </div>
-              <CardTitle className="text-3xl font-bold mb-4">
-                Follow Us
-              </CardTitle>
-              <p className="text-xl text-muted-foreground">
-                Stay updated with latest tours and adventures
-              </p>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="flex flex-wrap gap-4 justify-center">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid md:grid-cols-2 gap-5">
                 {[
-                  {
-                    icon: Facebook,
-                    href: "https://facebook.com/adventurenepal",
-                    color: "from-blue-600 to-blue-700",
-                  },
-                  {
-                    icon: Instagram,
-                    href: "https://instagram.com/adventurenepal",
-                    color: "from-pink-500 to-rose-500",
-                  },
-                  {
-                    icon: Twitter,
-                    href: "https://twitter.com/adventurenepal",
-                    color: "from-sky-400 to-blue-500",
-                  },
-                  {
-                    icon: Youtube,
-                    href: "https://youtube.com/adventurenepal",
-                    color: "from-red-500 to-rose-600",
-                  },
-                ].map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
-                    initial={{ y: 20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.1, y: -5 }}
-                  >
-                    <div
-                      className={`w-20 h-20 ${social.color} rounded-2xl flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300`}
-                    >
-                      <social.icon className="h-8 w-8 text-white" />
-                    </div>
-                  </motion.a>
+                  { id: "name", label: "Full Name", type: "text", placeholder: "Your name" },
+                  { id: "email", label: "Email Address", type: "email", placeholder: "you@email.com" },
+                ].map(({ id, label, type, placeholder }) => (
+                  <div key={id}>
+                    <label className="block text-xs text-gray-500 uppercase tracking-wider mb-2">{label}</label>
+                    <input
+                      type={type}
+                      placeholder={placeholder}
+                      value={form[id]}
+                      onChange={(e) => setForm({ ...form, [id]: e.target.value })}
+                      required
+                      className="w-full h-11 px-4 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-emerald-500 focus:outline-none transition-colors placeholder-gray-400"
+                    />
+                  </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+
+              <div>
+                <label className="block text-xs text-gray-500 uppercase tracking-wider mb-2">Subject</label>
+                <input
+                  type="text"
+                  placeholder="Tour inquiry, booking, general question..."
+                  value={form.subject}
+                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                  required
+                  className="w-full h-11 px-4 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-emerald-500 focus:outline-none transition-colors placeholder-gray-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-500 uppercase tracking-wider mb-2">Message</label>
+                <textarea
+                  rows={5}
+                  placeholder="Tell us about your dream adventure..."
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  required
+                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:border-emerald-500 focus:outline-none transition-colors placeholder-gray-400 resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={sending}
+                className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white text-sm font-semibold px-7 py-3 rounded-lg transition-colors"
+              >
+                {sending ? "Sending…" : <><Send className="w-4 h-4" /> Send Message</>}
+              </button>
+            </form>
+          </motion.div>
+        </section>
+
+        {/* FAQ + SOCIAL */}
+        <section className="grid md:grid-cols-2 gap-16 py-20">
 
           {/* FAQ */}
-          <Card className="border-0 shadow-2xl">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold text-center">
-                Frequently Asked Questions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {faq.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-b border-gray-200 pb-4 last:border-b-0"
-                >
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-2xl font-bold mb-8">FAQs</h2>
+            <div className="divide-y divide-gray-100">
+              {faqs.map((item, i) => (
+                <div key={i}>
                   <button
-                    onClick={() => toggleFaq(index)}
-                    className="w-full flex justify-between items-center p-4 hover:bg-gray-50 rounded-xl transition-all duration-200"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex justify-between items-center py-4 text-left gap-4 group"
                   >
-                    <span className="font-semibold text-lg">
-                      {item.question}
+                    <span className="text-sm font-medium text-gray-900 group-hover:text-emerald-700 transition-colors">
+                      {item.q}
                     </span>
-                    <ChevronDown
-                      className={`h-6 w-6 transition-transform duration-200 ${expandedFaq === index ? "rotate-180" : ""}`}
-                    />
+                    <ChevronDown className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`} />
                   </button>
-                  {expandedFaq === index && (
-                    <motion.p
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="pl-4 text-muted-foreground text-lg leading-relaxed mt-2"
-                    >
-                      {item.answer}
-                    </motion.p>
-                  )}
+                  <AnimatePresence initial={false}>
+                    {openFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-sm text-gray-500 leading-relaxed pb-4">{item.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-        </motion.section>
+            </div>
+          </motion.div>
+
+          {/* SOCIAL */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h2 className="text-2xl font-bold mb-2">Follow us</h2>
+            <p className="text-gray-500 text-sm mb-8">Stay updated with our latest tours and stories.</p>
+            <div className="space-y-3">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-4 py-3.5 rounded-lg border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <s.icon className="w-4 h-4 text-gray-500 group-hover:text-emerald-700 transition-colors" />
+                    <span className="text-sm font-medium text-gray-800">{s.label}</span>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-600 transition-colors" />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
+        </section>
       </div>
 
       <Footer />
     </div>
   );
-};
-
-export default Contact;
+}
