@@ -16,6 +16,8 @@ const Auth = lazy(() => import("@/pages/auth/Auth"));
 const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
+const ManageTours = lazy(() => import("@/pages/admin/ManageTours"));
+const ManageVehicles = lazy(() => import("@/pages/admin/ManageVehicles"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
 
@@ -42,6 +44,8 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/dashboard/add-vehicle" element={<AddVeichle />} />
           <Route path="/admin/dashboard/add-tour" element={<AddTour />} />
+          <Route path="/admin/dashboard/tours" element={<ManageTours />} />
+          <Route path="/admin/dashboard/vehicles" element={<ManageVehicles />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
