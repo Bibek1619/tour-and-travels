@@ -8,6 +8,8 @@ import AddTour from "./pages/admin/AddTour";
 const Home = lazy(() => import("@/pages/Home"));
 const VehicleBooking = lazy(() => import("@/pages/VehicleBooking"));
 const TourPackagesPage = lazy(() => import("@/pages/TourPakagesPage"));
+const TrekPackagesPage = lazy(() => import("@/pages/TrekPackagesPage"));
+const TrekDetailsPage = lazy(() => import("@/pages/TrekDetailsPage"));
 const PakagesDetailsPage = lazy(() => import("@/pages/PakagesDetailsPage"));
 const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
 const SignupForm = lazy(() => import("@/pages/auth/SignupForm"));
@@ -31,6 +33,8 @@ function App() {
           <Route path="/vehicle-booking" element={<VehicleBooking />} />
           <Route path="/tours" element={<TourPackagesPage />} />
           <Route path="/tours/:slug" element={<PakagesDetailsPage />} />
+          <Route path="/trek-packages" element={<TrekPackagesPage />} />
+          <Route path="/treks/:slug" element={<TrekDetailsPage />} />
           <Route path="/seat-booking" element={<SeatBooking />} />
           <Route path="/register" element={<Auth />}>
             <Route index element={<SignupForm />} />

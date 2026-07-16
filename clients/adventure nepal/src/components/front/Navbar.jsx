@@ -19,7 +19,7 @@ export function Navbar() {
     { href: "/seat-booking", label: "Seat Booking" },
     { href: "/vehicle-booking", label: "Vehicle Booking" },
     { href: "/tours", label: "Tour Packages" },
-    { href: "/hotels", label: "Hotels" },
+    { href: "/trek-packages", label: "Trek Packages" },
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ];

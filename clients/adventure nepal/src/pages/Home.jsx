@@ -2,6 +2,10 @@ import React from "react";
 import { motion } from "framer-motion"; // <-- import framer-motion
 import { Navbar } from "@/components/front/Navbar";
 import { HeroSection } from "@/components/front/HeroSection";
+import IntroSection from "@/components/front/IntroSection";
+import TopActivities from "@/components/front/TopActivities";
+import TopDestinations from "@/components/front/TopDestinations";
+import LastMinuteTrips from "@/components/front/LastMinuteTrips";
 import { Footer } from "@/components/front/Footer";
 import Whyus from "@/components/front/Whyus";
 import { DestinationsSection } from "@/components/front/DestinationsSection";
@@ -29,6 +33,46 @@ const Home = () => {
         viewport={{ once: true, amount: 0.3 }}
       >
         <HeroSection />
+      </motion.div>
+
+      {/* Last Minute Trips Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <LastMinuteTrips />
+      </motion.div>
+
+      {/* Intro Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <IntroSection />
+      </motion.div>
+
+      {/* Top Activities Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <TopActivities />
+      </motion.div>
+
+      {/* Top Destinations Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <TopDestinations />
       </motion.div>
 
       {/* Why Us Section */}
