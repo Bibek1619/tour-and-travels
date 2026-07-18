@@ -9,9 +9,12 @@ const Home = lazy(() => import("@/pages/Home"));
 const VehicleBooking = lazy(() => import("@/pages/VehicleBooking"));
 const TourPackagesPage = lazy(() => import("@/pages/TourPakagesPage"));
 const TrekPackagesPage = lazy(() => import("@/pages/TrekPackagesPage"));
+const TrekRegionPage = lazy(() => import("@/pages/TrekRegionPage"));
 const TrekDetailsPage = lazy(() => import("@/pages/TrekDetailsPage"));
 const PakagesDetailsPage = lazy(() => import("@/pages/PakagesDetailsPage"));
 const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
+const AdventuresPage = lazy(() => import("@/pages/AdventuresPage"));
+const AdventureDetailPage = lazy(() => import("@/pages/AdventureDetailPage"));
 const SignupForm = lazy(() => import("@/pages/auth/SignupForm"));
 const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
@@ -34,8 +37,11 @@ function App() {
           <Route path="/tours" element={<TourPackagesPage />} />
           <Route path="/tours/:slug" element={<PakagesDetailsPage />} />
           <Route path="/trek-packages" element={<TrekPackagesPage />} />
+          <Route path="/trek-packages/:regionId" element={<TrekRegionPage />} />
           <Route path="/treks/:slug" element={<TrekDetailsPage />} />
           <Route path="/seat-booking" element={<SeatBooking />} />
+          <Route path="/adventures" element={<AdventuresPage />} />
+          <Route path="/adventures/:slug" element={<AdventureDetailPage />} />
           <Route path="/register" element={<Auth />}>
             <Route index element={<SignupForm />} />
           </Route>

@@ -13,13 +13,13 @@ export function Navbar() {
   const {isAuthenticated,user}=useSelector(state=>state.auth)
   const location=useLocation();
 
-
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/seat-booking", label: "Seat Booking" },
     { href: "/vehicle-booking", label: "Vehicle Booking" },
     { href: "/tours", label: "Tour Packages" },
     { href: "/trek-packages", label: "Trek Packages" },
+    { href: "/adventures", label: "Adventures" },
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },
   ];
@@ -113,6 +113,7 @@ export function Navbar() {
               key={idx}
               to={link.href}
               className="text-base font-medium hover:text-green-500 transition-colors duration-500 ease-in-out py-2"
+              onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}
             </Link>
