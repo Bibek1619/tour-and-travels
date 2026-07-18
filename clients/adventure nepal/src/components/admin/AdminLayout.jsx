@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '@/features/auth/authSlice';
+import { logout } from '@/redux/slices/authSlice';
 
 const AdminLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
