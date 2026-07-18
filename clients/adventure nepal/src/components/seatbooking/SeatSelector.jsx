@@ -1,103 +1,320 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { UserCheck } from 'lucide-react';
-import { Button } from '../ui/button';
+import { UserCheck, User } from 'lucide-react';
 
 const SeatSelector = ({ vehicle, selectedSeats, onToggleSeat }) => {
-  const [seatsStatus] = useState(() => {
-    // Mock seat statuses per vehicle (4x5 grid = 20 seats)
-    const statuses = Array(20).fill('free');
-    const reservedCount = Math.floor(Math.random() * 5) + 2;
-    const bookedCount = Math.floor(Math.random() * 3) + 1;
-    for (let i = 0; i < bookedCount; i++) {
-      statuses[Math.floor(Math.random() * 20)] = 'booked';
-    }
-    for (let i = 0; i < reservedCount; i++) {
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * 20);
-      } while (statuses[idx] === 'booked');
-      statuses[idx] = 'reserved';
-    }
-    return statuses;
-  });
+  // Get booked seats from vehicle data
+  const bookedSeats = vehicle.bookedSeats || [];
+  
+  // Calculate available seats
+  const availableSeatsCount = vehicle.seats - bookedSeats.length;
 
-  const getSeatClass = (status, isSelected) => {
-    let base = 'w-12 h-12 rounded-lg border-2 flex items-center justify-center text-xs font-medium transition-all cursor-pointer hover:scale-105 mx-1 my-1 shadow-md';
-    if (isSelected) return base + ' bg-blue-500 border-blue-600 text-white shadow-lg';
-    switch (status) {
-      case 'free': return base + ' bg-emerald-500 border-emerald-600 text-white hover:bg-emerald-600';
-      case 'reserved': return base + ' bg-amber-500 border-amber-600 text-white hover:bg-amber-600';
-      case 'booked': return base + ' bg-red-500 border-red-600 text-white cursor-not-allowed opacity-75';
-      default: return base + ' bg-gray-200 border-gray-300';
+  const getSeatClass = (seatNum, isBooked, isSelected) => {
+    let base = 'w-14 h-14 rounded-lg border-2 flex items-center justify-center text-sm font-semibold transition-all cursor-pointer hover:scale-105 shadow';
+    
+    if (isBooked) {
+      return base + ' bg-gray-400 border-gray-500 text-white cursor-not-allowed opacity-75';
     }
+    if (isSelected) {
+      return base + ' bg-orange-500 border-orange-600 text-white shadow-lg scale-105';
+    }
+    return base + ' bg-blue-500 border-blue-600 text-white hover:bg-blue-600';
   };
 
-  const seatNumber = (row, col) => row * 5 + col + 1;
+  // Bus Layout (18 seats) - like the image you showed
+  const renderBusLayout = () => {
+    const seats = [];
+    let seatNum = 1;
 
-  const availableSeats = seatsStatus.filter(s => s === 'free').length;
-  const selectedCount = selectedSeats.length;
-
-  return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <UserCheck className="w-5 h-5" />
-          Select Seats - {vehicle.name}
-        </CardTitle>
-        <div className="flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">
-            Free: {availableSeats}
-          </Badge>
-          <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-amber-200">
-            Reserved
-          </Badge>
-          <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
-            Booked
-          </Badge>
-          <Badge variant="default" className="bg-blue-100 text-blue-800">
-            Selected: {selectedCount}
-          </Badge>
+    return (
+      <div className="relative bg-gradient-to-b from-gray-100 to-gray-200 rounded-3xl p-6 border-4 border-gray-400" style={{ minWidth: '320px' }}>
+        {/* Windshield */}
+        <div className="bg-gray-300 h-4 rounded-t-full mb-6 mx-4"></div>
+        
+        {/* Driver section */}
+        <div className="flex justify-end mb-6 px-4">
+          <div className="w-14 h-14 bg-yellow-400 border-2 border-yellow-500 rounded-lg flex items-center justify-center">
+            <User className="w-6 h-6 text-gray-800" />
+          </div>
         </div>
-      </CardHeader>
-      <CardContent className="p-4">
-        <div className="grid grid-cols-5 gap-1 p-4 bg-gradient-to-b from-gray-50 to-white rounded-lg border">
-          {Array(4).fill().map((_, row) => (
-            <div key={row} className="flex justify-center mb-1">
-              {Array(5).fill().map((_, col) => {
-                const idx = row * 5 + col;
-                const status = seatsStatus[idx];
-                const seatNum = seatNumber(row, col);
-                const isSelected = selectedSeats.includes(seatNum);
-                const isSelectable = status === 'free' || isSelected;
 
-                return (
-                  <div
-                    key={seatNum}
-                    className={getSeatClass(status, isSelected)}
-                    onClick={() => isSelectable && onToggleSeat(seatNum, isSelected)}
-                    title={`Seat ${seatNum}: ${status}${isSelected ? ' (selected)' : ''}`}
-                  >
-                    {seatNum}
-                  </div>
-                );
-              })}
+        {/* Seats - Bus style: 2 columns (A and B rows) */}
+        <div className="space-y-3">
+          {/* Row 1-8: Single seats on left, double seats on right */}
+          {[...Array(8)].map((_, rowIndex) => {
+            const leftSeat = rowIndex + 1; // A1-A8
+            const rightSeat1 = rowIndex + 9; // B1-B8 (seats 9-16)
+            const rightSeat2 = rowIndex + 17; // B9-B16 (seats 17-18 only for first 2 rows)
+            
+            return (
+              <div key={rowIndex} className="flex justify-between items-center gap-12 px-4">
+                {/* Left column - Single seat */}
+                <div
+                  className={getSeatClass(
+                    leftSeat,
+                    bookedSeats.includes(leftSeat),
+                    selectedSeats.includes(leftSeat)
+                  )}
+                  onClick={() => {
+                    if (!bookedSeats.includes(leftSeat)) {
+                      onToggleSeat(leftSeat, selectedSeats.includes(leftSeat));
+                    }
+                  }}
+                  title={`Seat A${rowIndex + 1}`}
+                >
+                  A{rowIndex + 1}
+                </div>
+
+                {/* Right column - Double seats */}
+                <div className="flex gap-2">
+                  {rightSeat1 <= vehicle.seats && (
+                    <div
+                      className={getSeatClass(
+                        rightSeat1,
+                        bookedSeats.includes(rightSeat1),
+                        selectedSeats.includes(rightSeat1)
+                      )}
+                      onClick={() => {
+                        if (!bookedSeats.includes(rightSeat1)) {
+                          onToggleSeat(rightSeat1, selectedSeats.includes(rightSeat1));
+                        }
+                      }}
+                      title={`Seat B${rowIndex + 1}`}
+                    >
+                      B{rowIndex + 1}
+                    </div>
+                  )}
+                  {rightSeat2 <= vehicle.seats && rowIndex < 2 && (
+                    <div
+                      className={getSeatClass(
+                        rightSeat2,
+                        bookedSeats.includes(rightSeat2),
+                        selectedSeats.includes(rightSeat2)
+                      )}
+                      onClick={() => {
+                        if (!bookedSeats.includes(rightSeat2)) {
+                          onToggleSeat(rightSeat2, selectedSeats.includes(rightSeat2));
+                        }
+                      }}
+                      title={`Seat B${rowIndex + 9}`}
+                    >
+                      B{rowIndex + 9}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Last row for any remaining seats */}
+        {vehicle.seats > 16 && (
+          <div className="flex justify-center gap-2 mt-4">
+            {[...Array(vehicle.seats - 16)].map((_, idx) => {
+              const seatNum = 17 + idx;
+              return (
+                <div
+                  key={seatNum}
+                  className={getSeatClass(
+                    seatNum,
+                    bookedSeats.includes(seatNum),
+                    selectedSeats.includes(seatNum)
+                  )}
+                  onClick={() => {
+                    if (!bookedSeats.includes(seatNum)) {
+                      onToggleSeat(seatNum, selectedSeats.includes(seatNum));
+                    }
+                  }}
+                  title={`Seat ${seatNum}`}
+                >
+                  {seatNum}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // SUV Layout (7 seats)
+  const renderSUVLayout = () => {
+    return (
+      <div className="relative bg-gradient-to-b from-gray-100 to-gray-200 rounded-3xl p-6 border-4 border-gray-400" style={{ minWidth: '280px' }}>
+        {/* Windshield */}
+        <div className="bg-gray-300 h-4 rounded-t-full mb-6 mx-4"></div>
+        
+        {/* Driver section */}
+        <div className="flex justify-between mb-6 px-4">
+          <div className="w-14 h-14 bg-yellow-400 border-2 border-yellow-500 rounded-lg flex items-center justify-center">
+            <User className="w-6 h-6 text-gray-800" />
+          </div>
+          {/* Seat 1 - Front passenger */}
+          <div
+            className={getSeatClass(1, bookedSeats.includes(1), selectedSeats.includes(1))}
+            onClick={() => {
+              if (!bookedSeats.includes(1)) {
+                onToggleSeat(1, selectedSeats.includes(1));
+              }
+            }}
+            title="Seat 1 - Front"
+          >
+            1
+          </div>
+        </div>
+
+        {/* Middle row - 3 seats */}
+        <div className="flex justify-center gap-3 mb-6">
+          {[2, 3, 4].map((seatNum) => (
+            <div
+              key={seatNum}
+              className={getSeatClass(seatNum, bookedSeats.includes(seatNum), selectedSeats.includes(seatNum))}
+              onClick={() => {
+                if (!bookedSeats.includes(seatNum)) {
+                  onToggleSeat(seatNum, selectedSeats.includes(seatNum));
+                }
+              }}
+              title={`Seat ${seatNum} - Middle`}
+            >
+              {seatNum}
             </div>
           ))}
         </div>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-emerald-500 rounded-sm" />
-            <span>Free</span>
+
+        {/* Back row - 3 seats */}
+        <div className="flex justify-center gap-3">
+          {[5, 6, 7].map((seatNum) => (
+            <div
+              key={seatNum}
+              className={getSeatClass(seatNum, bookedSeats.includes(seatNum), selectedSeats.includes(seatNum))}
+              onClick={() => {
+                if (!bookedSeats.includes(seatNum)) {
+                  onToggleSeat(seatNum, selectedSeats.includes(seatNum));
+                }
+              }}
+              title={`Seat ${seatNum} - Back`}
+            >
+              {seatNum}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Van Layout (12 seats)
+  const renderVanLayout = () => {
+    return (
+      <div className="relative bg-gradient-to-b from-gray-100 to-gray-200 rounded-3xl p-6 border-4 border-gray-400" style={{ minWidth: '320px' }}>
+        {/* Windshield */}
+        <div className="bg-gray-300 h-4 rounded-t-full mb-6 mx-4"></div>
+        
+        {/* Driver section */}
+        <div className="flex justify-between mb-6 px-4">
+          <div className="w-14 h-14 bg-yellow-400 border-2 border-yellow-500 rounded-lg flex items-center justify-center">
+            <User className="w-6 h-6 text-gray-800" />
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-amber-500 rounded-sm" />
-            <span>Reserved</span>
+          <div
+            className={getSeatClass(1, bookedSeats.includes(1), selectedSeats.includes(1))}
+            onClick={() => {
+              if (!bookedSeats.includes(1)) {
+                onToggleSeat(1, selectedSeats.includes(1));
+              }
+            }}
+            title="Seat 1"
+          >
+            1
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-red-500 rounded-sm" />
+        </div>
+
+        {/* Rows of 2 seats each */}
+        <div className="space-y-4">
+          {[...Array(5)].map((_, rowIndex) => {
+            const seat1 = (rowIndex * 2) + 2;
+            const seat2 = seat1 + 1;
+            
+            return (
+              <div key={rowIndex} className="flex justify-between gap-12 px-4">
+                <div
+                  className={getSeatClass(seat1, bookedSeats.includes(seat1), selectedSeats.includes(seat1))}
+                  onClick={() => {
+                    if (!bookedSeats.includes(seat1)) {
+                      onToggleSeat(seat1, selectedSeats.includes(seat1));
+                    }
+                  }}
+                  title={`Seat ${seat1}`}
+                >
+                  {seat1}
+                </div>
+                <div
+                  className={getSeatClass(seat2, bookedSeats.includes(seat2), selectedSeats.includes(seat2))}
+                  onClick={() => {
+                    if (!bookedSeats.includes(seat2)) {
+                      onToggleSeat(seat2, selectedSeats.includes(seat2));
+                    }
+                  }}
+                  title={`Seat ${seat2}`}
+                >
+                  {seat2}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderLayout = () => {
+    switch (vehicle.type) {
+      case 'bus':
+        return renderBusLayout();
+      case 'suv':
+        return renderSUVLayout();
+      case 'van':
+        return renderVanLayout();
+      default:
+        return renderBusLayout();
+    }
+  };
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <UserCheck className="w-5 h-5" />
+          Select Your Seats - {vehicle.name}
+        </CardTitle>
+        <div className="flex flex-wrap gap-3 text-sm mt-3">
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+            Available: {availableSeatsCount}
+          </Badge>
+          <Badge variant="secondary" className="bg-gray-200 text-gray-800">
+            Booked: {bookedSeats.length}
+          </Badge>
+          <Badge variant="secondary" className="bg-orange-100 text-orange-800">
+            Selected: {selectedSeats.length}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center">
+        {/* Seat Layout */}
+        {renderLayout()}
+
+        {/* Legend */}
+        <div className="mt-6 grid grid-cols-3 gap-4 text-sm w-full max-w-md">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-blue-500 border-2 border-blue-600 rounded" />
+            <span>Available</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-gray-400 border-2 border-gray-500 rounded" />
             <span>Booked</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-orange-500 border-2 border-orange-600 rounded" />
+            <span>Selected</span>
           </div>
         </div>
       </CardContent>

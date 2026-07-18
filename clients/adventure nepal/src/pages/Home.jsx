@@ -3,6 +3,7 @@ import { motion } from "framer-motion"; // <-- import framer-motion
 import { Navbar } from "@/components/front/Navbar";
 import { HeroSection } from "@/components/front/HeroSection";
 import IntroSection from "@/components/front/IntroSection";
+import DailyTripsBooking from "@/components/front/DailyTripsBooking";
 import TopActivities from "@/components/front/TopActivities";
 import TopDestinations from "@/components/front/TopDestinations";
 import LastMinuteTrips from "@/components/front/LastMinuteTrips";
@@ -53,6 +54,16 @@ const Home = () => {
         viewport={{ once: true, amount: 0.3 }}
       >
         <IntroSection />
+      </motion.div>
+
+      {/* Daily Trips Booking Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <DailyTripsBooking />
       </motion.div>
 
       {/* Top Activities Section */}
