@@ -1,6 +1,6 @@
-import AdminNavbar from "@/components/admin/AdminNavbar";
+import AdminLayout from "@/components/admin/AdminLayout";
 import RecentBookings from "@/components/admin/RecentBookings";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardStatsApi } from "@/api/statsApi";
 import { getAllToursApi } from "@/api/tourApi";
@@ -14,8 +14,11 @@ import {
   DollarSign,
   Calendar,
   Package,
+  ArrowUpRight,
+  ArrowDownRight,
   Activity,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const AdminDashboard = () => {
   // Fetch dashboard stats
@@ -56,148 +59,214 @@ const AdminDashboard = () => {
   const statCards = [
     {
       title: "Total Revenue",
-      value: `Rs ${stats.totalRevenue?.toLocaleString() || "0"}`,
+      value: `NPR ${stats.totalRevenue?.toLocaleString() || "0"}`,
+      change: "+12.5%",
+      changeType: "increase",
       icon: DollarSign,
-      color: "bg-green-500",
-      bgColor: "bg-green-50",
-      textColor: "text-green-700",
+      iconBg: "bg-emerald-500",
+      description: "from last month",
     },
     {
       title: "Total Bookings",
       value: stats.totalBookings || 0,
+      change: `${stats.pendingBookings || 0} pending`,
+      changeType: "neutral",
       icon: Calendar,
-      color: "bg-blue-500",
-      bgColor: "bg-blue-50",
-      textColor: "text-blue-700",
-      subtitle: `${stats.pendingBookings || 0} pending`,
+      iconBg: "bg-blue-500",
+      description: "active bookings",
     },
     {
-      title: "Active Tours",
+      title: "Tour Packages",
       value: stats.totalTours || 0,
+      change: "+3 new",
+      changeType: "increase",
       icon: MapPin,
-      color: "bg-purple-500",
-      bgColor: "bg-purple-50",
-      textColor: "text-purple-700",
+      iconBg: "bg-violet-500",
+      description: "total packages",
     },
     {
       title: "Vehicles",
       value: stats.totalVehicles || 0,
+      change: "All active",
+      changeType: "neutral",
       icon: Car,
-      color: "bg-orange-500",
-      bgColor: "bg-orange-50",
-      textColor: "text-orange-700",
+      iconBg: "bg-orange-500",
+      description: "in fleet",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <AdminNavbar />
+    <AdminLayout>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+        <p className="text-gray-600">
+          Welcome back! Here's an overview of your business
+        </p>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back 👋
-          </h2>
-          <p className="text-gray-600">
-            Here's what's happening with your business today
-          </p>
+      {/* Stats Grid */}
+      {statsLoading ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-6">
+                <div className="h-24 bg-gray-200 rounded" />
+              </CardContent>
+            </Card>
+          ))}
         </div>
-
-        {/* Stats Grid */}
-        {statsLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-6">
-                  <div className="h-20 bg-gray-200 rounded" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {statCards.map((stat, index) => (
-              <Card
-                key={index}
-                className="border-2 hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-600 mb-2">
-                        {stat.title}
-                      </p>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-1">
-                        {stat.value}
-                      </h3>
-                      {stat.subtitle && (
-                        <p className="text-xs text-gray-500">{stat.subtitle}</p>
-                      )}
-                    </div>
-                    <div
-                      className={`${stat.bgColor} p-3 rounded-xl`}
-                    >
-                      <stat.icon className={`h-6 w-6 ${stat.textColor}`} />
-                    </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          {statCards.map((stat, index) => (
+            <Card key={index} className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`${stat.iconBg} p-2.5 rounded-lg`}>
+                    <stat.icon className="h-5 w-5 text-white" />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                  {stat.changeType === "increase" && (
+                    <Badge variant="outline" className="text-green-700 bg-green-50 border-green-200">
+                      <ArrowUpRight className="h-3 w-3 mr-1" />
+                      {stat.change}
+                    </Badge>
+                  )}
+                  {stat.changeType === "neutral" && (
+                    <Badge variant="outline" className="text-gray-700 bg-gray-50">
+                      {stat.change}
+                    </Badge>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-1">
+                    {stat.title}
+                  </p>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">{stat.description}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
+      {/* Two Column Layout */}
+      <div className="grid gap-6 lg:grid-cols-3 mb-8">
         {/* Quick Actions */}
-        <Card className="mb-8 border-2">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Activity className="h-5 w-5 text-green-600" />
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Activity className="h-5 w-5 text-orange-600" />
               Quick Actions
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <QuickActionCard
-                icon={Package}
-                title="Manage Tours"
-                description="View and edit tour packages"
-                link="/admin/dashboard/tours"
-              />
-              <QuickActionCard
-                icon={Car}
-                title="Manage Vehicles"
-                description="View and edit vehicle rentals"
-                link="/admin/dashboard/vehicles"
-              />
-              <QuickActionCard
-                icon={Users}
-                title="View Bookings"
-                description="Manage customer bookings"
-                link="/admin/dashboard/bookings"
-              />
-            </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <QuickActionCard
+              icon={Package}
+              title="Add New Tour"
+              link="/admin/dashboard/add-tour"
+              color="blue"
+            />
+            <QuickActionCard
+              icon={Car}
+              title="Add Vehicle"
+              link="/admin/dashboard/add-vehicle"
+              color="orange"
+            />
+            <QuickActionCard
+              icon={Calendar}
+              title="View Bookings"
+              link="/admin/dashboard/bookings"
+              color="green"
+            />
+            <QuickActionCard
+              icon={MapPin}
+              title="Manage Tours"
+              link="/admin/dashboard/tours"
+              color="violet"
+            />
           </CardContent>
         </Card>
 
-        {/* Recent Bookings */}
-        <RecentBookings />
+        {/* Recent Activity Overview */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-lg">Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between py-3 border-b">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Confirmed Bookings</p>
+                    <p className="text-sm text-gray-500">This month</p>
+                  </div>
+                </div>
+                <span className="text-2xl font-bold text-gray-900">
+                  {stats.confirmedBookings || 0}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between py-3 border-b">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <Activity className="h-5 w-5 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Pending Reviews</p>
+                    <p className="text-sm text-gray-500">Awaiting confirmation</p>
+                  </div>
+                </div>
+                <span className="text-2xl font-bold text-gray-900">
+                  {stats.pendingBookings || 0}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between py-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Active Customers</p>
+                    <p className="text-sm text-gray-500">Total registered</p>
+                  </div>
+                </div>
+                <span className="text-2xl font-bold text-gray-900">156</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+
+      {/* Recent Bookings */}
+      <RecentBookings />
+    </AdminLayout>
   );
 };
 
 // Quick Action Card Component
-const QuickActionCard = ({ icon: Icon, title, description, link }) => {
+const QuickActionCard = ({ icon: Icon, title, link, color }) => {
+  const colorClasses = {
+    blue: "bg-blue-50 hover:bg-blue-100 text-blue-700",
+    orange: "bg-orange-50 hover:bg-orange-100 text-orange-700",
+    green: "bg-green-50 hover:bg-green-100 text-green-700",
+    violet: "bg-violet-50 hover:bg-violet-100 text-violet-700",
+  };
+
   return (
     <a
       href={link}
-      className="flex items-start gap-4 p-4 rounded-xl border-2 border-gray-100 hover:border-green-300 hover:bg-green-50/50 transition-all duration-200 group"
+      className={`flex items-center gap-3 p-3 rounded-lg transition-all ${colorClasses[color]}`}
     >
-      <div className="p-2 rounded-lg bg-green-100 group-hover:bg-green-200 transition-colors">
-        <Icon className="h-5 w-5 text-green-700" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900 mb-1">{title}</h4>
-        <p className="text-sm text-gray-600">{description}</p>
-      </div>
+      <Icon className="h-5 w-5" />
+      <span className="font-medium">{title}</span>
+      <ArrowUpRight className="h-4 w-4 ml-auto" />
     </a>
   );
 };
