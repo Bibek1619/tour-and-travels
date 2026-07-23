@@ -2,22 +2,19 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Navbar } from '@/components/front/Navbar';
 import { Footer } from '@/components/front/Footer';
-import { ArrowLeft, MapPin, Clock, Users, Star, Calendar } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Star } from 'lucide-react';
 
 const AdventureDetailPage = () => {
   const { slug } = useParams();
 
-  // Adventure data with packages
   const adventureData = {
     'rafting': {
       name: 'Rafting',
-      location: 'Trishuli River',
       heroImage: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200',
-      description: 'Experience the thrill of white water rafting on the Trishuli River, one of Nepal\'s most popular rafting destinations. Navigate through exciting rapids while enjoying stunning mountain scenery.',
       packages: [
         {
           id: 1,
-          title: 'Half Day Rafting - Trishuli River',
+          title: 'Half Day Rafting',
           image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
           duration: '3-4 Hours',
           difficulty: 'Moderate',
@@ -29,7 +26,7 @@ const AdventureDetailPage = () => {
         },
         {
           id: 2,
-          title: 'Full Day Rafting - Trishuli River',
+          title: 'Full Day Rafting',
           image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
           duration: '6-7 Hours',
           difficulty: 'Moderate',
@@ -55,9 +52,7 @@ const AdventureDetailPage = () => {
     },
     'kayaking': {
       name: 'Kayaking',
-      location: 'Fewa Lake, Pokhara',
       heroImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200',
-      description: 'Paddle through the serene waters of Fewa Lake with stunning views of the Annapurna mountain range. Perfect for beginners and experienced kayakers alike.',
       packages: [
         {
           id: 1,
@@ -87,9 +82,7 @@ const AdventureDetailPage = () => {
     },
     'paragliding': {
       name: 'Paragliding',
-      location: 'Sarangkot, Pokhara',
       heroImage: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200',
-      description: 'Soar like a bird over the beautiful Pokhara valley with breathtaking panoramic views of the Himalayas including Annapurna, Dhaulagiri, and Machhapuchhre.',
       packages: [
         {
           id: 1,
@@ -119,9 +112,7 @@ const AdventureDetailPage = () => {
     },
     'bungee-jumping': {
       name: 'Bungee Jumping',
-      location: 'Hemja & Kushma',
       heroImage: 'https://images.unsplash.com/photo-1604357209793-fca5dca89f97?w=1200',
-      description: 'Take the ultimate leap of faith from Nepal\'s highest bungee jumping points. Experience pure adrenaline as you free fall over stunning gorges.',
       packages: [
         {
           id: 1,
@@ -151,13 +142,11 @@ const AdventureDetailPage = () => {
     },
     'ziplining': {
       name: 'Ziplining',
-      location: 'Pokhara',
       heroImage: 'https://images.unsplash.com/photo-1570552626352-8b0d6f5fcf5b?w=1200',
-      description: 'Fly through the air at speeds up to 120 km/h on one of the world\'s longest and steepest ziplines. An unforgettable adrenaline experience!',
       packages: [
         {
           id: 1,
-          title: ' zipFlyer Nepal - The Extreme Zipline',
+          title: 'zipFlyer Nepal - The Extreme Zipline',
           image: 'https://images.unsplash.com/photo-1570552626352-8b0d6f5fcf5b?w=800',
           duration: '3-4 Hours',
           difficulty: 'Moderate',
@@ -171,9 +160,7 @@ const AdventureDetailPage = () => {
     },
     'canyoning': {
       name: 'Canyoning',
-      location: 'Pokhara',
       heroImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200',
-      description: 'Experience the thrill of canyoning - rappelling down waterfalls, natural rock slides, cliff jumping, and swimming through pristine canyons.',
       packages: [
         {
           id: 1,
@@ -225,64 +212,55 @@ const AdventureDetailPage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-[400px]">
+      <section className="relative h-[500px]">
         <img
           src={adventure.heroImage}
           alt={adventure.name}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-center text-white">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        <div className="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-12 text-white">
           <Link
             to="/adventures"
-            className="inline-flex items-center gap-2 text-white hover:text-orange-300 mb-4 transition-colors"
+            className="absolute top-8 left-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Adventures
+            Back
           </Link>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">{adventure.name}</h1>
-          <div className="flex items-center gap-2 text-xl">
-            <MapPin className="w-6 h-6" />
-            <span>{adventure.location}</span>
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-12 h-[2px] bg-orange-500"></div>
+              <span className="text-orange-400 text-sm font-semibold uppercase tracking-widest">
+                {adventure.packages.length} {adventure.packages.length === 1 ? 'Package' : 'Packages'} Available
+              </span>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">{adventure.name}</h1>
           </div>
         </div>
       </section>
 
-      {/* Description */}
-      <section className="py-8 bg-white">
+      {/* Packages */}
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <p className="text-lg text-gray-700">
-            {adventure.description}
-          </p>
-        </div>
-      </section>
-
-      {/* Packages Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Available Packages
-          </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {adventure.packages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300"
               >
                 {/* Image */}
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-52 overflow-hidden">
                   <img
                     src={pkg.image}
                     alt={pkg.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  {/* Difficulty Badge */}
-                  <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold ${
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                     pkg.difficulty === 'Easy' 
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-emerald-500 text-white'
                       : pkg.difficulty === 'Moderate'
-                      ? 'bg-yellow-500 text-white'
+                      ? 'bg-amber-500 text-white'
                       : pkg.difficulty === 'Challenging'
                       ? 'bg-orange-500 text-white'
                       : 'bg-red-500 text-white'
@@ -293,50 +271,46 @@ const AdventureDetailPage = () => {
 
                 {/* Content */}
                 <div className="p-6">
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
                     {pkg.title}
                   </h3>
 
                   {/* Rating */}
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-4">
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold text-gray-800">{pkg.rating}</span>
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <span className="font-bold text-gray-900">{pkg.rating}</span>
                     </div>
-                    <span className="text-sm text-gray-500">({pkg.reviews} reviews)</span>
+                    <span className="text-sm text-gray-400">({pkg.reviews})</span>
                   </div>
 
                   {/* Details */}
-                  <div className="space-y-2 mb-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-4 mb-5 text-sm text-gray-500">
+                    <div className="flex items-center gap-1.5">
                       <Clock className="w-4 h-4" />
                       <span>{pkg.duration}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       <Users className="w-4 h-4" />
                       <span>{pkg.groupSize}</span>
                     </div>
                   </div>
 
                   {/* Highlights */}
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2 text-sm">Highlights:</h4>
-                    <ul className="space-y-1 text-sm text-gray-600">
-                      {pkg.highlights.slice(0, 3).map((highlight, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <span className="text-orange-600 mt-1">•</span>
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <ul className="space-y-1.5 mb-6">
+                    {pkg.highlights.slice(0, 3).map((highlight, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                        <div className="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
 
-                  {/* Price & Button */}
-                  <div className="pt-4 border-t">
-                    <div className="flex items-center justify-between mb-3">
+                  {/* Price & CTA */}
+                  <div className="pt-5 border-t border-gray-100">
+                    <div className="flex items-end justify-between mb-4">
                       <div>
-                        <div className="text-sm text-gray-500">From</div>
+                        <span className="text-xs text-gray-400 uppercase tracking-wider">From</span>
                         <div className="text-2xl font-bold text-gray-900">
                           NPR {pkg.price.toLocaleString()}
                         </div>
@@ -344,7 +318,7 @@ const AdventureDetailPage = () => {
                     </div>
                     <Link
                       to="/contact"
-                      className="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center px-6 py-3 rounded-lg font-semibold transition-colors"
+                      className="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center py-3 rounded-xl font-semibold transition-all duration-300"
                     >
                       Book Now
                     </Link>
