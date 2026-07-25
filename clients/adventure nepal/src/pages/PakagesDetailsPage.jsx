@@ -10,7 +10,8 @@ import {
   Star,
   Phone,
   Mail,
-  ChevronLeft
+  ChevronLeft,
+  MessageCircle
 } from "lucide-react";
 import { getAllToursApi } from "@/api/tourApi";
 import toast from "react-hot-toast";
@@ -417,26 +418,71 @@ const PakagesDetailsPage = () => {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="sticky top-4 space-y-6">
-                {/* Booking Card */}
-                <div className="bg-white rounded-lg p-6 shadow">
-                  <div className="mb-6">
-                    <p className="text-gray-600 mb-2">Starting from</p>
-                    <p className="text-4xl font-bold text-orange-600">${tour.price}</p>
-                    <p className="text-gray-500 text-sm">per person</p>
+                {/* Booking Card - Redesigned */}
+                <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-lg border border-orange-100">
+                  {/* Price Section */}
+                  <div className="text-center mb-6 pb-6 border-b border-orange-200">
+                    <p className="text-sm text-gray-600 mb-2">Starting from</p>
+                    <div className="flex items-baseline justify-center gap-2">
+                      <span className="text-5xl font-bold text-orange-600">${tour.price}</span>
+                      <span className="text-gray-500">/person</span>
+                    </div>
                   </div>
 
-                  <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-colors mb-4">
-                    Book Now
-                  </button>
+                  {/* Booking Title */}
+                  <div className="text-center mb-4">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">Ready to Book?</h3>
+                    <p className="text-sm text-gray-600">Contact us for instant booking</p>
+                  </div>
 
-                  <div className="space-y-3 pt-4 border-t">
+                  {/* Action Buttons */}
+                  <div className="space-y-3 mb-6">
+                    {/* WhatsApp Button */}
+                    <button 
+                      onClick={() => {
+                        const message = encodeURIComponent(
+                          `Hi! I'm interested in booking the ${tour.title} tour.\n\n` +
+                          `📍 Duration: ${tour.durationDays} days\n` +
+                          `💰 Price: $${tour.price} per person\n\n` +
+                          `Can you help me with the booking process?`
+                        );
+                        window.open(`https://wa.me/9779841480794?text=${message}`, '_blank');
+                      }}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
+                    >
+                      <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <span>Book via WhatsApp</span>
+                    </button>
+
+                    {/* Email Button */}
+                    <a href={`mailto:info@adventurenepal.com?subject=Booking Inquiry - ${tour.title}&body=Hi, I'm interested in booking the ${tour.title} tour.%0D%0A%0D%0ADuration: ${tour.durationDays} days%0D%0APrice: $${tour.price} per person%0D%0A%0D%0APlease provide more details about availability and booking process.`}>
+                      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group">
+                        <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <span>Book via Email</span>
+                      </button>
+                    </a>
+                  </div>
+
+                  {/* Contact Info */}
+                  <div className="bg-white rounded-lg p-4 space-y-3">
+                    <div className="text-center text-xs text-gray-500 mb-3">Or reach us directly</div>
                     <a href="tel:+9779841480794" className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors">
-                      <Phone className="w-5 h-5" />
-                      <span>+977 984-1480794</span>
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500">Call us</div>
+                        <div className="font-semibold">+977 984-1480794</div>
+                      </div>
                     </a>
                     <a href="mailto:info@adventurenepal.com" className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors">
-                      <Mail className="w-5 h-5" />
-                      <span>info@adventurenepal.com</span>
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-5 h-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500">Email us</div>
+                        <div className="font-semibold text-sm">info@adventurenepal.com</div>
+                      </div>
                     </a>
                   </div>
                 </div>

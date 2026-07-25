@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Truck, Calendar, Users, Clock, MapPin } from 'lucide-react';
 
-const MustangPackages = ({ vehicles, onSelectVehicle }) => {
+const MustangPackages = ({ vehicles }) => {
   // Format date helper
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -73,12 +74,11 @@ const MustangPackages = ({ vehicles, onSelectVehicle }) => {
                   </p>
                   <p className="text-xs text-gray-500">per seat</p>
                 </div>
-                <Button 
-                  onClick={() => onSelectVehicle(vehicle)}
-                  className="bg-orange-600 hover:bg-orange-700"
-                >
-                  View Seats
-                </Button>
+                <Link to={`/seat-booking/${vehicle.id}`}>
+                  <Button className="bg-orange-600 hover:bg-orange-700">
+                    View Seats
+                  </Button>
+                </Link>
               </div>
             </CardFooter>
           </Card>

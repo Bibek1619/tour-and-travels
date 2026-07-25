@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import MustangPackages from "@/components/seatbooking/MustangPackages";
-import SeatSelector from "@/components/seatbooking/SeatSelector";
-import TripDetails from "@/components/seatbooking/TripDetails";
-import BookingModal from "@/components/seatbooking/BookingModal";
-import { toast } from 'react-hot-toast';
-import { Bus, Landmark, MapPin, Calendar, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Bus, Landmark, MapPin } from 'lucide-react';
 
 const SeatBooking = () => {
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [selectedSeats, setSelectedSeats] = useState([]);
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-
   // Mock vehicles data (Pokhara to Mustang daily packages)
   const mockVehicles = [
     {
@@ -63,36 +53,6 @@ const SeatBooking = () => {
     },
   ];
 
-  const handleSelectVehicle = (vehicle) => {
-    setSelectedVehicle(vehicle);
-    setSelectedSeats([]);
-    toast.success(`Selected ${vehicle.name} - ${vehicle.departureDate}`);
-  };
-
-  const handleToggleSeat = (seatNum, isSelected) => {
-    if (isSelected) {
-      setSelectedSeats(prev => prev.filter(s => s !== seatNum));
-    } else {
-      setSelectedSeats(prev => [...prev, seatNum]);
-    }
-  };
-
-  const handleBook = (bookingId) => {
-    toast.success(`Booking confirmed! ID: ${bookingId}`);
-    // Reset
-    setSelectedVehicle(null);
-    setSelectedSeats([]);
-    setShowBookingModal(false);
-  };
-
-  const handleBookClick = () => {
-    if (selectedSeats.length === 0) {
-      toast.error('Please select at least one seat');
-      return;
-    }
-    setShowBookingModal(true);
-  };
-
   return (
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12 px-4">
@@ -120,52 +80,7 @@ const SeatBooking = () => {
           </p>
         </div>
 
-        {!selectedVehicle ? (
-          <MustangPackages 
-            vehicles={mockVehicles}
-            onSelectVehicle={handleSelectVehicle} 
-          />
-        ) : (
-          <>
-            <div className="max-w-7xl mx-auto mb-8">
-              <Button 
-                variant="outline" 
-                onClick={() => setSelectedVehicle(null)}
-                className="mb-4"
-              >
-                ← Back to Vehicles
-              </Button>
-            </div>
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-12">
-              <SeatSelector 
-                vehicle={selectedVehicle} 
-                selectedSeats={selectedSeats} 
-                onToggleSeat={handleToggleSeat} 
-              />
-              <TripDetails 
-                vehicle={selectedVehicle} 
-                selectedSeats={selectedSeats} 
-              />
-            </div>
-            <div className="text-center">
-              <Button 
-                size="lg" 
-                className="text-lg px-12 bg-orange-600 hover:bg-orange-700" 
-                onClick={handleBookClick}
-              >
-                Book {selectedSeats.length} Seat{selectedSeats.length !== 1 ? 's' : ''} Now
-              </Button>
-            </div>
-          </>
-        )}
-
-        <BookingModal
-          vehicle={selectedVehicle}
-          selectedSeats={selectedSeats}
-          isOpen={showBookingModal}
-          onClose={() => setShowBookingModal(false)}
-          onBook={handleBook}
-        />
+        <MustangPackages vehicles={mockVehicles} />
       </div>
     </MainLayout>
   );

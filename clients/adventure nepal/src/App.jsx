@@ -13,6 +13,7 @@ const TrekRegionPage = lazy(() => import("@/pages/TrekRegionPage"));
 const TrekDetailsPage = lazy(() => import("@/pages/TrekDetailsPage"));
 const PakagesDetailsPage = lazy(() => import("@/pages/PakagesDetailsPage"));
 const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
+const SeatBookingDetail = lazy(() => import("@/pages/SeatBookingDetail"));
 const AdventuresPage = lazy(() => import("@/pages/AdventuresPage"));
 const AdventureDetailPage = lazy(() => import("@/pages/AdventureDetailPage"));
 const SignupForm = lazy(() => import("@/pages/auth/SignupForm"));
@@ -40,6 +41,7 @@ function App() {
           <Route path="/trek-packages/:regionId" element={<TrekRegionPage />} />
           <Route path="/treks/:slug" element={<TrekDetailsPage />} />
           <Route path="/seat-booking" element={<SeatBooking />} />
+          <Route path="/seat-booking/:vehicleId" element={<SeatBookingDetail />} />
           <Route path="/adventures" element={<AdventuresPage />} />
           <Route path="/adventures/:slug" element={<AdventureDetailPage />} />
           <Route path="/register" element={<Auth />}>

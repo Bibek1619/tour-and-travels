@@ -211,36 +211,29 @@ const AdventureDetailPage = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative h-[500px]">
-        <img
-          src={adventure.heroImage}
-          alt={adventure.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-        <div className="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-12 text-white">
+      {/* Compact Header */}
+      <section className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           <Link
             to="/adventures"
-            className="absolute top-8 left-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-orange-600 transition-colors mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back
+            Back to Adventures
           </Link>
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-12 h-[2px] bg-orange-500"></div>
-              <span className="text-orange-400 text-sm font-semibold uppercase tracking-widest">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{adventure.name}</h1>
+              <p className="text-gray-600">
                 {adventure.packages.length} {adventure.packages.length === 1 ? 'Package' : 'Packages'} Available
-              </span>
+              </p>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">{adventure.name}</h1>
           </div>
         </div>
       </section>
 
       {/* Packages */}
-      <section className="py-20">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {adventure.packages.map((pkg) => (

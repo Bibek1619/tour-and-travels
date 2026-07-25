@@ -19,7 +19,8 @@ import {
   Heart,
   ChevronLeft,
   Award,
-  Shield
+  Shield,
+  MessageCircle
 } from "lucide-react";
 import { getAllToursApi } from "@/api/tourApi";
 import toast from "react-hot-toast";
@@ -148,90 +149,81 @@ const TrekDetailsPage = () => {
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="space-y-6"
+                className="space-y-4"
               >
-                <div>
-                  <h1 className="text-4xl font-bold text-gray-800 mb-4">{trek.title}</h1>
-                  <p className="text-gray-600 text-lg">{trek.shortOverview}</p>
-                </div>
+                {/* Compact Trek Card */}
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                  {/* Title & Description */}
+                  <div className="p-4 border-b">
+                    <h1 className="text-xl font-bold text-gray-900 mb-2">{trek.title}</h1>
+                    <p className="text-sm text-gray-600 line-clamp-2">{trek.shortOverview}</p>
+                  </div>
 
-                {/* Quick Facts */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                    <div className="flex items-center gap-3">
-                      <Clock className="w-6 h-6 text-orange-600" />
-                      <div>
-                        <p className="text-sm text-gray-600">Duration</p>
-                        <p className="text-xl font-bold text-gray-800">{trek.durationDays} Days</p>
-                      </div>
+                  {/* Trek Details - Inline Compact */}
+                  <div className="p-4 bg-gray-50 space-y-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 flex items-center gap-2">
+                        <Clock className="w-4 h-4" /> Duration
+                      </span>
+                      <span className="font-semibold text-gray-900">{trek.durationDays} Days</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" /> Max Altitude
+                      </span>
+                      <span className="font-semibold text-gray-900">{trek.maxAltitude || "N/A"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 flex items-center gap-2">
+                        <MapPin className="w-4 h-4" /> Location
+                      </span>
+                      <span className="font-semibold text-gray-900">{trek.location || "Nepal"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600 flex items-center gap-2">
+                        <Calendar className="w-4 h-4" /> Best Season
+                      </span>
+                      <span className="font-semibold text-gray-900 text-right text-xs">{trek.bestSeason || "All Year"}</span>
                     </div>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div className="flex items-center gap-3">
-                      <TrendingUp className="w-6 h-6 text-blue-600" />
-                      <div>
-                        <p className="text-sm text-gray-600">Max Altitude</p>
-                        <p className="text-xl font-bold text-gray-800">{trek.maxAltitude || "N/A"}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <div className="flex items-center gap-3">
-                      <MapPin className="w-6 h-6 text-green-600" />
-                      <div>
-                        <p className="text-sm text-gray-600">Location</p>
-                        <p className="text-lg font-bold text-gray-800">{trek.location || "Nepal"}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <div className="flex items-center gap-3">
-                      <Calendar className="w-6 h-6 text-purple-600" />
-                      <div>
-                        <p className="text-sm text-gray-600">Best Season</p>
-                        <p className="text-lg font-bold text-gray-800">{trek.bestSeason || "All Year"}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Price & Booking */}
-                <div className="bg-gradient-to-r from-orange-600 to-red-600 p-6 rounded-xl text-white shadow-lg">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <p className="text-orange-100 text-sm">Starting From</p>
-                      <div className="flex items-baseline gap-2">
-                        <DollarSign className="w-8 h-8" />
-                        <span className="text-5xl font-bold">{trek.price}</span>
-                        <span className="text-xl text-orange-100">/person</span>
+                  {/* Price & Booking - Compact */}
+                  <div className="p-4">
+                    <div className="text-center mb-4">
+                      <p className="text-xs text-gray-500 mb-1">Starting From</p>
+                      <div className="flex items-baseline justify-center gap-1">
+                        <span className="text-3xl font-bold text-orange-600">${trek.price}</span>
+                        <span className="text-gray-500 text-xs">/person</span>
                       </div>
                     </div>
-                  </div>
-                  <button className="w-full bg-white text-orange-600 py-4 rounded-lg font-bold text-lg hover:bg-orange-50 transition-all duration-300 shadow-lg">
-                    Book Now
-                  </button>
-                  <div className="mt-4 flex items-center justify-center gap-4 text-sm">
-                    <button className="flex items-center gap-2 hover:text-orange-200 transition-colors">
-                      <Heart className="w-5 h-5" />
-                      Save
-                    </button>
-                    <button className="flex items-center gap-2 hover:text-orange-200 transition-colors">
-                      <Share2 className="w-5 h-5" />
-                      Share
-                    </button>
-                  </div>
-                </div>
 
-                {/* Contact Options */}
-                <div className="grid grid-cols-2 gap-4">
-                  <a href="tel:+9779841480794" className="flex items-center gap-2 justify-center bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
-                    <Phone className="w-5 h-5" />
-                    Call Us
-                  </a>
-                  <a href="mailto:info@adventurenepal.com" className="flex items-center gap-2 justify-center bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                    <Mail className="w-5 h-5" />
-                    Email Us
-                  </a>
+                    {/* Action Buttons - Compact */}
+                    <div className="space-y-2">
+                      <button 
+                        onClick={() => {
+                          const message = encodeURIComponent(
+                            `Hi! I'm interested in booking the ${trek.title} trek.\n\n` +
+                            `📍 Duration: ${trek.durationDays} days\n` +
+                            `💰 Price: $${trek.price} per person\n\n` +
+                            `Can you help me with the booking process?`
+                          );
+                          window.open(`https://wa.me/9779841480794?text=${message}`, '_blank');
+                        }}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-medium transition-all text-sm flex items-center justify-center gap-2"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        WhatsApp Us
+                      </button>
+
+                      <a 
+                        href={`mailto:info@adventurenepal.com?subject=Booking Inquiry - ${trek.title}&body=Hi, I'm interested in booking the ${trek.title} trek.%0D%0A%0D%0ADuration: ${trek.durationDays} days%0D%0APrice: $${trek.price} per person`}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition-all text-sm flex items-center justify-center gap-2"
+                      >
+                        <Mail className="w-4 h-4" />
+                        Email Us
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>

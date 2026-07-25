@@ -1,62 +1,74 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Clock, Users, CarFront } from 'lucide-react';
+import { Receipt, Armchair } from 'lucide-react';
 
 const TripDetails = ({ vehicle, selectedSeats }) => {
   const totalPrice = selectedSeats.length * vehicle.pricePerSeat;
-  const departureTime = '05:00 AM Daily';
 
   return (
-    <Card className="w-full lg:w-80">
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MapPin className="w-5 h-5" />
-          Trip Details
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Receipt className="w-5 h-5" />
+          Booking Summary
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <CarFront size={16} />
-            <span>{vehicle.name} - {vehicle.type}</span>
+      <CardContent className="space-y-6">
+        {/* Selected Seats */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-600">Seats Selected</span>
+            <Badge variant="secondary" className="text-lg px-3 py-1">
+              {selectedSeats.length}
+            </Badge>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Users size={16} />
-            <span>Capacity: {vehicle.seats} seats</span>
+          
+          {selectedSeats.length > 0 && (
+            <div className="bg-gray-50 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Armchair className="w-4 h-4 text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">Your Seats:</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {selectedSeats.sort((a, b) => a - b).map((seat) => (
+                  <Badge key={seat} className="bg-orange-500 text-white">
+                    Seat {seat}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Price Breakdown */}
+        <div className="space-y-3 pt-4 border-t">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600">Price per seat</span>
+            <span className="font-medium">NPR {vehicle.pricePerSeat.toLocaleString()}</span>
+          </div>
+          
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-600">Number of seats</span>
+            <span className="font-medium">× {selectedSeats.length}</span>
+          </div>
+          
+          <div className="flex justify-between items-center pt-3 border-t-2">
+            <span className="text-lg font-semibold text-gray-900">Total Amount</span>
+            <span className="text-2xl font-bold text-orange-600">
+              NPR {totalPrice.toLocaleString()}
+            </span>
           </div>
         </div>
 
-        <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
-          <h3 className="font-semibold flex items-center gap-2">
-            <MapPin size={18} />
-            Route
-          </h3>
-          <p className="text-sm">Kathmandu → Pokhara → Upper Mustang</p>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Clock size={14} />
-            <span>{departureTime} | ~14 hours drive</span>
+        {/* Note */}
+        {selectedSeats.length === 0 && (
+          <div className="bg-blue-50 rounded-lg p-4 text-center">
+            <p className="text-sm text-blue-800">
+              Select your preferred seats from the seat map to continue
+            </p>
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <span className="text-sm font-medium">Seats Selected:</span>
-            <Badge>{selectedSeats.length}</Badge>
-          </div>
-          <div className="flex justify-between text-lg font-bold">
-            <span>Total Amount:</span>
-            <span className="text-primary">NPR {totalPrice.toLocaleString()}</span>
-          </div>
-        </div>
-
-        <ul className="space-y-1 text-xs text-muted-foreground">
-          <li>• Experienced Mustang driver</li>
-          <li>• AC / Heater</li>
-          <li>• Road permits included</li>
-          <li>• Free water bottles</li>
-          <li>• Breakdown assistance 24/7</li>
-        </ul>
+        )}
       </CardContent>
     </Card>
   );
