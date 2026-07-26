@@ -2,14 +2,14 @@ import React from 'react'
 import AdminLayout from '@/components/admin/AdminLayout'
 import CreateTourStepWise from '@/components/admin/addTours/CreateTourStepWise'
 
-const AddTour = () => {
+const AddTrek = () => {
   return (
     <AdminLayout>
       <div className='p-8'>
-        <CreateTourStepWise />
+        <CreateTourStepWise defaultCategory="trek" isTrek={true} />
       </div>
     </AdminLayout>
   )
 }
 
-export default AddTour
+export default AddTrek

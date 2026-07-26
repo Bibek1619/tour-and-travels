@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loader from "@/components/Loader";
 import { Toaster } from "react-hot-toast";
 import AddTour from "./pages/admin/AddTour";
+import AddTrek from "./pages/admin/AddTrek";
 
 // Lazy load pages
 const Home = lazy(() => import("@/pages/Home"));
@@ -16,6 +17,7 @@ const SeatBooking = lazy(() => import("@/pages/SeatBooking"));
 const SeatBookingDetail = lazy(() => import("@/pages/SeatBookingDetail"));
 const AdventuresPage = lazy(() => import("@/pages/AdventuresPage"));
 const AdventureDetailPage = lazy(() => import("@/pages/AdventureDetailPage"));
+const AdventurePackageDetailPage = lazy(() => import("@/pages/AdventurePackageDetailPage"));
 const SignupForm = lazy(() => import("@/pages/auth/SignupForm"));
 const Login = lazy(() => import("@/pages/auth/LoginForm"));
 const Auth = lazy(() => import("@/pages/auth/Auth"));
@@ -23,6 +25,7 @@ const VerifyCode = lazy(() => import("@/pages/auth/VerifyCode"));
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
 const ManageTours = lazy(() => import("@/pages/admin/ManageTours"));
+const ManageTreks = lazy(() => import("@/pages/admin/ManageTreks"));
 const ManageVehicles = lazy(() => import("@/pages/admin/ManageVehicles"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
@@ -44,6 +47,7 @@ function App() {
           <Route path="/seat-booking/:vehicleId" element={<SeatBookingDetail />} />
           <Route path="/adventures" element={<AdventuresPage />} />
           <Route path="/adventures/:slug" element={<AdventureDetailPage />} />
+          <Route path="/adventures/:slug/:packageId" element={<AdventurePackageDetailPage />} />
           <Route path="/register" element={<Auth />}>
             <Route index element={<SignupForm />} />
           </Route>
@@ -56,7 +60,9 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/dashboard/add-vehicle" element={<AddVeichle />} />
           <Route path="/admin/dashboard/add-tour" element={<AddTour />} />
+          <Route path="/admin/dashboard/add-trek" element={<AddTrek />} />
           <Route path="/admin/dashboard/tours" element={<ManageTours />} />
+          <Route path="/admin/dashboard/treks" element={<ManageTreks />} />
           <Route path="/admin/dashboard/vehicles" element={<ManageVehicles />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

@@ -12,7 +12,9 @@ import {
   Menu,
   X,
   ChevronRight,
-  Compass
+  Compass,
+  MapPin,
+  Route
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -37,6 +39,11 @@ const AdminLayout = ({ children }) => {
     {
       name: 'Tours',
       href: '/admin/dashboard/tours',
+      icon: Package,
+    },
+    {
+      name: 'Treks',
+      href: '/admin/dashboard/treks',
       icon: Mountain,
     },
     {
@@ -48,6 +55,11 @@ const AdminLayout = ({ children }) => {
       name: 'Adventures',
       href: '/admin/dashboard/adventures',
       icon: Compass,
+    },
+    {
+      name: 'Daily Routes',
+      href: '/admin/dashboard/daily-routes',
+      icon: Route,
     },
     {
       name: 'Bookings',

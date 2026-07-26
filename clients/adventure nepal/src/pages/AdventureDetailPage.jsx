@@ -310,10 +310,10 @@ const AdventureDetailPage = () => {
                       </div>
                     </div>
                     <Link
-                      to="/contact"
+                      to={`/adventures/${slug}/${pkg.id}`}
                       className="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center py-3 rounded-xl font-semibold transition-all duration-300"
                     >
-                      Book Now
+                      View More
                     </Link>
                   </div>
                 </div>

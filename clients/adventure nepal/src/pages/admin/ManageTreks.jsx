@@ -4,47 +4,54 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllVehiclesApi, deleteVehicleApi } from "@/api/VehicleApi";
+import { getAllToursApi, deleteTourApi } from "@/api/tourApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
-  Car,
-  Users,
+  MapPin,
+  Clock,
   DollarSign,
   Edit,
   Trash2,
+  Eye,
   Plus,
-  Fuel,
-  Package,
+  Mountain,
 } from "lucide-react";
 
-const ManageVehicles = () => {
+const ManageTreks = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["vehicles"],
-    queryFn: getAllVehiclesApi,
+    queryKey: ["treks", "trek"],
+    queryFn: () => getAllToursApi({ category: "trek" }),
   });
 
   const deleteMutation = useMutation({
-    mutationFn: deleteVehicleApi,
+    mutationFn: deleteTourApi,
     onSuccess: () => {
-      toast.success("Vehicle deleted successfully");
-      queryClient.invalidateQueries(["vehicles"]);
+      toast.success("Trek deleted successfully");
+      queryClient.invalidateQueries(["treks"]);
       setDeleteConfirm(null);
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.message || "Failed to delete vehicle");
+      toast.error(error?.response?.data?.message || "Failed to delete trek");
     },
   });
 
-  const vehicles = data?.vehicles || data?.data || [];
+  const treks = data?.data || [];
   const BASE_URL = "http://localhost:5000";
 
-  console.log("ManageVehicles API Response:", data);
-  console.log("Vehicles:", vehicles);
+  const getDifficultyColor = (difficulty) => {
+    const colors = {
+      easy: "bg-green-100 text-green-700 border-green-300",
+      moderate: "bg-yellow-100 text-yellow-700 border-yellow-300",
+      hard: "bg-red-100 text-red-700 border-red-300",
+      challenging: "bg-orange-100 text-orange-700 border-orange-300"
+    };
+    return colors[difficulty?.toLowerCase()] || "bg-gray-100 text-gray-700 border-gray-300";
+  };
 
   return (
     <AdminLayout>
@@ -52,17 +59,17 @@ const ManageVehicles = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Manage Vehicles</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Manage Treks</h1>
             <p className="text-gray-600 mt-1">
-              View, edit, and manage all vehicle rentals
+              View, edit, and manage trekking packages
             </p>
           </div>
           <Button
-            onClick={() => navigate("/admin/dashboard/add-vehicle")}
-            className="bg-orange-600 hover:bg-orange-700"
+            onClick={() => navigate("/admin/dashboard/add-trek")}
+            className="bg-green-600 hover:bg-green-700"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add New Vehicle
+            Add New Trek
           </Button>
         </div>
 
@@ -71,7 +78,7 @@ const ManageVehicles = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <Card key={i} className="animate-pulse">
-                <div className="h-48 bg-gray-200 rounded-t-lg" />
+                <div className="h-52 bg-gray-200 rounded-t-lg" />
                 <CardContent className="p-4 space-y-3">
                   <div className="h-4 bg-gray-200 rounded w-3/4" />
                   <div className="h-4 bg-gray-200 rounded w-1/2" />
@@ -86,112 +93,84 @@ const ManageVehicles = () => {
         {isError && (
           <Card className="border-red-200">
             <CardContent className="p-8 text-center">
-              <Car className="w-16 h-16 text-red-300 mx-auto mb-4" />
-              <p className="text-red-600 font-semibold mb-2">Failed to load vehicles</p>
+              <Mountain className="w-16 h-16 text-red-300 mx-auto mb-4" />
+              <p className="text-red-600 font-semibold mb-2">Failed to load treks</p>
               <p className="text-gray-500 text-sm">Please try refreshing the page</p>
             </CardContent>
           </Card>
         )}
 
         {/* Empty State */}
-        {!isLoading && !isError && vehicles.length === 0 && (
+        {!isLoading && !isError && treks.length === 0 && (
           <Card>
             <CardContent className="p-12 text-center">
-              <Car className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No vehicles yet</h3>
-              <p className="text-gray-600 mb-6">Get started by adding your first vehicle</p>
+              <Mountain className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No treks yet</h3>
+              <p className="text-gray-600 mb-6">Get started by creating your first trekking package</p>
               <Button
-                onClick={() => navigate("/admin/dashboard/add-vehicle")}
-                className="bg-orange-600 hover:bg-orange-700"
+                onClick={() => navigate("/admin/dashboard/add-trek")}
+                className="bg-green-600 hover:bg-green-700"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Your First Vehicle
+                Create Your First Trek
               </Button>
             </CardContent>
           </Card>
         )}
 
-        {/* Vehicles Grid */}
-        {!isLoading && !isError && vehicles.length > 0 && (
+        {/* Treks Grid */}
+        {!isLoading && !isError && treks.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vehicles.map((vehicle) => (
+            {treks.map((trek) => (
               <Card
-                key={vehicle._id}
+                key={trek._id}
                 className="overflow-hidden hover:shadow-xl transition-all duration-300 group"
               >
-                {/* Vehicle Image */}
+                {/* Trek Image */}
                 <div className="h-52 overflow-hidden relative bg-gray-200">
-                  {vehicle.images?.length > 0 ? (
+                  {trek.images?.length > 0 ? (
                     <img
-                      src={
-                        vehicle.images[0].startsWith("http")
-                          ? vehicle.images[0]
-                          : `${BASE_URL}${vehicle.images[0]}`
-                      }
-                      alt={vehicle.name}
+                      src={`${BASE_URL}/images/${trek.images[0].split("/").pop()}`}
+                      alt={trek.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Car className="w-16 h-16 text-gray-400" />
+                      <Mountain className="w-16 h-16 text-gray-400" />
                     </div>
                   )}
-
+                  
                   {/* Badges */}
-                  <div className="absolute top-3 right-3">
-                    <Badge
-                      className={`${
-                        vehicle.isAvailable
-                          ? "bg-green-500 hover:bg-green-600"
-                          : "bg-red-500 hover:bg-red-600"
-                      } text-white border-0`}
-                    >
-                      {vehicle.isAvailable ? "Available" : "Unavailable"}
+                  <div className="absolute top-3 left-3 flex gap-2">
+                    <Badge className={`${getDifficultyColor(trek.difficulty)} border`}>
+                      {trek.difficulty}
+                    </Badge>
+                    <Badge className="bg-green-100 text-green-700 border border-green-300">
+                      Trek
                     </Badge>
                   </div>
-                  {vehicle.category && (
-                    <div className="absolute top-3 left-3">
-                      <Badge className="bg-white/90 text-gray-900 border border-gray-200 capitalize">
-                        {vehicle.category}
-                      </Badge>
-                    </div>
-                  )}
                 </div>
 
-                {/* Vehicle Content */}
+                {/* Trek Content */}
                 <CardContent className="p-5">
-                  <h3 className="font-bold text-lg text-gray-900 mb-1">
-                    {vehicle.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    {vehicle.brand} {vehicle.model}
-                  </p>
-
-                  <div className="flex items-center gap-2 text-xs text-gray-600 mb-3">
-                    <Fuel className="h-4 w-4 text-orange-600" />
-                    <span className="capitalize">{vehicle.fuelType}</span>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                    <MapPin className="h-4 w-4 text-green-600" />
+                    <span className="truncate">{trek.location || "Nepal"}</span>
                   </div>
+
+                  <h3 className="font-bold text-lg text-gray-900 mb-3 line-clamp-2 min-h-[3.5rem]">
+                    {trek.title}
+                  </h3>
 
                   <div className="flex items-center justify-between text-sm mb-4 pb-4 border-b">
                     <span className="flex items-center gap-1.5 text-gray-600">
-                      <Users className="h-4 w-4 text-orange-600" />
-                      {vehicle.capacity} seats
+                      <Clock className="h-4 w-4 text-green-600" />
+                      {trek.durationDays} days
                     </span>
-                    <span className="flex items-center gap-1.5 text-gray-600">
-                      <Package className="h-4 w-4 text-orange-600" />
-                      {vehicle.luggage || "N/A"}
+                    <span className="flex items-center gap-1 font-bold text-green-600">
+                      <DollarSign className="h-4 w-4" />
+                      {trek.price}
                     </span>
-                  </div>
-
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-lg font-bold text-orange-600">
-                      Rs {vehicle.dailyRate}/day
-                    </span>
-                    {vehicle.availableCount > 0 && (
-                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        {vehicle.availableCount} available
-                      </span>
-                    )}
                   </div>
 
                   {/* Action Buttons */}
@@ -199,9 +178,16 @@ const ManageVehicles = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() =>
-                        navigate(`/admin/dashboard/edit-vehicle/${vehicle._id}`)
-                      }
+                      onClick={() => navigate(`/treks/${trek.slug}`)}
+                      className="flex-1 hover:bg-gray-50"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      View
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => navigate(`/admin/dashboard/edit-trek/${trek._id}`)}
                       className="flex-1 border-blue-200 text-blue-600 hover:bg-blue-50"
                     >
                       <Edit className="w-4 h-4 mr-1" />
@@ -210,7 +196,7 @@ const ManageVehicles = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => setDeleteConfirm(vehicle._id)}
+                      onClick={() => setDeleteConfirm(trek._id)}
                       className="border-red-200 text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -231,10 +217,10 @@ const ManageVehicles = () => {
                   <Trash2 className="w-6 h-6 text-red-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
-                  Delete Vehicle?
+                  Delete Trek?
                 </h3>
                 <p className="text-gray-600 mb-6 text-center">
-                  Are you sure you want to delete this vehicle? This action cannot be undone.
+                  Are you sure you want to delete this trek? This action cannot be undone.
                 </p>
                 <div className="flex gap-3">
                   <Button
@@ -262,4 +248,4 @@ const ManageVehicles = () => {
   );
 };
 
-export default ManageVehicles;
+export default ManageTreks;
