@@ -17,6 +17,7 @@ import {
   Fuel,
   Package,
 } from "lucide-react";
+import { getVehicleCardImage } from "@/utils/cloudinaryHelper";
 
 const ManageVehicles = () => {
   const navigate = useNavigate();
@@ -41,7 +42,6 @@ const ManageVehicles = () => {
   });
 
   const vehicles = data?.vehicles || data?.data || [];
-  const BASE_URL = "http://localhost:5000";
 
   console.log("ManageVehicles API Response:", data);
   console.log("Vehicles:", vehicles);
@@ -123,11 +123,7 @@ const ManageVehicles = () => {
                 <div className="h-52 overflow-hidden relative bg-gray-200">
                   {vehicle.images?.length > 0 ? (
                     <img
-                      src={
-                        vehicle.images[0].startsWith("http")
-                          ? vehicle.images[0]
-                          : `${BASE_URL}${vehicle.images[0]}`
-                      }
+                      src={getVehicleCardImage(vehicle.images[0])}
                       alt={vehicle.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />

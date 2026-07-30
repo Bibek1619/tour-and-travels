@@ -17,6 +17,7 @@ import {
   Plus,
   Mountain,
 } from "lucide-react";
+import { getAdminCardImage } from "@/utils/cloudinaryHelper";
 
 const ManageTours = () => {
   const navigate = useNavigate();
@@ -41,7 +42,6 @@ const ManageTours = () => {
   });
 
   const tours = data?.data || [];
-  const BASE_URL = "http://localhost:5000";
 
   const getDifficultyColor = (difficulty) => {
     const colors = {
@@ -130,7 +130,7 @@ const ManageTours = () => {
                 <div className="h-52 overflow-hidden relative bg-gray-200">
                   {tour.images?.length > 0 ? (
                     <img
-                      src={`${BASE_URL}/images/${tour.images[0].split("/").pop()}`}
+                      src={getAdminCardImage(tour.images[0])}
                       alt={tour.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
