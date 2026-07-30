@@ -26,7 +26,10 @@ const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const AddVeichle = lazy(() => import("@/pages/admin/AddVeichle"));
 const ManageTours = lazy(() => import("@/pages/admin/ManageTours"));
 const ManageTreks = lazy(() => import("@/pages/admin/ManageTreks"));
+const RegionTreks = lazy(() => import("@/pages/admin/RegionTreks"));
 const ManageVehicles = lazy(() => import("@/pages/admin/ManageVehicles"));
+const EditTour = lazy(() => import("@/pages/admin/EditTour"));
+const EditTrek = lazy(() => import("@/pages/admin/EditTrek"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
 
@@ -62,7 +65,10 @@ function App() {
           <Route path="/admin/dashboard/add-tour" element={<AddTour />} />
           <Route path="/admin/dashboard/add-trek" element={<AddTrek />} />
           <Route path="/admin/dashboard/tours" element={<ManageTours />} />
+          <Route path="/admin/dashboard/edit-tour/:id" element={<EditTour />} />
           <Route path="/admin/dashboard/treks" element={<ManageTreks />} />
+          <Route path="/admin/dashboard/treks/:regionId" element={<RegionTreks />} />
+          <Route path="/admin/dashboard/edit-trek/:id" element={<EditTrek />} />
           <Route path="/admin/dashboard/vehicles" element={<ManageVehicles />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
