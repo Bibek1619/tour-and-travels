@@ -20,6 +20,13 @@ const tourPackageSchema = new mongoose.Schema({
   location: String,
   difficulty: String,
   durationDays: Number,
+  
+  // Region reference (for treks)
+  region: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Region",
+    default: null
+  },
  
 
   price: Number,
