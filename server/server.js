@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const veichleRoute=require("./routes/veichleRoute");
 const adminRoutes=require("./routes/adminRoutes");
 const tourPackageRoutes=require("./routes/tourRoutes");
+const regionRoutes=require("./routes/regionRoutes");
 
 
 
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
+//region routes
+app.use("/api/regions", regionRoutes);
 
 //veichle routes
 app.use("/api/vehicles",veichleRoute);
