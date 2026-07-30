@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/upload"); // your multer file
+const { uploadTourImages } = require("../config/cloudinary");
 const {
   createTourPackage,
   getAllTourPackages,
@@ -9,10 +9,10 @@ const {
   deleteTourPackage,
 } = require("../controllers/tourController");
 
-router.post("/", upload.array("images", 10), createTourPackage);
+router.post("/", uploadTourImages.array("images", 10), createTourPackage);
 router.get("/", getAllTourPackages);
 router.get("/:slug", getTourBySlug);
-router.put("/:id", upload.array("images", 10), updateTourPackage);
+router.put("/:id", uploadTourImages.array("images", 10), updateTourPackage);
 router.delete("/:id", deleteTourPackage);
 
 module.exports = router;

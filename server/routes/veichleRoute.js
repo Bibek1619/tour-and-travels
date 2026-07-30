@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { uploadVehicleImages } = require("../config/cloudinary");
 
 const {
   createVehicle,
@@ -9,7 +10,6 @@ const {
   deleteVehicle,
 } = require("../controllers/vehicleController");
 
-const upload=require("../middleware/upload");
 const {protect,adminOnly}= require("../middleware/authMiddleware");
 
 
@@ -28,8 +28,7 @@ router.post(
   "/",
   protect,
   adminOnly,
-
-  upload.array("images", 5), // max 5 images
+  uploadVehicleImages.array("images", 5), // max 5 images
   createVehicle
 );
 
@@ -38,7 +37,7 @@ router.put(
   "/:id",
   protect,
   adminOnly,
-  upload.array("images", 5),
+  uploadVehicleImages.array("images", 5),
   updateVehicle
 );
 

@@ -1,26 +1,20 @@
 const Vehicle = require("../models/Vehicle");
-const fs = require("fs");
-const path = require("path");
+const { cloudinary } = require("../config/cloudinary");
 
 
 exports.createVehicle = async (req, res) => {
   try {
-
-
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
         message: "No images received",
       });
     }
-const images = req.files.map(
-  (file) =>
-    `${req.protocol}://${req.get("host")}/images/${file.filename}`
-);
 
+    // Get Cloudinary URLs
+    const images = req.files.map((file) => file.path);
 
-
-    const availableCount=Number(req.body.availableCount || 1);
+    const availableCount = Number(req.body.availableCount || 1);
 
     const vehicle = await Vehicle.create({
       category: req.body.category,
@@ -39,7 +33,7 @@ const images = req.files.map(
       bestFor: req.body.bestFor,
       images,
       availableCount,
-      isAvailable: availableCount > 0, // Set availability based on count
+      isAvailable: availableCount > 0,
     });
 
     res.status(201).json({
@@ -116,10 +110,8 @@ exports.updateVehicle = async (req, res) => {
 
     let newImages = [];
     if (req.files && req.files.length > 0) {
-      newImages = req.files.map(
-        (file) =>
-          `${req.protocol}://${req.get("host")}/images/${file.filename}`
-      );
+      // Get Cloudinary URLs
+      newImages = req.files.map((file) => file.path);
     }
 
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
@@ -157,20 +149,19 @@ exports.deleteVehicle = async (req, res) => {
         message: "Vehicle not found",
       });
 
-    // 🧹 Delete images
-    vehicle.images.forEach((img) => {
-      const filename = img.split("/images/")[1];
-      if (filename) {
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "public",
-          "images",
-          filename
-        );
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    // Delete images from Cloudinary
+    for (const imageUrl of vehicle.images) {
+      try {
+        // Extract public_id from Cloudinary URL
+        const urlParts = imageUrl.split('/');
+        const filename = urlParts[urlParts.length - 1];
+        const publicId = `tour-travels/vehicles/${filename.split('.')[0]}`;
+        
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error('Error deleting image from Cloudinary:', err);
       }
-    });
+    }
 
     await vehicle.deleteOne();
 
