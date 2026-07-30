@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { createTourApi } from "@/api/tourApi";
+import { getAllRegionsApi } from "@/api/regionApi";
 import { 
   ChevronRight, 
   ChevronLeft, 
@@ -25,6 +26,7 @@ const CreateTourStepWise = ({ defaultCategory = "tour", isTrek = false }) => {
     category: defaultCategory,
     location: "",
     difficulty: "",
+    region: "", // Add region field
     durationDays: "",
     price: "",
     maxAltitude: "",
@@ -38,6 +40,15 @@ const CreateTourStepWise = ({ defaultCategory = "tour", isTrek = false }) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+
+  // Fetch regions for trek category
+  const { data: regionsData } = useQuery({
+    queryKey: ["regions"],
+    queryFn: getAllRegionsApi,
+    enabled: formData.category === "trek", // Only fetch when category is trek
+  });
+
+  const regions = regionsData?.data || [];
 
   const steps = [
     { id: 1, name: "Basic Info", icon: MapPin },
@@ -164,8 +175,10 @@ const CreateTourStepWise = ({ defaultCategory = "tour", isTrek = false }) => {
     if (!validateStep(4)) return;
 
     const form = new FormData();
-    ["title", "slug", "category", "location", "difficulty", "durationDays", "price", "maxAltitude", "bestSeason", "shortOverview"]
-      .forEach((key) => form.append(key, formData[key]));
+    ["title", "slug", "category", "location", "difficulty", "region", "durationDays", "price", "maxAltitude", "bestSeason", "shortOverview"]
+      .forEach((key) => {
+        if (formData[key]) form.append(key, formData[key]);
+      });
     
     form.append("status", "published");
     
@@ -310,6 +323,33 @@ const CreateTourStepWise = ({ defaultCategory = "tour", isTrek = false }) => {
                   </select>
                 </div>
               </div>
+
+              {/* Region selector - only show for treks */}
+              {formData.category === "trek" && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Trek Region
+                  </label>
+                  <select
+                    name="region"
+                    value={formData.region}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  >
+                    <option value="">Select Region</option>
+                    {regions.map((region) => (
+                      <option key={region._id} value={region._id}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                  {regions.length === 0 && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      No regions available. Please add regions first.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 

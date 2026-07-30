@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAllToursApi, deleteTourApi } from "@/api/tourApi";
+import { getAllRegionsApi, deleteRegionApi } from "@/api/regionApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
@@ -16,42 +17,38 @@ import {
   Eye,
   Plus,
   Mountain,
+  Map,
+  ChevronRight
 } from "lucide-react";
+import AddRegionModal from "@/components/admin/AddRegionModal";
+import { getRegionCardImage } from "@/utils/cloudinaryHelper";
 
 const ManageTreks = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [isRegionModalOpen, setIsRegionModalOpen] = useState(false);
+  const [deleteRegionConfirm, setDeleteRegionConfirm] = useState(null);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["treks", "trek"],
-    queryFn: () => getAllToursApi({ category: "trek" }),
+  // Fetch regions
+  const { data: regionsData, isLoading: regionsLoading, isError: regionsError } = useQuery({
+    queryKey: ["regions"],
+    queryFn: getAllRegionsApi,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: deleteTourApi,
+  const regions = regionsData?.data || [];
+
+  const deleteRegionMutation = useMutation({
+    mutationFn: deleteRegionApi,
     onSuccess: () => {
-      toast.success("Trek deleted successfully");
-      queryClient.invalidateQueries(["treks"]);
-      setDeleteConfirm(null);
+      toast.success("Region deleted successfully");
+      queryClient.invalidateQueries(["regions"]);
+      setDeleteRegionConfirm(null);
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.message || "Failed to delete trek");
+      toast.error(error?.response?.data?.message || "Failed to delete region");
     },
   });
-
-  const treks = data?.data || [];
-  const BASE_URL = "http://localhost:5000";
-
-  const getDifficultyColor = (difficulty) => {
-    const colors = {
-      easy: "bg-green-100 text-green-700 border-green-300",
-      moderate: "bg-yellow-100 text-yellow-700 border-yellow-300",
-      hard: "bg-red-100 text-red-700 border-red-300",
-      challenging: "bg-orange-100 text-orange-700 border-orange-300"
-    };
-    return colors[difficulty?.toLowerCase()] || "bg-gray-100 text-gray-700 border-gray-300";
-  };
 
   return (
     <AdminLayout>
@@ -59,22 +56,22 @@ const ManageTreks = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Manage Treks</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Trek Regions</h1>
             <p className="text-gray-600 mt-1">
-              View, edit, and manage trekking packages
+              Manage trek regions and their packages
             </p>
           </div>
           <Button
-            onClick={() => navigate("/admin/dashboard/add-trek")}
+            onClick={() => setIsRegionModalOpen(true)}
             className="bg-green-600 hover:bg-green-700"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add New Trek
+            Add New Region
           </Button>
         </div>
 
         {/* Loading State */}
-        {isLoading && (
+        {regionsLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <Card key={i} className="animate-pulse">
@@ -82,7 +79,6 @@ const ManageTreks = () => {
                 <CardContent className="p-4 space-y-3">
                   <div className="h-4 bg-gray-200 rounded w-3/4" />
                   <div className="h-4 bg-gray-200 rounded w-1/2" />
-                  <div className="h-8 bg-gray-200 rounded" />
                 </CardContent>
               </Card>
             ))}
@@ -90,113 +86,89 @@ const ManageTreks = () => {
         )}
 
         {/* Error State */}
-        {isError && (
+        {regionsError && (
           <Card className="border-red-200">
             <CardContent className="p-8 text-center">
               <Mountain className="w-16 h-16 text-red-300 mx-auto mb-4" />
-              <p className="text-red-600 font-semibold mb-2">Failed to load treks</p>
+              <p className="text-red-600 font-semibold mb-2">Failed to load regions</p>
               <p className="text-gray-500 text-sm">Please try refreshing the page</p>
             </CardContent>
           </Card>
         )}
 
         {/* Empty State */}
-        {!isLoading && !isError && treks.length === 0 && (
+        {!regionsLoading && !regionsError && regions.length === 0 && (
           <Card>
             <CardContent className="p-12 text-center">
-              <Mountain className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No treks yet</h3>
-              <p className="text-gray-600 mb-6">Get started by creating your first trekking package</p>
+              <Map className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No regions yet</h3>
+              <p className="text-gray-600 mb-6">Get started by creating your first trek region</p>
               <Button
-                onClick={() => navigate("/admin/dashboard/add-trek")}
+                onClick={() => setIsRegionModalOpen(true)}
                 className="bg-green-600 hover:bg-green-700"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Create Your First Trek
+                Create Your First Region
               </Button>
             </CardContent>
           </Card>
         )}
 
-        {/* Treks Grid */}
-        {!isLoading && !isError && treks.length > 0 && (
+        {/* Regions Grid */}
+        {!regionsLoading && !regionsError && regions.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {treks.map((trek) => (
+            {regions.map((region) => (
               <Card
-                key={trek._id}
-                className="overflow-hidden hover:shadow-xl transition-all duration-300 group"
+                key={region._id}
+                className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                onClick={() => navigate(`/admin/dashboard/treks/${region._id}`)}
               >
-                {/* Trek Image */}
-                <div className="h-52 overflow-hidden relative bg-gray-200">
-                  {trek.images?.length > 0 ? (
+                {/* Region Image */}
+                <div className="h-52 overflow-hidden relative bg-gradient-to-br from-green-100 to-green-50">
+                  {region.image ? (
                     <img
-                      src={`${BASE_URL}/images/${trek.images[0].split("/").pop()}`}
-                      alt={trek.title}
+                      src={getRegionCardImage(region.image)}
+                      alt={region.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Mountain className="w-16 h-16 text-gray-400" />
+                      <Map className="w-20 h-20 text-green-300" />
                     </div>
                   )}
                   
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <Badge className={`${getDifficultyColor(trek.difficulty)} border`}>
-                      {trek.difficulty}
-                    </Badge>
-                    <Badge className="bg-green-100 text-green-700 border border-green-300">
-                      Trek
-                    </Badge>
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white rounded-full p-3">
+                      <ChevronRight className="w-6 h-6 text-green-600" />
+                    </div>
                   </div>
                 </div>
 
-                {/* Trek Content */}
+                {/* Region Content */}
                 <CardContent className="p-5">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <MapPin className="h-4 w-4 text-green-600" />
-                    <span className="truncate">{trek.location || "Nepal"}</span>
-                  </div>
-
-                  <h3 className="font-bold text-lg text-gray-900 mb-3 line-clamp-2 min-h-[3.5rem]">
-                    {trek.title}
+                  <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">
+                    {region.name}
                   </h3>
-
-                  <div className="flex items-center justify-between text-sm mb-4 pb-4 border-b">
-                    <span className="flex items-center gap-1.5 text-gray-600">
-                      <Clock className="h-4 w-4 text-green-600" />
-                      {trek.durationDays} days
-                    </span>
-                    <span className="flex items-center gap-1 font-bold text-green-600">
-                      <DollarSign className="h-4 w-4" />
-                      {trek.price}
-                    </span>
-                  </div>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[2.5rem]">
+                    {region.description}
+                  </p>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2">
+                  <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => navigate(`/treks/${trek.slug}`)}
-                      className="flex-1 hover:bg-gray-50"
+                      onClick={() => navigate(`/admin/dashboard/treks/${region._id}`)}
+                      className="flex-1 border-green-200 text-green-600 hover:bg-green-50"
                     >
                       <Eye className="w-4 h-4 mr-1" />
-                      View
+                      View Treks
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => navigate(`/admin/dashboard/edit-trek/${trek._id}`)}
-                      className="flex-1 border-blue-200 text-blue-600 hover:bg-blue-50"
-                    >
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setDeleteConfirm(trek._id)}
+                      onClick={() => setDeleteRegionConfirm(region._id)}
                       className="border-red-200 text-red-600 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -208,8 +180,8 @@ const ManageTreks = () => {
           </div>
         )}
 
-        {/* Delete Confirmation Modal */}
-        {deleteConfirm && (
+        {/* Delete Region Confirmation Modal */}
+        {deleteRegionConfirm && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
             <Card className="max-w-md w-full animate-in fade-in zoom-in duration-200">
               <CardContent className="p-6">
@@ -217,26 +189,26 @@ const ManageTreks = () => {
                   <Trash2 className="w-6 h-6 text-red-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
-                  Delete Trek?
+                  Delete Region?
                 </h3>
                 <p className="text-gray-600 mb-6 text-center">
-                  Are you sure you want to delete this trek? This action cannot be undone.
+                  Are you sure you want to delete this region? All treks in this region will need to be reassigned.
                 </p>
                 <div className="flex gap-3">
                   <Button
                     variant="outline"
-                    onClick={() => setDeleteConfirm(null)}
+                    onClick={() => setDeleteRegionConfirm(null)}
                     className="flex-1"
-                    disabled={deleteMutation.isPending}
+                    disabled={deleteRegionMutation.isPending}
                   >
                     Cancel
                   </Button>
                   <Button
-                    onClick={() => deleteMutation.mutate(deleteConfirm)}
-                    disabled={deleteMutation.isPending}
+                    onClick={() => deleteRegionMutation.mutate(deleteRegionConfirm)}
+                    disabled={deleteRegionMutation.isPending}
                     className="flex-1 bg-red-600 hover:bg-red-700"
                   >
-                    {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                    {deleteRegionMutation.isPending ? "Deleting..." : "Delete"}
                   </Button>
                 </div>
               </CardContent>
@@ -244,6 +216,12 @@ const ManageTreks = () => {
           </div>
         )}
       </div>
+
+      {/* Add Region Modal */}
+      <AddRegionModal 
+        isOpen={isRegionModalOpen} 
+        onClose={() => setIsRegionModalOpen(false)} 
+      />
     </AdminLayout>
   );
 };
