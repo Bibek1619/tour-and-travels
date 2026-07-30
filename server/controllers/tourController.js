@@ -13,10 +13,10 @@ exports.createTourPackage = async (req, res) => {
       strict: true,
     });
 
-    // Handle images
+    // Handle images from Cloudinary
     let images = [];
     if (req.files && req.files.length > 0) {
-      images = req.files.map((file) => `/uploads/${file.filename}`);
+      images = req.files.map((file) => file.path); // Cloudinary returns full URL in file.path
     }
 
     // Parse highlights array
@@ -43,6 +43,7 @@ exports.createTourPackage = async (req, res) => {
       category: req.body.category,
       location: req.body.location,
       difficulty: req.body.difficulty,
+      region: req.body.region || null, // Add region field
       durationDays: Number(req.body.durationDays),
       price: Number(req.body.price),
       maxAltitude: req.body.maxAltitude,
@@ -83,6 +84,7 @@ exports.getAllTourPackages = async (req, res) => {
       category,
       status,
       search,
+      region, // Add region filter
     } = req.query;
 
     const query = {};
@@ -97,6 +99,11 @@ exports.getAllTourPackages = async (req, res) => {
       query.status = status;
     }
 
+    // Filter by region (for treks)
+    if (region) {
+      query.region = region;
+    }
+
     // Search by title
     if (search) {
       query.title = { $regex: search, $options: "i" };
@@ -105,7 +112,8 @@ exports.getAllTourPackages = async (req, res) => {
     const tours = await TourPackage.find(query)
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .populate("region", "name description"); // Populate region details
 
     const total = await TourPackage.countDocuments(query);
 
@@ -177,9 +185,7 @@ exports.updateTourPackage = async (req, res) => {
 
     // Update images if new images uploaded
     if (req.files && req.files.length > 0) {
-      req.body.images = req.files.map(
-        (file) => `/uploads/${file.filename}`
-      );
+      req.body.images = req.files.map((file) => file.path); // Cloudinary URLs
     }
 
     const updatedTour = await TourPackage.findByIdAndUpdate(
