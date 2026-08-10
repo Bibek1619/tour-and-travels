@@ -15,6 +15,11 @@ export const updateTourApi = async (id, formData) => {
   return res.data;
 };
 
+export const getTourByIdApi = async (id) => {
+  const res = await axiosInstance.get(`/tours/detail/${id}`);
+  return res.data;
+};
+
 export const deleteTourApi = async (id) => {
   const res = await axiosInstance.delete(`/tours/${id}`);
   return res.data;

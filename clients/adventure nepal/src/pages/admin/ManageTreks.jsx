@@ -2,35 +2,30 @@ import { useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllToursApi, deleteTourApi } from "@/api/tourApi";
-import { getAllRegionsApi, deleteRegionApi } from "@/api/regionApi";
+import { getAllRegionsApi, deleteRegionApi, updateRegionApi } from "@/api/regionApi";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
-  MapPin,
-  Clock,
-  DollarSign,
-  Edit,
   Trash2,
   Eye,
   Plus,
   Mountain,
   Map,
-  ChevronRight
+  ChevronRight,
+  Pencil,
 } from "lucide-react";
 import AddRegionModal from "@/components/admin/AddRegionModal";
+import EditRegionModal from "@/components/admin/EditRegionModal";
 import { getRegionCardImage } from "@/utils/cloudinaryHelper";
 
 const ManageTreks = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [isRegionModalOpen, setIsRegionModalOpen] = useState(false);
   const [deleteRegionConfirm, setDeleteRegionConfirm] = useState(null);
+  const [editRegion, setEditRegion] = useState(null);
 
-  // Fetch regions
   const { data: regionsData, isLoading: regionsLoading, isError: regionsError } = useQuery({
     queryKey: ["regions"],
     queryFn: getAllRegionsApi,
@@ -50,10 +45,21 @@ const ManageTreks = () => {
     },
   });
 
+  const updateRegionMutation = useMutation({
+    mutationFn: ({ id, formData }) => updateRegionApi(id, formData),
+    onSuccess: () => {
+      toast.success("Region updated successfully");
+      queryClient.invalidateQueries(["regions"]);
+      setEditRegion(null);
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Failed to update region");
+    },
+  });
+
   return (
     <AdminLayout>
       <div className="p-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Trek Regions</h1>
@@ -70,7 +76,6 @@ const ManageTreks = () => {
           </Button>
         </div>
 
-        {/* Loading State */}
         {regionsLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
@@ -85,7 +90,6 @@ const ManageTreks = () => {
           </div>
         )}
 
-        {/* Error State */}
         {regionsError && (
           <Card className="border-red-200">
             <CardContent className="p-8 text-center">
@@ -96,7 +100,6 @@ const ManageTreks = () => {
           </Card>
         )}
 
-        {/* Empty State */}
         {!regionsLoading && !regionsError && regions.length === 0 && (
           <Card>
             <CardContent className="p-12 text-center">
@@ -114,7 +117,6 @@ const ManageTreks = () => {
           </Card>
         )}
 
-        {/* Regions Grid */}
         {!regionsLoading && !regionsError && regions.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regions.map((region) => (
@@ -123,7 +125,6 @@ const ManageTreks = () => {
                 className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
                 onClick={() => navigate(`/admin/dashboard/treks/${region._id}`)}
               >
-                {/* Region Image */}
                 <div className="h-52 overflow-hidden relative bg-gradient-to-br from-green-100 to-green-50">
                   {region.image ? (
                     <img
@@ -137,7 +138,6 @@ const ManageTreks = () => {
                     </div>
                   )}
                   
-                  {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white rounded-full p-3">
                       <ChevronRight className="w-6 h-6 text-green-600" />
@@ -145,7 +145,6 @@ const ManageTreks = () => {
                   </div>
                 </div>
 
-                {/* Region Content */}
                 <CardContent className="p-5">
                   <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">
                     {region.name}
@@ -154,7 +153,6 @@ const ManageTreks = () => {
                     {region.description}
                   </p>
 
-                  {/* Action Buttons */}
                   <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                     <Button
                       size="sm"
@@ -164,6 +162,14 @@ const ManageTreks = () => {
                     >
                       <Eye className="w-4 h-4 mr-1" />
                       View Treks
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setEditRegion(region)}
+                      className="border-green-200 text-green-600 hover:bg-green-50"
+                    >
+                      <Pencil className="w-4 h-4" />
                     </Button>
                     <Button
                       size="sm"
@@ -180,7 +186,6 @@ const ManageTreks = () => {
           </div>
         )}
 
-        {/* Delete Region Confirmation Modal */}
         {deleteRegionConfirm && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
             <Card className="max-w-md w-full animate-in fade-in zoom-in duration-200">
@@ -217,10 +222,17 @@ const ManageTreks = () => {
         )}
       </div>
 
-      {/* Add Region Modal */}
       <AddRegionModal 
         isOpen={isRegionModalOpen} 
         onClose={() => setIsRegionModalOpen(false)} 
+      />
+
+      <EditRegionModal
+        isOpen={!!editRegion}
+        onClose={() => setEditRegion(null)}
+        region={editRegion}
+        onSave={(formData) => updateRegionMutation.mutate({ id: editRegion._id, formData })}
+        isSaving={updateRegionMutation.isPending}
       />
     </AdminLayout>
   );

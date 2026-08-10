@@ -27,6 +27,22 @@ exports.createTourPackage = async (req, res) => {
         : [req.body.highlights];
     }
 
+    // Parse included array
+    let included = [];
+    if (req.body.included) {
+      included = Array.isArray(req.body.included)
+        ? req.body.included
+        : [req.body.included];
+    }
+
+    // Parse excluded array
+    let excluded = [];
+    if (req.body.excluded) {
+      excluded = Array.isArray(req.body.excluded)
+        ? req.body.excluded
+        : [req.body.excluded];
+    }
+
     // Parse itinerary
     let itinerary = [];
     if (req.body["itinerary[]"] || req.body.itinerary) {
@@ -52,6 +68,8 @@ exports.createTourPackage = async (req, res) => {
       status: req.body.status || "draft",
 
       highlights,
+      included,
+      excluded,
       itinerary,
 
       images: images.length ? images : [],
@@ -133,6 +151,32 @@ exports.getAllTourPackages = async (req, res) => {
 };
 
 // =====================================================
+// GET SINGLE TOUR BY ID
+// =====================================================
+exports.getTourById = async (req, res) => {
+  try {
+    const tour = await TourPackage.findById(req.params.id).populate("region", "name description");
+
+    if (!tour) {
+      return res.status(404).json({
+        success: false,
+        message: "Tour not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: tour,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// =====================================================
 // GET SINGLE TOUR BY SLUG (Better for SEO)
 // =====================================================
 exports.getTourBySlug = async (req, res) => {
@@ -183,9 +227,20 @@ exports.updateTourPackage = async (req, res) => {
       });
     }
 
-    // Update images if new images uploaded
-    if (req.files && req.files.length > 0) {
-      req.body.images = req.files.map((file) => file.path); // Cloudinary URLs
+    // Merge existing images with new uploads
+    if (req.body.existingImages) {
+      try {
+        const existing = JSON.parse(req.body.existingImages);
+        const newImages = req.files && req.files.length > 0 ? req.files.map((file) => file.path) : [];
+        req.body.images = [...existing, ...newImages];
+      } catch (e) {
+        // If parsing fails and new files uploaded, replace all
+        if (req.files && req.files.length > 0) {
+          req.body.images = req.files.map((file) => file.path);
+        }
+      }
+    } else if (req.files && req.files.length > 0) {
+      req.body.images = req.files.map((file) => file.path);
     }
 
     const updatedTour = await TourPackage.findByIdAndUpdate(
