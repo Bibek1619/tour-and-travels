@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout';
 import {
-  Clock, Users, Star, ChevronLeft, MapPin, MessageCircle, Mail
+  Clock, Users, Star, ChevronLeft, MapPin, MessageCircle, Mail, Send
 } from 'lucide-react';
+import EnquiryModal from '@/components/front/EnquiryModal';
 
 const AdventurePackageDetailPage = () => {
   const { slug, packageId } = useParams();
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
 
   const adventureData = {
     'rafting': {
@@ -303,7 +305,15 @@ const AdventurePackageDetailPage = () => {
                     <span className="text-gray-500">/person</span>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => setEnquiryOpen(true)}
+                    className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg font-semibold transition-all flex items-center gap-2"
+                  >
+                    <Send className="w-5 h-5" />
+                    Send Enquiry
+                  </button>
+
                   <button 
                     onClick={() => {
                       const message = encodeURIComponent(
@@ -333,6 +343,15 @@ const AdventurePackageDetailPage = () => {
           </div>
         </section>
       </div>
+
+      {/* Enquiry Modal */}
+      <EnquiryModal
+        isOpen={enquiryOpen}
+        onClose={() => setEnquiryOpen(false)}
+        packageName={pkg?.title}
+        packageId={packageId}
+        packageType="adventure"
+      />
     </MainLayout>
   );
 };

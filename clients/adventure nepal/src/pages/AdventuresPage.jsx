@@ -3,52 +3,66 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '@/components/front/Navbar';
 import { Footer } from '@/components/front/Footer';
 import { ArrowRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { getAllAdventuresApi } from '@/api/adventureApi';
 
 const AdventuresPage = () => {
-  const adventures = [
-    {
-      id: 1,
+  // Fetch adventures from API
+  const { data, isLoading } = useQuery({
+    queryKey: ['adventures'],
+    queryFn: () => getAllAdventuresApi({}),
+  });
+
+  // Group adventures by category and count packages
+  const categories = [
+    { 
+      id: 'rafting', 
       name: 'Rafting',
       image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800',
-      packages: 3,
       slug: 'rafting'
     },
-    {
-      id: 2,
+    { 
+      id: 'kayaking', 
       name: 'Kayaking',
       image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
-      packages: 2,
       slug: 'kayaking'
     },
-    {
-      id: 3,
+    { 
+      id: 'paragliding', 
       name: 'Paragliding',
       image: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800',
-      packages: 2,
       slug: 'paragliding'
     },
-    {
-      id: 4,
+    { 
+      id: 'bungee', 
       name: 'Bungee Jumping',
       image: 'https://images.unsplash.com/photo-1604357209793-fca5dca89f97?w=800',
-      packages: 2,
-      slug: 'bungee-jumping'
+      slug: 'bungee'
     },
-    {
-      id: 5,
+    { 
+      id: 'zipline', 
       name: 'Ziplining',
       image: 'https://images.unsplash.com/photo-1570552626352-8b0d6f5fcf5b?w=800',
-      packages: 1,
-      slug: 'ziplining'
+      slug: 'zipline'
     },
-    {
-      id: 6,
+    { 
+      id: 'canyoning', 
       name: 'Canyoning',
       image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
-      packages: 2,
       slug: 'canyoning'
     }
   ];
+
+  // Count packages per category from API data
+  const getPackageCount = (categoryId) => {
+    if (!data?.data) return 0;
+    return data.data.filter(adv => adv.category === categoryId).length;
+  };
+
+  const adventures = categories.map(cat => ({
+    ...cat,
+    packages: getPackageCount(cat.id)
+  }));
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -56,8 +70,26 @@ const AdventuresPage = () => {
 
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {adventures.map((adventure) => (
+          {/* Loading State */}
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="relative block h-96 rounded-3xl overflow-hidden animate-pulse">
+                  <div className="absolute inset-0 bg-gray-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="w-16 h-2 bg-gray-400/50 rounded mb-3" />
+                    <div className="h-4 bg-gray-400/50 rounded w-3/4 mb-2" />
+                    <div className="h-4 bg-gray-400/50 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Adventures Grid */}
+          {!isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {adventures.map((adventure) => (
               <Link
                 key={adventure.id}
                 to={`/adventures/${adventure.slug}`}
@@ -88,6 +120,7 @@ const AdventuresPage = () => {
               </Link>
             ))}
           </div>
+          )}
         </div>
       </section>
 

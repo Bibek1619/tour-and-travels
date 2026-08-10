@@ -14,7 +14,9 @@ import {
   ChevronRight,
   Compass,
   MapPin,
-  Route
+  Route,
+  Inbox,
+  Star
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -65,6 +67,16 @@ const AdminLayout = ({ children }) => {
       name: 'Bookings',
       href: '/admin/dashboard/bookings',
       icon: Calendar,
+    },
+    {
+      name: 'Enquiries',
+      href: '/admin/dashboard/enquiries',
+      icon: Inbox,
+    },
+    {
+      name: 'Reviews',
+      href: '/admin/dashboard/reviews',
+      icon: Star,
     },
     {
       name: 'Users',
