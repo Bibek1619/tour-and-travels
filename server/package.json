@@ -7,7 +7,8 @@
     "dev": "nodemon server.js",
     "seed:tours": "node seeders/tourSeeder.js",
     "seed:treks": "node seeders/trekSeeder.js",
-    "seed:regions": "node seedRegions.js"
+    "seed:regions": "node seedRegions.js",
+    "seed:adventures": "node seedAdventures.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

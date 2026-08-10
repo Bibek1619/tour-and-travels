@@ -57,6 +57,22 @@ const vehicleStorage = new CloudinaryStorage({
   }
 });
 
+// Configure Cloudinary storage for categories
+const categoryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'tour-travels/categories',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ 
+      width: 1200, 
+      height: 800, 
+      crop: 'fill',
+      gravity: 'auto',
+      quality: 'auto' 
+    }]
+  }
+});
+
 // Create multer instances
 const uploadTourImages = multer({
   storage: tourStorage,
@@ -73,9 +89,15 @@ const uploadVehicleImages = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
+const uploadCategoryImage = multer({
+  storage: categoryStorage,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
+
 module.exports = {
   cloudinary,
   uploadTourImages,
   uploadRegionImage,
-  uploadVehicleImages
+  uploadVehicleImages,
+  uploadCategoryImage
 };

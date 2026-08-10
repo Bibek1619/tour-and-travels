@@ -10,6 +10,11 @@ const veichleRoute=require("./routes/veichleRoute");
 const adminRoutes=require("./routes/adminRoutes");
 const tourPackageRoutes=require("./routes/tourRoutes");
 const regionRoutes=require("./routes/regionRoutes");
+const adventureRoutes=require("./routes/adventureRoutes");
+const categoryRoutes=require("./routes/categoryRoutes");
+const dailyRouteRoutes=require("./routes/dailyRouteRoutes");
+const enquiryRoutes=require("./routes/enquiryRoutes");
+const reviewRoutes=require("./routes/reviewRoutes");
 
 
 
@@ -38,6 +43,21 @@ app.use("/api/auth", authRoutes);
 
 //region routes
 app.use("/api/regions", regionRoutes);
+
+//adventure routes
+app.use("/api/adventures", adventureRoutes);
+
+//category routes
+app.use("/api/categories", categoryRoutes);
+
+//daily route routes
+app.use("/api/daily-routes", dailyRouteRoutes);
+
+//enquiry routes
+app.use("/api/enquiries", enquiryRoutes);
+
+//review routes
+app.use("/api/reviews", reviewRoutes);
 
 //veichle routes
 app.use("/api/vehicles",veichleRoute);
