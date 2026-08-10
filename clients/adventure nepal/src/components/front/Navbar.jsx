@@ -28,8 +28,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       {/* Top Bar */}
       <div className="border-b bg-primary/5">
-        <div className="mx-auto max-w-7xl px-4 py-2 flex justify-between text-sm">
-          <div className="flex items-center gap-4">
+        <div className="mx-auto max-w-7xl px-4 py-2 flex flex-wrap justify-between items-center gap-2 text-xs sm:text-sm">
+          <div className="flex items-center gap-3 sm:gap-4">
             <a
               href="tel:+9779841480794"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -52,11 +52,11 @@ export function Navbar() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="mx-auto max-w-7xl px-4 py-4 flex justify-between items-center">
+      <nav className="mx-auto max-w-7xl px-4 py-3 sm:py-4 flex justify-between items-center gap-2">
         {/* Logo */}
-        <Link to="/" className="flex flex-col">
-          <span className="text-2xl font-bold text-primary">Adventure Nepal</span>
-          <span className="text-xs text-muted-foreground">26+ Years of Experience</span>
+        <Link to="/" className="flex flex-col min-w-0">
+          <span className="text-lg sm:text-xl lg:text-2xl font-bold text-primary truncate">Adventure Nepal</span>
+          <span className="text-[10px] sm:text-xs text-muted-foreground truncate">26+ Years of Experience</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -107,12 +107,17 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t mt-4 pt-4 pb-4 px-4 flex flex-col gap-3">
+        <div className="lg:hidden border-t bg-background px-4 py-3 flex flex-col gap-1">
           {navLinks.map((link, idx) => (
             <Link
               key={idx}
               to={link.href}
-              className="text-base font-medium hover:text-green-500 transition-colors duration-500 ease-in-out py-2"
+              className={`text-base font-medium rounded-md px-2 py-2 transition-colors
+                ${
+                  location.pathname === link.href
+                    ? "text-green-500 bg-green-50"
+                    : "hover:text-green-500 hover:bg-muted"
+                }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}

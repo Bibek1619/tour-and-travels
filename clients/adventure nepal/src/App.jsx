@@ -28,8 +28,17 @@ const ManageTours = lazy(() => import("@/pages/admin/ManageTours"));
 const ManageTreks = lazy(() => import("@/pages/admin/ManageTreks"));
 const RegionTreks = lazy(() => import("@/pages/admin/RegionTreks"));
 const ManageVehicles = lazy(() => import("@/pages/admin/ManageVehicles"));
+const ManageAdventures = lazy(() => import("@/pages/admin/ManageAdventures"));
+const CategoryAdventures = lazy(() => import("@/pages/admin/CategoryAdventures"));
+const CreateAdventure = lazy(() => import("@/pages/admin/CreateAdventure"));
+const AddAdventure = lazy(() => import("@/pages/admin/AddAdventure"));
+const EditAdventure = lazy(() => import("@/pages/admin/EditAdventure"));
 const EditTour = lazy(() => import("@/pages/admin/EditTour"));
 const EditTrek = lazy(() => import("@/pages/admin/EditTrek"));
+const ManageDailyRoutes = lazy(() => import("@/pages/admin/ManageDailyRoutes"));
+const AddDailyRoute = lazy(() => import("@/pages/admin/AddDailyRoute"));
+const ManageEnquiries = lazy(() => import("@/pages/admin/ManageEnquiries"));
+const ManageReviews = lazy(() => import("@/pages/admin/ManageReviews"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
 
@@ -70,6 +79,15 @@ function App() {
           <Route path="/admin/dashboard/treks/:regionId" element={<RegionTreks />} />
           <Route path="/admin/dashboard/edit-trek/:id" element={<EditTrek />} />
           <Route path="/admin/dashboard/vehicles" element={<ManageVehicles />} />
+          <Route path="/admin/dashboard/adventures" element={<ManageAdventures />} />
+          <Route path="/admin/dashboard/adventures/:category" element={<CategoryAdventures />} />
+          <Route path="/admin/dashboard/create-adventure" element={<CreateAdventure />} />
+          <Route path="/admin/dashboard/add-adventure" element={<AddAdventure />} />
+          <Route path="/admin/dashboard/edit-adventure/:id" element={<EditAdventure />} />
+          <Route path="/admin/dashboard/daily-routes" element={<ManageDailyRoutes />} />
+          <Route path="/admin/dashboard/add-daily-route" element={<AddDailyRoute />} />
+          <Route path="/admin/dashboard/enquiries" element={<ManageEnquiries />} />
+          <Route path="/admin/dashboard/reviews" element={<ManageReviews />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

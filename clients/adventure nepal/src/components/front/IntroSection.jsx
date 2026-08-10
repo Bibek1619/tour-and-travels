@@ -1,20 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { MapPin, Users, Award, Heart } from "lucide-react";
+import { Users, Award, Mountain, Compass, Heart, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const IntroSection = () => {
-  const featuredPackages = [
-    "Nepal Family Holiday",
-    "Nepal Vacation Tour",
-    "Sunrise/Sunset Tour",
-    "Chitwan Safari Tour",
-    "Kathmandu Valley Trek",
-    "Bhutan Tour Package",
-    "Tibet Tour Package",
-  ];
-
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50 py-16 px-4 md:px-8">
+    <section className="bg-gradient-to-b from-white via-orange-50/30 to-white py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Welcome Heading */}
         <motion.div
@@ -22,140 +13,158 @@ const IntroSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Dear Travellers, <span className="text-orange-600">Namaste</span> and Welcome
-          </h2>
-          <div className="w-24 h-1 bg-orange-600 mx-auto mb-8"></div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Dear Travelers, <span className="text-orange-600">Namaste</span> and Welcome
+          </h1>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 mx-auto mb-6"></div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Your Gateway to the Majestic Himalayas
+          </p>
         </motion.div>
 
-        {/* Main Content */}
-        <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
-          {/* Left Column - Description */}
+        {/* Main Content Grid */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          {/* Left Column - Rich Description */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            transition={{ duration: 0.7 }}
             className="space-y-6"
           >
-            <div className="prose prose-lg">
-              <p className="text-gray-700 leading-relaxed">
-                <span className="font-semibold text-gray-900">
-                  Plan Nepal Travels & Tours (P.) Ltd.
-                </span>{" "}
-                a leading online travel agency in Nepal. A Destination Management Company 
-                in Nepal, We are one of key travel agents in Nepal that brings tours of 
-                <span className="font-semibold text-orange-600"> "Incredible Nepal"</span>, 
-                the country that has mystified the world for centuries.
+            <div className="space-y-5 text-lg leading-relaxed">
+              <p className="text-gray-700">
+                <strong className="text-gray-900 text-xl">Adventure Nepal</strong> is a leading travel agency and destination management company in Nepal with over <strong className="text-orange-600">26+ years of experience</strong>. We specialize in bringing you the wonders of <span className="font-semibold text-orange-600">"Incredible Nepal"</span> – a country that has captivated travelers for centuries.
               </p>
 
-              <p className="text-gray-700 leading-relaxed">
-                Your tour to Nepal, a colorfully diverse country, will enchant you with 
-                the beauty of its <span className="font-semibold">Culture, Mountain and Nature</span>. 
-                These tours to Nepal will enrich you with its culture, heritage, wildlife, 
-                flora & fauna, folklore, festivals, spirituality, philosophy and at the 
-                same time surprise you with its modernity.
+              <p className="text-gray-700">
+                Embark on an unforgettable journey through Nepal's <strong>diverse landscapes</strong>, from the snow-capped peaks of the <strong>Himalayas</strong> to lush valleys, ancient temples, and vibrant cities. Our expertly crafted tours showcase Nepal's rich <strong>culture, heritage, wildlife, and spirituality</strong> while surprising you with its modern developments.
               </p>
 
-              <p className="text-gray-700 leading-relaxed">
-                Nepal tour & travel packages also offers the welcoming smile of hospitable 
-                people who make it a must experience destination.
+              <p className="text-gray-700">
+                Experience the <strong>warm hospitality</strong> of Nepali people, explore UNESCO World Heritage Sites, trek through pristine mountain trails, and immerse yourself in colorful festivals and traditions. Whether you seek <strong>adventure, spirituality, or cultural enrichment</strong>, Nepal offers an experience that will transform you.
               </p>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300"
+            <Link
+              to="/about"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              View More
-            </motion.button>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 gap-4 pt-8">
-              <div className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
-                <Users className="w-8 h-8 text-orange-600" />
-                <div>
-                  <p className="text-2xl font-bold text-gray-800">10K+</p>
-                  <p className="text-sm text-gray-600">Happy Travelers</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
-                <Award className="w-8 h-8 text-orange-600" />
-                <div>
-                  <p className="text-2xl font-bold text-gray-800">15+</p>
-                  <p className="text-sm text-gray-600">Years Experience</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Affiliated From */}
-            <div className="pt-8">
-              <p className="text-gray-600 font-semibold mb-4 text-sm">Affiliated From</p>
-              <div className="flex flex-wrap items-center gap-4">
-                <img 
-                  src="/nepal-tourism-board.png" 
-                  alt="Nepal Tourism Board" 
-                  className="h-16 object-contain hover:scale-110 transition-transform"
-                />
-                <img 
-                  src="/nma.png" 
-                  alt="Nepal Mountaineering Association" 
-                  className="h-16 object-contain hover:scale-110 transition-transform"
-                />
-                <img 
-                  src="/taan.png" 
-                  alt="TAAN" 
-                  className="h-16 object-contain hover:scale-110 transition-transform"
-                />
-              </div>
-            </div>
+              Discover Our Story
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </motion.div>
 
-          {/* Right Column - Featured Packages */}
+          {/* Right Column - Image & Highlights */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+            transition={{ duration: 0.7 }}
+            className="relative"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <MapPin className="w-6 h-6 text-orange-600" />
-              <h3 className="text-2xl font-bold text-gray-800">Featured Packages</h3>
+            {/* Image Card */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800"
+                alt="Nepal Mountains - Trekking and Tours"
+                className="w-full h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              
+              {/* Overlay Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                <h3 className="text-3xl font-bold mb-4">Why Choose Us?</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                      <Mountain className="w-5 h-5" />
+                    </div>
+                    <span className="text-lg">Expert Local Guides</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                      <Compass className="w-5 h-5" />
+                    </div>
+                    <span className="text-lg">Customizable Itineraries</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                      <Heart className="w-5 h-5" />
+                    </div>
+                    <span className="text-lg">100% Customer Satisfaction</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-
-            <ul className="space-y-4">
-              {featuredPackages.map((pkg, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-3 p-4 rounded-lg hover:bg-orange-50 transition-all duration-300 cursor-pointer group"
-                >
-                  <div className="w-2 h-2 bg-orange-600 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
-                  <span className="text-gray-700 group-hover:text-orange-600 font-medium transition-colors duration-300">
-                    {pkg}
-                  </span>
-                  <Heart className="w-4 h-4 text-gray-400 group-hover:text-red-500 ml-auto transition-colors duration-300" />
-                </motion.li>
-              ))}
-            </ul>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full mt-6 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white py-3 rounded-lg font-semibold shadow-lg transition-all duration-300"
-            >
-              Explore All Packages
-            </motion.button>
           </motion.div>
         </div>
+
+        {/* Stats & Certifications Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="grid md:grid-cols-3 gap-8"
+        >
+          {/* Stat 1 */}
+          <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="bg-orange-100 p-4 rounded-xl">
+              <Users className="w-10 h-10 text-orange-600" />
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-gray-900">10,000+</p>
+              <p className="text-gray-600 font-medium">Happy Travelers</p>
+            </div>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="bg-green-100 p-4 rounded-xl">
+              <Award className="w-10 h-10 text-green-600" />
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-gray-900">26+ Years</p>
+              <p className="text-gray-600 font-medium">Experience</p>
+            </div>
+          </div>
+
+          {/* Affiliations */}
+          <div className="flex flex-col justify-center p-6 bg-white rounded-2xl shadow-lg">
+            <p className="text-sm text-gray-600 font-semibold mb-3 uppercase tracking-wider">
+              Certified & Affiliated
+            </p>
+            <div className="flex items-center gap-4 flex-wrap">
+              <img 
+                src="/nepal-tourism-board.png" 
+                alt="Nepal Tourism Board Certified" 
+                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <img 
+                src="/taan.png" 
+                alt="TAAN Member" 
+                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <img 
+                src="/nma.png" 
+                alt="Nepal Mountaineering Association" 
+                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

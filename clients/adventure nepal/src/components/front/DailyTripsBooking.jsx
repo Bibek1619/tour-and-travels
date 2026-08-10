@@ -1,38 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MoveRight } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { getAllDailyRoutesApi } from '@/api/dailyRouteApi';
 
 const DailyTripsBooking = () => {
-  // Popular daily trip routes
-  const dailyTrips = [
-    {
-      id: 1,
-      from: 'Pokhara',
-      to: 'Mustang',
-      time: '06:00 AM',
-      duration: '8-10 hrs',
-      seats: 12,
-      price: 3500
-    },
-    {
-      id: 2,
-      from: 'Kathmandu',
-      to: 'Pokhara',
-      time: '07:00 AM',
-      duration: '6-7 hrs',
-      seats: 18,
-      price: 1500
-    },
-    {
-      id: 3,
-      from: 'Pokhara',
-      to: 'Kathmandu',
-      time: '08:00 AM',
-      duration: '6-7 hrs',
-      seats: 15,
-      price: 1500
-    }
-  ];
+  // Fetch daily routes from API
+  const { data, isLoading } = useQuery({
+    queryKey: ['dailyRoutes', { featured: true, status: 'active' }],
+    queryFn: () => getAllDailyRoutesApi({ featured: true, status: 'active', limit: 3 }),
+  });
+
+  const dailyTrips = (data?.data || []).map(route => ({
+    id: route._id,
+    from: route.departure.location.split(' ')[0], // Get first word (city name)
+    to: route.arrival.location.split(' ')[0],
+    time: route.departure.time,
+    duration: route.duration,
+    seats: route.availableSeats,
+    price: route.price,
+    routeName: route.routeName
+  }));
 
   return (
     <section className="py-20 bg-white">
@@ -58,8 +46,23 @@ const DailyTripsBooking = () => {
             <div className="col-span-2 text-center">Fare</div>
           </div>
 
+          {/* Loading State */}
+          {isLoading && (
+            <div className="px-6 py-12 text-center">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+              <p className="text-slate-400 mt-4">Loading daily routes...</p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && dailyTrips.length === 0 && (
+            <div className="px-6 py-12 text-center text-slate-400">
+              No daily routes available at the moment.
+            </div>
+          )}
+
           {/* Table Rows */}
-          {dailyTrips.map((trip, index) => (
+          {!isLoading && dailyTrips.map((trip, index) => (
             <div
               key={trip.id}
               className={`grid grid-cols-12 gap-4 px-6 py-5 items-center ${
@@ -103,7 +106,7 @@ const DailyTripsBooking = () => {
               {/* Price & Book Button */}
               <div className="col-span-2 flex flex-col items-center gap-2">
                 <span className="text-white font-bold text-lg">
-                  NPR {trip.price.toLocaleString()}
+                  ${trip.price.toLocaleString()}
                 </span>
                 <Link
                   to="/seat-booking"
@@ -118,7 +121,22 @@ const DailyTripsBooking = () => {
 
         {/* Mobile Schedule Cards */}
         <div className="md:hidden space-y-4 mb-6">
-          {dailyTrips.map((trip) => (
+          {/* Loading State */}
+          {isLoading && (
+            <div className="bg-slate-900 rounded-lg p-12 text-center">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+              <p className="text-slate-400 mt-4">Loading daily routes...</p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && dailyTrips.length === 0 && (
+            <div className="bg-slate-900 rounded-lg p-12 text-center text-slate-400">
+              No daily routes available at the moment.
+            </div>
+          )}
+
+          {!isLoading && dailyTrips.map((trip) => (
             <div
               key={trip.id}
               className="bg-slate-900 rounded-lg p-5"
@@ -153,7 +171,7 @@ const DailyTripsBooking = () => {
               {/* Price & Button */}
               <div className="flex items-center justify-between pt-4 border-t border-slate-800">
                 <span className="text-white font-bold text-xl">
-                  NPR {trip.price.toLocaleString()}
+                  ${trip.price.toLocaleString()}
                 </span>
                 <Link
                   to="/seat-booking"

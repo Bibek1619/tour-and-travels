@@ -37,11 +37,7 @@ const stats = [
   { icon: Award, number: "500+", label: "Tours Completed" },
 ];
 
-const team = [
-  { name: "Ram Bahadur", role: "Founder & CEO", img: "/images/team1.jpg" },
-  { name: "Sita Gurung", role: "Tour Director", img: "/images/team2.jpg" },
-  { name: "Hari Thapa", role: "Operations Manager", img: "/images/team3.jpg" },
-];
+
 
 const testimonials = [
   {
@@ -223,7 +219,59 @@ const About = () => {
         </div>
       </motion.section>
 
-      {/* Team */}
+      {/* Why Our Guides Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Choose Our Guides</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              All our guides are professionally trained, licensed, and have extensive experience in the Himalayas
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              {
+                icon: Award,
+                title: 'Certified Professionals',
+                description: 'Licensed by Nepal Tourism Board'
+              },
+              {
+                icon: MapPin,
+                title: 'Experienced Climbers',
+                description: '10+ years average experience'
+              },
+              {
+                icon: Star,
+                title: 'Safety First',
+                description: 'First Aid & Rescue trained'
+              },
+              {
+                icon: Users,
+                title: 'Local Experts',
+                description: 'Born and raised in the Himalayas'
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <feature.icon className="w-8 h-8 text-orange-600" />
+                </div>
+                <h3 className="font-bold text-lg text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Members */}
       <motion.section
         className="py-24 px-4 md:px-8 lg:px-16 bg-gray-50"
         variants={sectionVariants}
@@ -231,40 +279,93 @@ const About = () => {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <div className="max-w-6xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Meet Our Team</h2>
+        <div className="max-w-7xl mx-auto text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Meet Our Expert Team</h2>
           <p className="text-xl text-muted-foreground">
-            Passionate locals who live and breathe adventure
+            Professional, experienced, and passionate about creating unforgettable mountain adventures
           </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
-          {team.map((member, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            {
+              name: 'Rajesh Sharma',
+              role: 'Founder & Lead Guide',
+              experience: '26+ Years',
+              image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
+              specialization: 'Everest Region Expert',
+              certifications: ['Mountain Guide License', 'First Aid Certified']
+            },
+            {
+              name: 'Sanjay Gurung',
+              role: 'Senior Trekking Guide',
+              experience: '15+ Years',
+              image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+              specialization: 'Annapurna & Langtang',
+              certifications: ['Trekking Guide License', 'Wilderness First Responder']
+            },
+            {
+              name: 'Karma Sherpa',
+              role: 'Climbing Guide',
+              experience: '12+ Years',
+              image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+              specialization: 'Peak Climbing Expeditions',
+              certifications: ['Mountain Guide License', 'Rescue Trained']
+            },
+            {
+              name: 'Pemba Lama',
+              role: 'Trekking Guide',
+              experience: '10+ Years',
+              image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
+              specialization: 'Cultural Tours & Treks',
+              certifications: ['Trekking Guide License', 'Cultural Heritage Specialist']
+            }
+          ].map((member, index) => (
             <motion.div
-              key={member.name}
-              className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer group"
+              key={index}
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
+              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-6 group-hover:scale-105 transition-transform overflow-hidden">
+              {/* Image */}
+              <div className="relative h-80 overflow-hidden">
                 <img
-                  src={member.img}
+                  src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                  <p className="text-orange-400 font-semibold text-sm">{member.role}</p>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-2">{member.name}</h3>
-              <p className="text-lg text-muted-foreground mb-4 font-medium">
-                {member.role}
-              </p>
-              <div className="flex gap-2 justify-center">
-                <Button variant="ghost" size="sm">
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Mail className="h-4 w-4" />
-                </Button>
+
+              {/* Content */}
+              <div className="p-6">
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-muted-foreground">Experience</span>
+                    <span className="font-bold text-orange-600">{member.experience}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Specialization</span>
+                  </div>
+                  <p className="text-sm font-semibold text-gray-900 mt-1">{member.specialization}</p>
+                </div>
+
+                <div className="pt-4 border-t border-gray-100">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Certifications</p>
+                  <div className="space-y-1">
+                    {member.certifications.map((cert, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        <span className="text-xs text-gray-700">{cert}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}

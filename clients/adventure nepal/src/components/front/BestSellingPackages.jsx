@@ -1,48 +1,48 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { MapPin, Star, Clock, ChevronRight, Compass } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Star, Clock, MapPin, TrendingUp, ChevronRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllToursApi } from '@/api/tourApi';
 import { getCardImage } from '@/utils/cloudinaryHelper';
 
-export const DestinationsSection = () => {
-  // Fetch popular tour packages from API
+const BestSellingPackages = () => {
+  // Fetch tours with featured flag
   const { data, isLoading } = useQuery({
-    queryKey: ['popularTours'],
-    queryFn: () => getAllToursApi({ category: 'tour', limit: 6 }),
+    queryKey: ['bestSellingTours'],
+    queryFn: () => getAllToursApi({ featured: true, limit: 6 }),
   });
 
-  const destinations = data?.data || [];
+  const packages = data?.data || [];
 
-  // Mock reviews data
+  // Mock reviews data (you can add this to your tour model later)
   const getReviewData = (index) => {
     const reviews = [
-      { rating: 4.8, count: 128 },
-      { rating: 4.7, count: 98 },
-      { rating: 4.6, count: 65 },
-      { rating: 4.9, count: 210 },
-      { rating: 5.0, count: 85 },
-      { rating: 4.8, count: 142 },
+      { rating: 5.0, count: 7 },
+      { rating: 4.9, count: 12 },
+      { rating: 5.0, count: 5 },
+      { rating: 4.8, count: 9 },
+      { rating: 5.0, count: 11 },
+      { rating: 4.9, count: 6 },
     ];
     return reviews[index % reviews.length];
   };
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Heading */}
+        {/* Section Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-3">
-            <Compass className="w-6 h-6 text-green-600" />
-            <span className="text-green-600 font-semibold text-sm uppercase tracking-wider">
-              Explore Nepal
+            <TrendingUp className="w-6 h-6 text-orange-600" />
+            <span className="text-orange-600 font-semibold text-sm uppercase tracking-wider">
+              Most Popular
             </span>
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Popular Tour Packages
+            Best Selling Trekking Packages
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover Nepal's most breathtaking destinations with our expertly crafted tour packages.
+            Walk along the best selling trekking routes in the Himalayas of Nepal
           </p>
         </div>
 
@@ -55,35 +55,35 @@ export const DestinationsSection = () => {
           </div>
         )}
 
-        {/* Cards */}
+        {/* Packages Grid */}
         {!isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {destinations.map((dest, index) => {
+            {packages.map((pkg, index) => {
               const reviewData = getReviewData(index);
               return (
                 <Link
-                  key={dest._id}
-                  to={`/tours/${dest.slug}`}
+                  key={pkg._id}
+                  to={`/tours/${pkg.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
                 >
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden">
                     <img
-                      src={getCardImage(dest.images?.[0])}
-                      alt={dest.title}
+                      src={getCardImage(pkg.images?.[0])}
+                      alt={pkg.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     
-                    {/* Popular Badge */}
-                    <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                      Popular
+                    {/* Best Seller Badge */}
+                    <div className="absolute top-4 left-4 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                      Best Selling
                     </div>
 
                     {/* Duration Badge */}
                     <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
-                      <Clock className="w-4 h-4 text-green-600" />
-                      <span className="text-sm font-bold text-gray-900">{dest.duration}</span>
+                      <Clock className="w-4 h-4 text-orange-600" />
+                      <span className="text-sm font-bold text-gray-900">{pkg.duration}</span>
                     </div>
                   </div>
 
@@ -108,14 +108,16 @@ export const DestinationsSection = () => {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
-                      {dest.title}
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors line-clamp-2">
+                      {pkg.title}
                     </h3>
 
-                    {/* Location */}
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-                      <MapPin className="w-4 h-4 text-green-500" />
-                      <span>{dest.location || 'Nepal'}</span>
+                    {/* Details */}
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <MapPin className="w-4 h-4 text-orange-500" />
+                        <span>{pkg.location || 'Nepal'}</span>
+                      </div>
                     </div>
 
                     {/* Price & CTA */}
@@ -125,11 +127,11 @@ export const DestinationsSection = () => {
                           From
                         </span>
                         <span className="text-2xl font-bold text-gray-900">
-                          ${dest.price}
+                          ${pkg.price}
                         </span>
                         <span className="text-gray-500 text-sm"> / person</span>
                       </div>
-                      <div className="flex items-center gap-1 text-green-600 font-semibold group-hover:gap-2 transition-all">
+                      <div className="flex items-center gap-1 text-orange-600 font-semibold group-hover:gap-2 transition-all">
                         View Details
                         <ChevronRight className="w-5 h-5" />
                       </div>
@@ -145,9 +147,9 @@ export const DestinationsSection = () => {
         <div className="text-center mt-12">
           <Link
             to="/tours"
-            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            View All Tour Packages
+            View All Trekking Packages
             <ChevronRight className="w-5 h-5" />
           </Link>
         </div>
@@ -155,3 +157,5 @@ export const DestinationsSection = () => {
     </section>
   );
 };
+
+export default BestSellingPackages;
