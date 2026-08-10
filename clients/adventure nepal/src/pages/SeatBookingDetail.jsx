@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import MainLayout from "@/layouts/MainLayout";
 import SeatSelector from "@/components/seatbooking/SeatSelector";
 import TripDetails from "@/components/seatbooking/TripDetails";
 import BookingModal from "@/components/seatbooking/BookingModal";
+import { getDailyRouteByIdApi, updateDailyRouteApi } from "@/api/dailyRouteApi";
 import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MessageCircle, MapPin, Calendar, Clock, Info } from 'lucide-react';
+
+// Derive the seat-layout type from the number of seats
+const getVehicleType = (seats) => {
+  if (seats <= 7) return "suv";
+  if (seats <= 12) return "van";
+  return "bus";
+};
 
 const SeatBookingDetail = () => {
   const { vehicleId } = useParams();
@@ -16,56 +25,46 @@ const SeatBookingDetail = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
 
-  // Mock vehicles data (same as in SeatBooking page)
-  const mockVehicles = [
-    {
-      id: 1,
-      name: 'Hiace Bus',
-      type: 'bus',
-      seats: 18,
-      pricePerSeat: 3500,
-      route: 'Pokhara to Mustang',
-      departureDate: '2026-08-15',
-      departureTime: '06:00 AM',
-      availableSeats: 12,
-      image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400',
-      description: 'Comfortable 18-seater Hiace bus for Upper Mustang. AC, experienced driver, mountain views.',
-      duration: '8-10 hours',
-      bookedSeats: [1, 5, 9, 13, 15, 17],
-    },
-    {
-      id: 2,
-      name: 'Scorpio SUV',
-      type: 'suv',
-      seats: 7,
-      pricePerSeat: 5000,
-      route: 'Pokhara to Mustang',
-      departureDate: '2026-08-15',
-      departureTime: '07:00 AM',
-      availableSeats: 4,
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-      description: 'Comfortable 7-seater Scorpio SUV. AC, experienced driver, faster journey.',
-      duration: '7-9 hours',
-      bookedSeats: [2, 5, 6],
-    },
-    {
-      id: 3,
-      name: 'Hiace Van',
-      type: 'van',
-      seats: 12,
-      pricePerSeat: 4000,
-      route: 'Pokhara to Mustang',
-      departureDate: '2026-08-16',
-      departureTime: '06:30 AM',
-      availableSeats: 8,
-      image: 'https://images.unsplash.com/photo-1606698175636-678f6ad18088?w=400',
-      description: '12-seater Hiace Van, comfortable seating, scenic mountain route.',
-      duration: '8-10 hours',
-      bookedSeats: [3, 7, 10, 11],
-    },
-  ];
+  // Fetch the daily route by id
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["dailyRoute", vehicleId],
+    queryFn: () => getDailyRouteByIdApi(vehicleId),
+    enabled: !!vehicleId,
+  });
 
-  const vehicle = mockVehicles.find(v => v.id === parseInt(vehicleId));
+  const route = data?.data;
+
+  // Transform the daily route into the vehicle shape the UI expects
+  const vehicle = route
+    ? {
+        id: route._id,
+        name: route.vehicle?.name || route.routeName,
+        type: getVehicleType(route.totalSeats),
+        seats: route.totalSeats,
+        pricePerSeat: route.price,
+        route: `${route.departure.location} to ${route.arrival.location}`,
+        departureDate: route.departureDate,
+        departureTime: route.departure.time,
+        availableSeats: route.availableSeats,
+        image:
+          route.vehicle?.images?.[0] ||
+          "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400",
+        description:
+          route.description ||
+          `Comfortable journey from ${route.departure.location} to ${route.arrival.location}`,
+        duration: route.duration,
+        // Use admin-controlled booked seats; fall back to first N seats
+        bookedSeats:
+          Array.isArray(route.bookedSeats) && route.bookedSeats.length
+            ? route.bookedSeats
+            : Array.from(
+                { length: Math.max(0, route.totalSeats - route.availableSeats) },
+                (_, i) => i + 1
+              ),
+        amenities: route.amenities || [],
+        stops: route.stops || [],
+      }
+    : null;
 
   const handleToggleSeat = (seatNum, isSelected) => {
     if (isSelected) {
@@ -75,7 +74,18 @@ const SeatBookingDetail = () => {
     }
   };
 
-  const handleBook = (bookingId) => {
+  const handleBook = async (bookingId) => {
+    // Persist the newly booked seats so they show as booked for everyone
+    try {
+      const existing = Array.isArray(route?.bookedSeats) ? route.bookedSeats : [];
+      const updatedBookedSeats = Array.from(new Set([...existing, ...selectedSeats]));
+      await updateDailyRouteApi(vehicleId, { bookedSeats: updatedBookedSeats });
+      await refetch();
+    } catch (err) {
+      // Booking still succeeds locally even if the seat sync fails
+      console.error("Failed to sync booked seats:", err);
+    }
+
     toast.success(`Booking confirmed! ID: ${bookingId}`);
     setSelectedSeats([]);
     setShowBookingModal(false);
@@ -105,12 +115,55 @@ const SeatBookingDetail = () => {
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
 
-  if (!vehicle) {
+  // Loading state
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="min-h-screen bg-gray-50 py-8 px-4">
+          <div className="max-w-7xl mx-auto animate-pulse">
+            <div className="h-10 bg-gray-200 rounded w-40 mb-6" />
+            <div className="h-12 bg-gray-200 rounded w-80 mb-8" />
+            <div className="bg-white rounded-xl overflow-hidden mb-8">
+              <div className="grid md:grid-cols-[280px_1fr] gap-0">
+                <div className="h-40 md:h-64 bg-gray-200" />
+                <div className="p-5 space-y-4">
+                  <div className="h-6 bg-gray-200 rounded w-2/3" />
+                  <div className="h-4 bg-gray-200 rounded w-full" />
+                  <div className="grid grid-cols-3 gap-4">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="space-y-2">
+                        <div className="h-3 bg-gray-200 rounded w-16" />
+                        <div className="h-4 bg-gray-200 rounded w-24" />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between pt-3 border-t">
+                    <div className="h-4 bg-gray-200 rounded w-48" />
+                    <div className="h-8 bg-gray-200 rounded w-32" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+              <div className="bg-white rounded-xl p-6 h-96" />
+              <div className="bg-white rounded-xl p-6 h-64" />
+            </div>
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  // Not found / error state
+  if (isError || !vehicle) {
     return (
       <MainLayout>
         <div className="min-h-screen bg-gray-50 py-12 px-4">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Vehicle Not Found</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Route Not Found</h1>
+            <p className="text-gray-600 mb-6">
+              This route may no longer be available. Please choose another from the list.
+            </p>
             <Link to="/seat-booking">
               <Button className="bg-orange-600 hover:bg-orange-700">
                 ← Back to Vehicles
@@ -189,7 +242,7 @@ const SeatBookingDetail = () => {
                       <MapPin className="w-4 h-4" />
                       <span className="text-xs font-medium">Route</span>
                     </div>
-                    <div className="font-semibold text-gray-900">Kathmandu → Mustang</div>
+                    <div className="font-semibold text-gray-900">{vehicle.route}</div>
                   </div>
 
                   <div>

@@ -17,6 +17,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Activity,
+  Inbox,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -180,6 +181,12 @@ const AdminDashboard = () => {
               title="View Bookings"
               link="/admin/dashboard/bookings"
               color="green"
+            />
+            <QuickActionCard
+              icon={Inbox}
+              title="View Enquiries"
+              link="/admin/dashboard/enquiries"
+              color="blue"
             />
             <QuickActionCard
               icon={MapPin}

@@ -11,10 +11,13 @@ import {
   Phone,
   Mail,
   ChevronLeft,
-  MessageCircle
+  MessageCircle,
+  Send
 } from "lucide-react";
 import { getAllToursApi } from "@/api/tourApi";
 import toast from "react-hot-toast";
+import EnquiryModal from "@/components/front/EnquiryModal";
+import GiveReview from "@/components/tour/TourDetails/GiveReview";
 
 const PakagesDetailsPage = () => {
   const { slug } = useParams();
@@ -22,6 +25,7 @@ const PakagesDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(0);
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,10 +56,52 @@ const PakagesDetailsPage = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading tour details...</p>
+        <div className="min-h-screen bg-gray-50">
+          <div className="bg-white border-b">
+            <div className="max-w-7xl mx-auto px-4 py-4">
+              <div className="h-4 bg-gray-200 rounded w-64 animate-pulse" />
+            </div>
+          </div>
+          <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+              <div className="lg:col-span-2 space-y-6 animate-pulse">
+                <div className="bg-white rounded-lg p-6 shadow">
+                  <div className="h-8 bg-gray-200 rounded w-2/3 mb-4" />
+                  <div className="flex gap-4">
+                    <div className="h-4 bg-gray-200 rounded w-32" />
+                    <div className="h-4 bg-gray-200 rounded w-24" />
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg overflow-hidden shadow">
+                  <div className="h-80 bg-gray-200" />
+                  <div className="p-4 flex gap-3">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="w-20 h-20 bg-gray-200 rounded flex-shrink-0" />
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow">
+                  <div className="border-b px-6 py-4 flex gap-8">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="h-4 bg-gray-200 rounded w-16" />
+                    ))}
+                  </div>
+                  <div className="p-6 space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-4 bg-gray-200 rounded w-full" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="lg:col-span-1 animate-pulse">
+                <div className="bg-white rounded-xl p-6 shadow-lg">
+                  <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto mb-4" />
+                  <div className="h-10 bg-gray-200 rounded w-2/3 mx-auto mb-6" />
+                  <div className="h-12 bg-gray-200 rounded w-full mb-3" />
+                  <div className="h-12 bg-gray-200 rounded w-full" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </MainLayout>
@@ -83,11 +129,11 @@ const PakagesDetailsPage = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 overflow-x-hidden">
         {/* Breadcrumb */}
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
               <Link to="/" className="hover:text-orange-600">Home</Link>
               <ChevronLeft className="w-4 h-4 rotate-180" />
               <Link to="/tours" className="hover:text-orange-600">Tour Packages</Link>
@@ -97,13 +143,13 @@ const PakagesDetailsPage = () => {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid lg:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Header */}
-              <div className="bg-white rounded-lg p-6 shadow">
-                <h1 className="text-3xl font-bold text-gray-800 mb-3">{tour.title}</h1>
+              <div className="bg-white rounded-lg p-4 sm:p-6 shadow">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 break-words">{tour.title}</h1>
                 <div className="flex flex-wrap items-center gap-4 text-gray-600">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-5 h-5 text-orange-600" />
@@ -125,7 +171,7 @@ const PakagesDetailsPage = () => {
 
               {/* Image Gallery */}
               <div className="bg-white rounded-lg overflow-hidden shadow">
-                <div className="relative h-[400px]">
+                <div className="relative h-56 sm:h-80 lg:h-[400px]">
                   <img
                     src={images[selectedImage]}
                     alt={tour.title}
@@ -423,8 +469,8 @@ const PakagesDetailsPage = () => {
                   {/* Price Section */}
                   <div className="text-center mb-6 pb-6 border-b border-orange-200">
                     <p className="text-sm text-gray-600 mb-2">Starting from</p>
-                    <div className="flex items-baseline justify-center gap-2">
-                      <span className="text-5xl font-bold text-orange-600">${tour.price}</span>
+                    <div className="flex items-baseline justify-center gap-2 flex-wrap">
+                      <span className="text-4xl sm:text-5xl font-bold text-orange-600 break-all">${tour.price}</span>
                       <span className="text-gray-500">/person</span>
                     </div>
                   </div>
@@ -437,6 +483,15 @@ const PakagesDetailsPage = () => {
 
                   {/* Action Buttons */}
                   <div className="space-y-3 mb-6">
+                    {/* Send Enquiry Button */}
+                    <button
+                      onClick={() => setEnquiryOpen(true)}
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
+                    >
+                      <Send className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <span>Send Enquiry</span>
+                    </button>
+
                     {/* WhatsApp Button */}
                     <button 
                       onClick={() => {
@@ -454,13 +509,6 @@ const PakagesDetailsPage = () => {
                       <span>Book via WhatsApp</span>
                     </button>
 
-                    {/* Email Button */}
-                    <a href={`mailto:info@adventurenepal.com?subject=Booking Inquiry - ${tour.title}&body=Hi, I'm interested in booking the ${tour.title} tour.%0D%0A%0D%0ADuration: ${tour.durationDays} days%0D%0APrice: $${tour.price} per person%0D%0A%0D%0APlease provide more details about availability and booking process.`}>
-                      <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group">
-                        <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                        <span>Book via Email</span>
-                      </button>
-                    </a>
                   </div>
 
                   {/* Contact Info */}
@@ -533,6 +581,20 @@ const PakagesDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Give Review */}
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+        <GiveReview tourId={tour._id} tourTitle={tour.title} />
+      </div>
+
+      {/* Enquiry Modal */}
+      <EnquiryModal
+        isOpen={enquiryOpen}
+        onClose={() => setEnquiryOpen(false)}
+        packageName={tour?.title}
+        packageId={tour?._id}
+        packageType="tour"
+      />
     </MainLayout>
   );
 };

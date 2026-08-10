@@ -7,8 +7,6 @@ import {
   Clock,
   TrendingUp,
   Calendar,
-  Users,
-  DollarSign,
   Check,
   X,
   Mountain,
@@ -18,12 +16,12 @@ import {
   Share2,
   Heart,
   ChevronLeft,
-  Award,
-  Shield,
-  MessageCircle
+  MessageCircle,
+  Send
 } from "lucide-react";
 import { getAllToursApi } from "@/api/tourApi";
 import toast from "react-hot-toast";
+import EnquiryModal from "@/components/front/EnquiryModal";
 
 const TrekDetailsPage = () => {
   const { slug } = useParams();
@@ -31,6 +29,7 @@ const TrekDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(0);
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
 
   useEffect(() => {
     fetchTrekDetails();
@@ -70,8 +69,45 @@ const TrekDetailsPage = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-600"></div>
+        <div className="min-h-screen bg-gray-50">
+          <div className="bg-white border-b">
+            <div className="max-w-7xl mx-auto px-4 py-4">
+              <div className="h-4 bg-gray-200 rounded w-64 animate-pulse" />
+            </div>
+          </div>
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="animate-pulse">
+                <div className="bg-gray-200 rounded-lg h-[400px] w-full" />
+                <div className="flex gap-3 mt-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="w-20 h-20 bg-gray-200 rounded" />
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-4 animate-pulse">
+                <div className="bg-white rounded-lg shadow-sm p-4">
+                  <div className="h-6 bg-gray-200 rounded w-3/4 mb-3" />
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2" />
+                  <div className="h-4 bg-gray-200 rounded w-2/3" />
+                </div>
+                <div className="bg-white rounded-lg shadow-sm p-4 space-y-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex justify-between">
+                      <div className="h-4 bg-gray-200 rounded w-1/3" />
+                      <div className="h-4 bg-gray-200 rounded w-1/4" />
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-white rounded-lg shadow-sm p-4">
+                  <div className="h-8 bg-gray-200 rounded w-1/2 mx-auto mb-4" />
+                  <div className="h-10 bg-gray-200 rounded w-full mb-2" />
+                  <div className="h-10 bg-gray-200 rounded w-full mb-2" />
+                  <div className="h-10 bg-gray-200 rounded w-full" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </MainLayout>
     );
@@ -114,14 +150,14 @@ const TrekDetailsPage = () => {
         {/* Hero Section with Images */}
         <section className="bg-white">
           <div className="max-w-7xl mx-auto px-4 py-8">
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-[1.5fr_1fr] gap-6">
               {/* Left Column - Image Gallery */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-white rounded-lg overflow-hidden shadow"
               >
-                <div className="relative h-[400px]">
+                <div className="relative h-[520px]">
                   <img
                     src={images[selectedImage]}
                     alt={trek.title}
@@ -199,6 +235,14 @@ const TrekDetailsPage = () => {
 
                     {/* Action Buttons - Compact */}
                     <div className="space-y-2">
+                      <button
+                        onClick={() => setEnquiryOpen(true)}
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2.5 rounded-lg font-medium transition-all text-sm flex items-center justify-center gap-2"
+                      >
+                        <Send className="w-4 h-4" />
+                        Send Enquiry
+                      </button>
+
                       <button 
                         onClick={() => {
                           const message = encodeURIComponent(
@@ -214,13 +258,28 @@ const TrekDetailsPage = () => {
                         <MessageCircle className="w-4 h-4" />
                         WhatsApp Us
                       </button>
+                    </div>
 
-                      <a 
-                        href={`mailto:info@adventurenepal.com?subject=Booking Inquiry - ${trek.title}&body=Hi, I'm interested in booking the ${trek.title} trek.%0D%0A%0D%0ADuration: ${trek.durationDays} days%0D%0APrice: $${trek.price} per person`}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition-all text-sm flex items-center justify-center gap-2"
-                      >
-                        <Mail className="w-4 h-4" />
-                        Email Us
+                    {/* Or reach us directly */}
+                    <div className="bg-gray-50 rounded-lg p-4 space-y-3 mt-3">
+                      <div className="text-center text-xs text-gray-500 mb-2">Or reach us directly</div>
+                      <a href="tel:+9779841480794" className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors">
+                        <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Phone className="w-5 h-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-500">Call us</div>
+                          <div className="font-semibold text-sm">+977 984-1480794</div>
+                        </div>
+                      </a>
+                      <a href="mailto:info@adventurenepal.com" className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors">
+                        <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Mail className="w-5 h-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-500">Email us</div>
+                          <div className="font-semibold text-sm">info@adventurenepal.com</div>
+                        </div>
                       </a>
                     </div>
                   </div>
@@ -254,9 +313,8 @@ const TrekDetailsPage = () => {
         {/* Tab Content */}
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Main Content */}
-              <div className="lg:col-span-2">
+            {/* Main Content */}
+            <div>
                 {activeTab === "overview" && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -530,57 +588,18 @@ const TrekDetailsPage = () => {
                   </motion.div>
                 )}
               </div>
-
-              {/* Sidebar */}
-              <div className="lg:col-span-1 space-y-6">
-                {/* Trust Badges */}
-                <div className="bg-white rounded-xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">Why Choose Us</h3>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Award className="w-6 h-6 text-orange-600 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-gray-800">Certified Guides</p>
-                        <p className="text-sm text-gray-600">Experienced and licensed</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Shield className="w-6 h-6 text-orange-600 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-gray-800">Safety First</p>
-                        <p className="text-sm text-gray-600">Full insurance coverage</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Users className="w-6 h-6 text-orange-600 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold text-gray-800">Small Groups</p>
-                        <p className="text-sm text-gray-600">Max 12 trekkers</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Need Help */}
-                <div className="bg-gradient-to-br from-orange-600 to-red-600 rounded-xl p-6 shadow-lg text-white">
-                  <h3 className="text-xl font-bold mb-4">Need Help?</h3>
-                  <p className="text-orange-100 mb-4">Have questions about this trek? Our experts are here to help!</p>
-                  <div className="space-y-3">
-                    <a href="tel:+9779841480794" className="flex items-center gap-3 bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-colors">
-                      <Phone className="w-5 h-5" />
-                      <span>+977 984-1480794</span>
-                    </a>
-                    <a href="mailto:info@adventurenepal.com" className="flex items-center gap-3 bg-white/20 hover:bg-white/30 p-3 rounded-lg transition-colors">
-                      <Mail className="w-5 h-5" />
-                      <span>info@adventurenepal.com</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
       </div>
+
+      {/* Enquiry Modal */}
+      <EnquiryModal
+        isOpen={enquiryOpen}
+        onClose={() => setEnquiryOpen(false)}
+        packageName={trek?.title}
+        packageId={trek?._id}
+        packageType="trek"
+      />
     </MainLayout>
   );
 };
