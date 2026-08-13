@@ -1,13 +1,17 @@
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { useHomepageContent } from "@/contexts/HomepageContentContext";
 
 export function HeroSection() {
+  const { content } = useHomepageContent();
+  const { hero } = content;
+
   return (
     <section className="relative h-[400px] lg:h-[600px] overflow-hidden">
       {/* Background Video with Overlay */}
       <div className="absolute inset-0">
         <video
-          src="/hero video.mp4"
+          src={hero.videoSrc}
           autoPlay
           loop
           muted
@@ -20,10 +24,10 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-balance">
-          Discover the Magic of Nepal
+          {hero.title}
         </h1>
         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl text-pretty fond-normal">
-          Book your adventure with confidence - Vehicle rentals, seat reservations, tour packages, and hotels all in one place
+          {hero.subtitle}
         </p>
 
         {/* Button with dropdown */}
@@ -32,22 +36,22 @@ export function HeroSection() {
             size="lg"
             className="bg-green-500 hover:bg-green-600 text-accent-foreground text-lg px-8 cursor-pointer transition-colors"
           >
-            View All Packages
+            {hero.ctaText}
           </Button>
 
           {/* Dropdown */}
           <div className="absolute hidden group-hover:block mt-2 w-48 bg-white rounded shadow-lg text-left">
             <a
-              href="/tour-packages"
+              href={hero.tourLink}
               className="block px-4 py-2 hover:bg-green-100 text-gray-800"
             >
-              Tour Packages
+              {hero.tourLinkText}
             </a>
             <a
-              href="/trek-packages"
+              href={hero.trekLink}
               className="block px-4 py-2 hover:bg-green-100 text-gray-800"
             >
-              Trek Packages
+              {hero.trekLinkText}
             </a>
           </div>
         </div>

@@ -94,10 +94,49 @@ const uploadCategoryImage = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
+// Configure Cloudinary storage for homepage images
+const homepageImageStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'tour-travels/homepage/images',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [{ 
+      width: 1920, 
+      height: 1080, 
+      crop: 'fill', 
+      gravity: 'auto', 
+      quality: 'auto' 
+    }]
+  }
+});
+
+// Configure Cloudinary storage for homepage videos
+const homepageVideoStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'tour-travels/homepage/videos',
+    resource_type: 'video',
+    allowed_formats: ['mp4', 'mov', 'avi', 'webm'],
+  }
+});
+
+// Create multer instances
+const uploadHomepageImage = multer({
+  storage: homepageImageStorage,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
+const uploadHomepageVideo = multer({
+  storage: homepageVideoStorage,
+  limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit for videos
+});
+
 module.exports = {
   cloudinary,
   uploadTourImages,
   uploadRegionImage,
   uploadVehicleImages,
-  uploadCategoryImage
+  uploadCategoryImage,
+  uploadHomepageImage,
+  uploadHomepageVideo
 };

@@ -39,6 +39,7 @@ const ManageDailyRoutes = lazy(() => import("@/pages/admin/ManageDailyRoutes"));
 const AddDailyRoute = lazy(() => import("@/pages/admin/AddDailyRoute"));
 const ManageEnquiries = lazy(() => import("@/pages/admin/ManageEnquiries"));
 const ManageReviews = lazy(() => import("@/pages/admin/ManageReviews"));
+const EditHomepage = lazy(() => import("@/pages/admin/EditHomepage"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
 
@@ -88,6 +89,7 @@ function App() {
           <Route path="/admin/dashboard/add-daily-route" element={<AddDailyRoute />} />
           <Route path="/admin/dashboard/enquiries" element={<ManageEnquiries />} />
           <Route path="/admin/dashboard/reviews" element={<ManageReviews />} />
+          <Route path="/admin/dashboard/edit-homepage" element={<EditHomepage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

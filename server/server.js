@@ -15,7 +15,7 @@ const categoryRoutes=require("./routes/categoryRoutes");
 const dailyRouteRoutes=require("./routes/dailyRouteRoutes");
 const enquiryRoutes=require("./routes/enquiryRoutes");
 const reviewRoutes=require("./routes/reviewRoutes");
-
+const homepageRoutes=require("./routes/homepageRoutes");
 
 
 // 2️⃣ Connect to MongoDB
@@ -63,6 +63,9 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/vehicles",veichleRoute);
 
 app.use("/api/tours", tourPackageRoutes);
+
+//homepage routes
+app.use("/api/homepage", homepageRoutes);
 
 //admin routes
 app.use("/api/admin",adminRoutes);

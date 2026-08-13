@@ -16,7 +16,8 @@ import {
   MapPin,
   Route,
   Inbox,
-  Star
+  Star,
+  Globe
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -37,6 +38,11 @@ const AdminLayout = ({ children }) => {
       name: 'Dashboard',
       href: '/admin/dashboard',
       icon: LayoutDashboard,
+    },
+    {
+      name: 'Homepage Content',
+      href: '/admin/dashboard/edit-homepage',
+      icon: Globe,
     },
     {
       name: 'Tours',
