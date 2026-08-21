@@ -1,18 +1,14 @@
 import axios from "axios";
-const axiosInstance =axios.create({
-    // baseURL:"http://localhost:5000/api",
-    baseURL:"https://tour-and-travels-k3qk.onrender.com/api",
 
-    timeout:10000,
-    headers:{
-       Accept:"application/json",
-
-
-    },
-
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  timeout: 10000,
+  headers: {
+    Accept: "application/json",
+  },
 });
 
-//token attach
+// Token attach
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -28,14 +24,12 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-//response interceptor
-
+// Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
-        // Optional: logout user automatically
         console.warn("Unauthorized – token expired");
       }
 
