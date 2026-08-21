@@ -4,6 +4,7 @@ import Loader from "@/components/Loader";
 import { Toaster } from "react-hot-toast";
 import AddTour from "./pages/admin/AddTour";
 import AddTrek from "./pages/admin/AddTrek";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 // Lazy load pages
 const Home = lazy(() => import("@/pages/Home"));
@@ -48,6 +49,7 @@ function App() {
   return (
     <Router>
       <Toaster position="bottom-right" reverseOrder={false} />
+      <PWAInstallPrompt />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />

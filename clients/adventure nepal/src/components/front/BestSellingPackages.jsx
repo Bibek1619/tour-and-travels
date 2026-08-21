@@ -6,13 +6,15 @@ import { getAllToursApi } from '@/api/tourApi';
 import { getCardImage } from '@/utils/cloudinaryHelper';
 
 const BestSellingPackages = () => {
-  // Fetch tours with featured flag
-  const { data, isLoading } = useQuery({
-    queryKey: ['bestSellingTours'],
-    queryFn: () => getAllToursApi({ featured: true, limit: 6 }),
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ['bestSellingPackages'],
+    queryFn: () => getAllToursApi({ status: 'published', limit: 6 }),
+    staleTime: 5 * 60 * 1000,
   });
 
-  const packages = data?.data || [];
+  const packages = [...(data?.data || [])].sort(
+    (a, b) => (b.rating || 0) - (a.rating || 0)
+  ).slice(0, 6);
 
   // Mock reviews data (you can add this to your tour model later)
   const getReviewData = (index) => {
@@ -55,15 +57,35 @@ const BestSellingPackages = () => {
           </div>
         )}
 
+        {/* Error State */}
+        {isError && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 mb-4">Failed to load packages. Please try again.</p>
+            <button
+              onClick={() => refetch()}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !isError && packages.length === 0 && (
+          <div className="text-center py-16 text-gray-500">
+            <p className="text-lg">No packages available at the moment. Check back soon!</p>
+          </div>
+        )}
+
         {/* Packages Grid */}
-        {!isLoading && (
+        {!isLoading && !isError && packages.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg, index) => {
               const reviewData = getReviewData(index);
               return (
                 <Link
                   key={pkg._id}
-                  to={`/tours/${pkg.slug}`}
+                  to={pkg.category === 'trek' ? `/treks/${pkg.slug}` : `/tours/${pkg.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
                 >
                   {/* Image */}
@@ -83,7 +105,7 @@ const BestSellingPackages = () => {
                     {/* Duration Badge */}
                     <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
                       <Clock className="w-4 h-4 text-orange-600" />
-                      <span className="text-sm font-bold text-gray-900">{pkg.duration}</span>
+                      <span className="text-sm font-bold text-gray-900">{pkg.durationDays} Days</span>
                     </div>
                   </div>
 

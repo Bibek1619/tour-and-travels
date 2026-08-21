@@ -1,10 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion"; // <-- import framer-motion
+import { motion } from "framer-motion";
 import { Navbar } from "@/components/front/Navbar";
 import { HeroSection } from "@/components/front/HeroSection";
 import IntroSection from "@/components/front/IntroSection";
 import DailyTripsBooking from "@/components/front/DailyTripsBooking";
-import LastMinuteTrips from "@/components/front/LastMinuteTrips";
 import { Footer } from "@/components/front/Footer";
 import Whyus from "@/components/front/Whyus";
 import TestimonialsSection from "@/components/front/TestimonialsSection";
@@ -12,110 +11,44 @@ import { DestinationsSection } from "@/components/front/DestinationsSection";
 import BestSellingPackages from "@/components/front/BestSellingPackages";
 import PeakClimbingSection from "@/components/front/PeakClimbingSection";
 
-// Updated: longer animation duration
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: "easeOut" } // slower and smoother
+// amount: 0.1 — only 10% of section needs to be visible to trigger animation
+// This prevents sections from staying hidden on short mobile screens
+const fade = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
+
+const Section = ({ children }) => (
+  <motion.div
+    variants={fade}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.1 }}
+  >
+    {children}
+  </motion.div>
+);
 
 const Home = () => {
   return (
     <div>
       <Navbar />
 
-      {/* Hero Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <HeroSection />
-      </motion.div>
+      <Section><HeroSection /></Section>
+      <Section><IntroSection /></Section>
 
-      {/* Last Minute Trips Section */}
-      {/* <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <LastMinuteTrips />
-      </motion.div> */}
+      {/* No animation wrapper — renders immediately, no risk of staying hidden */}
+      <BestSellingPackages />
 
-      {/* Intro Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <IntroSection />
-      </motion.div>
-
-      {/* Best Selling Packages Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <BestSellingPackages />
-      </motion.div>
-
-      {/* Peak Climbing Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <PeakClimbingSection />
-      </motion.div>
-
-      {/* Daily Trips Booking Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <DailyTripsBooking />
-      </motion.div>
-
-      {/* Destinations Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <DestinationsSection />
-      </motion.div>
-
-      {/* Testimonials Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <TestimonialsSection />
-      </motion.div>
-
-      {/* Why Us Section */}
-      <motion.div
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <Whyus />
-      </motion.div>
+      <Section><PeakClimbingSection /></Section>
+      <Section><DailyTripsBooking /></Section>
+      <Section><DestinationsSection /></Section>
+      <Section><TestimonialsSection /></Section>
+      <Section><Whyus /></Section>
 
       <Footer />
     </div>
