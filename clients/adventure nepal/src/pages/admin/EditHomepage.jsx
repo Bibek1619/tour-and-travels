@@ -17,6 +17,7 @@ import axios from 'axios';
 const MediaUploader = ({ type, onUpload, currentSrc }) => {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
   const fileInputRef = useRef(null);
 
   const isVideo = type === 'video';
@@ -69,6 +70,8 @@ const MediaUploader = ({ type, onUpload, currentSrc }) => {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  const src = preview || currentSrc;
+
   return (
     <div className="space-y-2">
       <div className="flex gap-2">
@@ -101,22 +104,46 @@ const MediaUploader = ({ type, onUpload, currentSrc }) => {
           </Button>
         )}
       </div>
-      {(preview || currentSrc) && (
-        <div className="relative rounded-lg overflow-hidden border border-gray-200">
+      {src && (
+        <div className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+          <div className="flex items-center justify-between px-3 py-1.5 bg-gray-50 border-b border-gray-200">
+            <span className="text-xs font-medium text-gray-500">Preview</span>
+            {uploading && <span className="text-xs text-orange-500">Uploading...</span>}
+          </div>
           {isVideo ? (
             <video
-              src={preview || currentSrc}
-              className="w-full h-40 object-cover"
+              src={src}
+              className="w-full max-h-56 object-contain"
               controls
               muted
             />
           ) : (
             <img
-              src={preview || currentSrc}
+              src={src}
               alt="Preview"
-              className="w-full h-40 object-cover"
+              onClick={() => setLightboxSrc(src)}
+              className="w-full max-h-56 object-contain cursor-pointer hover:opacity-90 transition-opacity"
             />
           )}
+        </div>
+      )}
+      {lightboxSrc && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <button
+            onClick={() => setLightboxSrc(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
+          >
+            <X className="h-8 w-8" />
+          </button>
+          <img
+            src={lightboxSrc}
+            alt="Full preview"
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full object-contain rounded-lg"
+          />
         </div>
       )}
     </div>
@@ -219,8 +246,16 @@ const HeroSectionEditor = ({ content, onUpdate, onSave }) => {
     setLocal((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    onUpdate(local);
+  const handleSave = (stateToSave) => {
+    const data = stateToSave || local;
+    onUpdate(data);
+    onSave();
+  };
+
+  const handleUploadAndSave = (field, value) => {
+    const updated = { ...local, [field]: value };
+    setLocal(updated);
+    onUpdate(updated);
     onSave();
   };
 
@@ -231,7 +266,7 @@ const HeroSectionEditor = ({ content, onUpdate, onSave }) => {
           <Video className="h-5 w-5 text-orange-600" />
           Hero Section
         </CardTitle>
-        <CardDescription>Edit the main hero section with video background</CardDescription>
+        <CardDescription>Edit the main hero section with video or image background</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
@@ -256,23 +291,69 @@ const HeroSectionEditor = ({ content, onUpdate, onSave }) => {
               />
             </div>
             <div>
-              <Label htmlFor="hero-video">Video Path/URL</Label>
-              <Input
-                id="hero-video"
-                value={local.videoSrc}
-                onChange={(e) => handleChange('videoSrc', e.target.value)}
-                placeholder="/hero video.mp4"
-              />
-              <p className="text-sm text-gray-500 mt-1">Path to video file or URL</p>
-              <div className="mt-3">
-                <Label className="text-xs">Or upload video to Cloudinary</Label>
-                <MediaUploader
-                  type="video"
-                  currentSrc={local.videoSrc}
-                  onUpload={(url) => handleChange('videoSrc', url)}
-                />
+              <Label>Background Media Type</Label>
+              <div className="flex gap-3 mt-2">
+                <Button
+                  type="button"
+                  variant={local.mediaType === 'video' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleUploadAndSave('mediaType', 'video')}
+                  className="flex items-center gap-2"
+                >
+                  <Video className="h-4 w-4" />
+                  Video
+                </Button>
+                <Button
+                  type="button"
+                  variant={local.mediaType === 'image' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleUploadAndSave('mediaType', 'image')}
+                  className="flex items-center gap-2"
+                >
+                  <Image className="h-4 w-4" />
+                  Image
+                </Button>
               </div>
             </div>
+            {local.mediaType === 'video' ? (
+              <div>
+                <Label htmlFor="hero-video">Video Path/URL</Label>
+                <Input
+                  id="hero-video"
+                  value={local.videoSrc}
+                  onChange={(e) => handleChange('videoSrc', e.target.value)}
+                  placeholder="/hero video.mp4"
+                />
+                <p className="text-sm text-gray-500 mt-1">Path to video file or URL</p>
+                <div className="mt-3">
+                  <Label className="text-xs">Or upload video to Cloudinary</Label>
+                  <MediaUploader
+                    type="video"
+                    currentSrc={local.videoSrc}
+                    onUpload={(url) => handleUploadAndSave('videoSrc', url)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div>
+                <Label htmlFor="hero-image">Image Path/URL</Label>
+                <Input
+                  id="hero-image"
+                  value={local.imageSrc}
+                  onChange={(e) => handleChange('imageSrc', e.target.value)}
+                  placeholder="https://example.com/hero-image.jpg"
+                />
+                <p className="text-sm text-gray-500 mt-1">Path to image file or URL</p>
+                <div className="mt-3">
+                  <Label className="text-xs">Or upload image to Cloudinary</Label>
+                  <MediaUploader
+                    type="image"
+                    currentSrc={local.imageSrc}
+                    onUpload={(url) => handleUploadAndSave('imageSrc', url)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
           <div className="space-y-4">
             <div>
@@ -317,7 +398,7 @@ const HeroSectionEditor = ({ content, onUpdate, onSave }) => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button onClick={handleSave} className="bg-orange-600 hover:bg-orange-700">
+          <Button onClick={() => handleSave()} className="bg-orange-600 hover:bg-orange-700">
             <Save className="h-4 w-4 mr-2" />
             Save Hero Section
           </Button>
@@ -857,7 +938,7 @@ const ContentPreview = ({ content }) => {
               <Badge variant="outline" className="text-white border-white/30">{content.hero.tourLinkText}</Badge>
               <Badge variant="outline" className="text-white border-white/30">{content.hero.trekLinkText}</Badge>
             </div>
-            <p className="text-sm text-white/60 mt-3">Video: {content.hero.videoSrc}</p>
+            <p className="text-sm text-white/60 mt-3">{content.hero.mediaType === 'video' ? 'Video' : 'Image'}: {content.hero.mediaType === 'video' ? content.hero.videoSrc : content.hero.imageSrc}</p>
           </div>
         </CardContent>
       </Card>

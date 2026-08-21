@@ -19,6 +19,22 @@ import AddRegionModal from "@/components/admin/AddRegionModal";
 import EditRegionModal from "@/components/admin/EditRegionModal";
 import { getRegionCardImage } from "@/utils/cloudinaryHelper";
 
+const regionFallbackImages = {
+  everest: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=800&q=80",
+  annapurna: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80",
+  langtang: "https://images.unsplash.com/photo-1614521084871-685ea4d06e72?w=800&q=80",
+  manaslu: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+  mustang: "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=800&q=80",
+  dolpo: "https://images.unsplash.com/photo-1571942676516-bcab84649e44?w=800&q=80",
+};
+
+const getRegionFallback = (name = "") => {
+  const key = Object.keys(regionFallbackImages).find((k) =>
+    name.toLowerCase().includes(k)
+  );
+  return key ? regionFallbackImages[key] : "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=800&q=80";
+};
+
 const ManageTreks = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -126,15 +142,15 @@ const ManageTreks = () => {
                 onClick={() => navigate(`/admin/dashboard/treks/${region._id}`)}
               >
                 <div className="h-52 overflow-hidden relative bg-gradient-to-br from-green-100 to-green-50">
-                  {region.image ? (
-                    <img
-                      src={getRegionCardImage(region.image)}
-                      alt={region.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Map className="w-20 h-20 text-green-300" />
+                  <img
+                    src={region.image ? getRegionCardImage(region.image) : getRegionFallback(region.name)}
+                    alt={region.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  
+                  {!region.image && (
+                    <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
+                      No image
                     </div>
                   )}
                   

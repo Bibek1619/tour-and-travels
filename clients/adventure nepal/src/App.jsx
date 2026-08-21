@@ -39,6 +39,7 @@ const ManageDailyRoutes = lazy(() => import("@/pages/admin/ManageDailyRoutes"));
 const AddDailyRoute = lazy(() => import("@/pages/admin/AddDailyRoute"));
 const ManageEnquiries = lazy(() => import("@/pages/admin/ManageEnquiries"));
 const ManageReviews = lazy(() => import("@/pages/admin/ManageReviews"));
+const EditVehicle = lazy(() => import("@/pages/admin/EditVehicle"));
 const EditHomepage = lazy(() => import("@/pages/admin/EditHomepage"));
 const About = lazy(() => import("@/pages/about/About"));
 const Contact = lazy(() => import("@/pages/contact/Contact"));
@@ -80,6 +81,7 @@ function App() {
           <Route path="/admin/dashboard/treks/:regionId" element={<RegionTreks />} />
           <Route path="/admin/dashboard/edit-trek/:id" element={<EditTrek />} />
           <Route path="/admin/dashboard/vehicles" element={<ManageVehicles />} />
+          <Route path="/admin/dashboard/edit-vehicle/:id" element={<EditVehicle />} />
           <Route path="/admin/dashboard/adventures" element={<ManageAdventures />} />
           <Route path="/admin/dashboard/adventures/:category" element={<CategoryAdventures />} />
           <Route path="/admin/dashboard/create-adventure" element={<CreateAdventure />} />

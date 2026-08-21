@@ -5,21 +5,29 @@ import { useHomepageContent } from "@/contexts/HomepageContentContext";
 export function HeroSection() {
   const { content } = useHomepageContent();
   const { hero } = content;
+  const heroBg = hero.mediaType === 'image' && hero.imageSrc ? hero.imageSrc : null;
 
   return (
     <section className="relative h-[400px] lg:h-[600px] overflow-hidden">
-      {/* Background Video with Overlay */}
-      <div className="absolute inset-0">
-        <video
-          src={hero.videoSrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
+      {/* Background Media */}
+      {heroBg ? (
+        <div
+          className="absolute inset-0 bg-no-repeat bg-center bg-cover"
+          style={{ backgroundImage: `url(${heroBg})` }}
         />
-        <div className="absolute inset-0 bg-black/50" />
-      </div>
+      ) : (
+        <div className="absolute inset-0">
+          <video
+            src={hero.videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-black/50" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
@@ -65,7 +73,7 @@ export function HeroSection() {
         className="fixed left-4 bottom-4 z-50 group"
       >
         <img src="/whatapplogo.webp" alt="WhatsApp" className="w-12 h-12" />
-        <span className="absolute left-full bottom-1/2 ml-3 -translate-y-1/2 px-3 py-1 rounded bg-green-600 text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+        <span className="absolute left-full bottom-1/2 ml-3 -translate-y-1/2 px-3 py-1 rounded bg-green-600 text-white text-sm opacity-100 transition-opacity whitespace-nowrap">
           Message on WhatsApp!
         </span>
       </a>

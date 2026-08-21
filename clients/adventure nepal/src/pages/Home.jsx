@@ -7,6 +7,7 @@ import DailyTripsBooking from "@/components/front/DailyTripsBooking";
 import LastMinuteTrips from "@/components/front/LastMinuteTrips";
 import { Footer } from "@/components/front/Footer";
 import Whyus from "@/components/front/Whyus";
+import TestimonialsSection from "@/components/front/TestimonialsSection";
 import { DestinationsSection } from "@/components/front/DestinationsSection";
 import BestSellingPackages from "@/components/front/BestSellingPackages";
 import PeakClimbingSection from "@/components/front/PeakClimbingSection";
@@ -94,6 +95,16 @@ const Home = () => {
         viewport={{ once: true, amount: 0.3 }}
       >
         <DestinationsSection />
+      </motion.div>
+
+      {/* Testimonials Section */}
+      <motion.div
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <TestimonialsSection />
       </motion.div>
 
       {/* Why Us Section */}

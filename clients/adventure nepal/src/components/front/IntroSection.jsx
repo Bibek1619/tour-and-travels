@@ -1,8 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Users, Award, Mountain, Compass, Heart, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useHomepageContent } from "@/contexts/HomepageContentContext";
+
+const TypingText = ({ texts, speed = 50, deleteSpeed = 30, pauseDuration = 1500 }) => {
+  const [displayed, setDisplayed] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [started, setStarted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const currentText = texts[currentIndex];
+
+  useEffect(() => {
+    setDisplayed("");
+    setIsDeleting(false);
+    setStarted(false);
+    const startTimer = setTimeout(() => setStarted(true), 400);
+    return () => clearTimeout(startTimer);
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!started) return;
+
+    if (!isDeleting && displayed.length < currentText.length) {
+      const timer = setTimeout(() => {
+        setDisplayed(currentText.slice(0, displayed.length + 1));
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+
+    if (!isDeleting && displayed.length === currentText.length) {
+      const timer = setTimeout(() => setIsDeleting(true), pauseDuration);
+      return () => clearTimeout(timer);
+    }
+
+    if (isDeleting && displayed.length > 0) {
+      const timer = setTimeout(() => {
+        setDisplayed(currentText.slice(0, displayed.length - 1));
+      }, deleteSpeed);
+      return () => clearTimeout(timer);
+    }
+
+    if (isDeleting && displayed.length === 0) {
+      setIsDeleting(false);
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    }
+  }, [displayed, isDeleting, started, currentText, speed, deleteSpeed, pauseDuration, texts.length]);
+
+  return (
+    <span className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 bg-clip-text text-transparent">
+      {displayed}
+      {started && (
+        <span className="animate-pulse bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+          |
+        </span>
+      )}
+    </span>
+  );
+};
 
 const iconMap = {
   Mountain,
@@ -42,19 +98,26 @@ const IntroSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-7"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {renderWelcomeTitle()}
           </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {intro.subtitle}
+          <p className="text-xl font-semibold max-w-3xl mx-auto">
+            <TypingText
+              texts={[
+                "Your Gateway to the Majestic Himalayas",
+                "Explore Nepal Like Never Before",
+                "Adventure Starts With Us"
+              ]}
+              speed={50}
+            />
           </p>
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-start mb-4">
           {/* Left Column - Rich Description */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}

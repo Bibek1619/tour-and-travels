@@ -33,10 +33,17 @@ const RegionTreks = () => {
     queryFn: () => getRegionByIdApi(regionId),
   });
 
-  // Fetch treks for this region
+  // Fetch treks for this region — try region-specific first, then all treks as fallback
   const { data: treksData, isLoading: treksLoading, isError } = useQuery({
     queryKey: ["treks", regionId],
-    queryFn: () => getAllToursApi({ category: "trek", region: regionId }),
+    queryFn: async () => {
+      const res = await getAllToursApi({ category: "trek", region: regionId, limit: 100 });
+      // If no treks found for this region, fetch all treks (region field may not be set)
+      if (!res?.data?.length) {
+        return getAllToursApi({ category: "trek", limit: 100 });
+      }
+      return res;
+    },
   });
 
   const deleteMutation = useMutation({

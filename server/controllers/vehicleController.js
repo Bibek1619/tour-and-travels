@@ -110,15 +110,39 @@ exports.updateVehicle = async (req, res) => {
 
     let newImages = [];
     if (req.files && req.files.length > 0) {
-      // Get Cloudinary URLs
       newImages = req.files.map((file) => file.path);
     }
+
+    let keptImages = vehicle.images;
+    if (req.body.existingImages) {
+      try {
+        keptImages = JSON.parse(req.body.existingImages);
+      } catch (e) {
+        // fallback to current images
+      }
+
+      const removedImages = vehicle.images.filter(
+        (img) => !keptImages.includes(img)
+      );
+      for (const imageUrl of removedImages) {
+        try {
+          const urlParts = imageUrl.split("/");
+          const filename = urlParts[urlParts.length - 1];
+          const publicId = `tour-travels/vehicles/${filename.split(".")[0]}`;
+          await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.error("Error deleting removed image from Cloudinary:", err);
+        }
+      }
+    }
+
+    const { existingImages, ...bodyData } = req.body;
 
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
       {
-        ...req.body,
-        images: [...vehicle.images, ...newImages],
+        ...bodyData,
+        images: [...keptImages, ...newImages],
       },
       { new: true }
     );

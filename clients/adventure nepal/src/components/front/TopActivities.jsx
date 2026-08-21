@@ -40,7 +40,7 @@ const bestSellersData = [
   {
     id: 4,
     badge: "Best Selling",
-    image: "https://images.unsplash.com/photo-1571942676516-bcab84649e44?w=800",
+    image: "https://images.unsplash.com/photo-1614521084871-685ea4d06e72?w=800&q=80",
     duration: "9 Days",
     rating: null,
     grade: "Moderate",
@@ -125,7 +125,7 @@ const topRatedData = [
   {
     id: 3,
     badge: "Top Rated",
-    image: "https://images.unsplash.com/photo-1571942676516-bcab84649e44?w=800",
+    image: "https://images.unsplash.com/photo-1614521084871-685ea4d06e72?w=800&q=80",
     duration: "8 Days",
     rating: { score: 4.8, reviews: 25 },
     grade: "Moderate",
@@ -151,11 +151,14 @@ const TripCard = ({ trip }) => {
     <Link to={trip.link} className="group block">
       <div className="bg-white rounded-xl overflow-hidden shadow hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
         {/* Image Container */}
-        <div className="relative h-56 overflow-hidden">
+        <div className="relative h-56 overflow-hidden bg-gray-100">
           <img
             src={trip.image}
             alt={trip.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => {
+              e.target.src = "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=800&q=80";
+            }}
           />
           {/* Badge */}
           <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">

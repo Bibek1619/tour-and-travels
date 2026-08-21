@@ -24,7 +24,7 @@ const destinationsData = [
   {
     id: 4,
     title: "Langtang Region Trekking",
-    image: "https://images.unsplash.com/photo-1571942676516-bcab84649e44?w=800",
+    image: "https://images.unsplash.com/photo-1614521084871-685ea4d06e72?w=800&q=80",
     link: "/region/langtang-region-trekking"
   }
 ];

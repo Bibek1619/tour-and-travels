@@ -9,7 +9,9 @@ const homepageContentSchema = new mongoose.Schema(
         default:
           "Book your adventure with confidence - Vehicle rentals, seat reservations, tour packages, and hotels all in one place",
       },
+      mediaType: { type: String, enum: ["video", "image"], default: "video" },
       videoSrc: { type: String, default: "/hero video.mp4" },
+      imageSrc: { type: String, default: "" },
       ctaText: { type: String, default: "View All Packages" },
       tourLink: { type: String, default: "/tour-packages" },
       tourLinkText: { type: String, default: "Tour Packages" },

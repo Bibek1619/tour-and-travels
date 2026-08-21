@@ -15,14 +15,7 @@ import {
 } from "lucide-react";
 import { useHomepageContent } from "@/contexts/HomepageContentContext";
 
-const iconMap = {
-  MapPin,
-  Clock,
-  Shield,
-  Star,
-  Headphones,
-  CreditCard,
-};
+const iconMap = { MapPin, Clock, Shield, Star, Headphones, CreditCard };
 
 export default function Whyus() {
   const { content } = useHomepageContent();
@@ -45,80 +38,87 @@ export default function Whyus() {
     return () => clearTimeout(t);
   }, [index, next, paused, length, slides]);
 
-  const onTouchStart = (e) => {
-    touchX.current = e.touches[0].clientX;
-  };
-
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
     if (touchX.current === null) return;
     const dx = e.changedTouches[0].clientX - touchX.current;
-    if (Math.abs(dx) > 50) {
-      dx > 0 ? prev() : next();
-    }
+    if (Math.abs(dx) > 50) dx > 0 ? prev() : next();
     touchX.current = null;
   };
 
   const slide = slides[index] || slides[0];
 
-  const renderHeading = () => {
-    const parts = whyUs.sectionHeading.split(whyUs.headingHighlight);
-    if (parts.length === 1) {
-      return whyUs.sectionHeading;
-    }
-    return (
-      <>
-        {parts[0]}
-        <span className="text-green-600">{whyUs.headingHighlight}</span>
-        {parts[1]}
-      </>
-    );
-  };
-
-  const renderSubheading = () => {
-    const parts = whyUs.subheading.split(whyUs.subheadingHighlight);
-    if (parts.length === 1) {
-      return whyUs.subheading;
-    }
-    return (
-      <>
-        {parts[0]}
-        <span className="text-green-600">{whyUs.subheadingHighlight}</span>
-        {parts[1]}
-      </>
-    );
-  };
-
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-green-50/40 to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Headline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 lg:mb-16"
-        >
-          <span className="inline-flex items-center gap-2 text-green-600 font-semibold text-sm uppercase tracking-wider mb-3">
-            <Star className="w-4 h-4" />
-            {whyUs.sectionTitle}
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            {renderHeading()}
-          </h2>
-        </motion.div>
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Media Slider — shown first on mobile, right on desktop */}
+        {/* ── Header ── */}
+        <div className="mb-12">
+          <span className="text-xs font-bold uppercase tracking-widest text-green-600">
+            Why Us
+          </span>
+          <div className="mt-2 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
+                Travel with confidence,{" "}
+                <span className="text-green-600">every step of the way.</span>
+              </h2>
+              <p className="mt-3 text-gray-500 max-w-2xl text-base leading-relaxed">
+                {whyUs.description}
+              </p>
+            </div>
+            <Link
+              to={whyUs.ctaLink}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors group shrink-0"
+            >
+              {whyUs.ctaText}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+          </div>
+        </div>
+
+        {/* ── Two-column layout ── */}
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
+
+          {/* Left — 3×2 feature grid */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {features.map((f, i) => {
+              const Icon = iconMap[f.icon] || Star;
+              return (
+                <motion.div
+                  key={f.title}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.07 }}
+                  className="bg-white rounded-2xl p-5 border border-gray-100 hover:border-green-200 hover:shadow-md transition-all"
+                >
+                  {/* Icon + badge row */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-green-600" />
+                    </div>
+                    <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-100 px-2.5 py-1 rounded-full">
+                      {f.badge}
+                    </span>
+                  </div>
+                  {/* Text */}
+                  <h4 className="font-semibold text-gray-900 text-base mb-1">{f.title}</h4>
+                  <p className="text-sm text-gray-500 leading-relaxed">{f.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Right — Media slider */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="order-1 lg:order-2"
+            transition={{ duration: 0.55 }}
           >
             <div
-              className="relative h-[320px] sm:h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-900 select-none"
+              className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg bg-gray-900 select-none"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               onTouchStart={onTouchStart}
@@ -136,10 +136,7 @@ export default function Whyus() {
                   {slide?.type === "video" ? (
                     <video
                       src={slide.src}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
+                      autoPlay muted loop playsInline
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -149,23 +146,18 @@ export default function Whyus() {
                       className="w-full h-full object-cover"
                     />
                   )}
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-
-                  {/* Caption + Dots */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                    <p className="text-white text-xl font-semibold mb-1">
-                      {slide?.title}
-                    </p>
-                    <p className="text-white/85 text-sm mb-4">{slide?.subtitle}</p>
-                    <div className="flex justify-center gap-2">
-                      {slides.map((s, i) => (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <p className="text-white font-semibold text-lg mb-0.5">{slide?.title}</p>
+                    <p className="text-white/70 text-sm mb-4">{slide?.subtitle}</p>
+                    <div className="flex gap-1.5">
+                      {slides.map((_, i) => (
                         <button
                           key={i}
                           onClick={() => goTo(i)}
                           aria-label={`Slide ${i + 1}`}
-                          className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                            i === index ? "w-8 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
+                          className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                            i === index ? "w-7 bg-white" : "w-1.5 bg-white/40 hover:bg-white/60"
                           }`}
                         />
                       ))}
@@ -174,85 +166,34 @@ export default function Whyus() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Video badge */}
               {slide?.type === "video" && (
-                <span className="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-black/60 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-                  <PlayCircle className="w-4 h-4" />
+                <span className="absolute top-4 left-4 z-10 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  <PlayCircle className="w-3.5 h-3.5" />
                   Video
                 </span>
               )}
 
-              {/* Counter */}
-              <div className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-full bg-black/60 text-white text-sm font-medium">
-                {index + 1} / {length}
+              <div className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white text-xs font-medium">
+                {index + 1}/{length}
               </div>
 
-              {/* Chevron controls */}
               <button
                 onClick={prev}
-                aria-label="Previous slide"
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
+                aria-label="Previous"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow flex items-center justify-center transition-all cursor-pointer"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={next}
-                aria-label="Next slide"
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
+                aria-label="Next"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow flex items-center justify-center transition-all cursor-pointer"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </motion.div>
 
-          {/* Why Us Content — shown below slider on mobile, left on desktop */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="order-2 lg:order-1"
-          >
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              {renderSubheading()}
-            </h3>
-            <p className="text-gray-600 leading-relaxed mb-8">
-              {whyUs.description}
-            </p>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              {features.map((f) => {
-                const FeatureIcon = iconMap[f.icon] || Star;
-                return (
-                  <div
-                    key={f.title}
-                    className="bg-white rounded-2xl border border-green-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-green-200 transition-all duration-300"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="bg-gradient-to-br from-green-500 to-green-600 w-11 h-11 rounded-xl flex items-center justify-center shadow-md shadow-green-200">
-                        <FeatureIcon className="w-5 h-5 text-white" />
-                      </div>
-                      <span className="text-xs font-bold text-green-600 bg-green-50 px-2.5 py-1 rounded-full whitespace-nowrap">
-                        {f.badge}
-                      </span>
-                    </div>
-                    <h4 className="font-bold text-gray-900 mb-1">{f.title}</h4>
-                    <p className="text-sm text-gray-500 leading-relaxed">
-                      {f.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-
-            <Link
-              to={whyUs.ctaLink}
-              className="mt-8 inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
-            >
-              {whyUs.ctaText}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
         </div>
       </div>
     </section>
