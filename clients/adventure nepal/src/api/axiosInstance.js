@@ -2,7 +2,8 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
+  // Render free tier cold starts can take 20–30s, so use a generous timeout
+  timeout: import.meta.env.PROD ? 30000 : 10000,
   headers: {
     Accept: "application/json",
   },
@@ -37,7 +38,7 @@ axiosInstance.interceptors.response.use(
         console.error("Server error:", error.response.data);
       }
     } else if (error.code === "ECONNABORTED") {
-      console.error("Request timeout:", error.message);
+      console.error("Request timeout – server may be waking up (Render cold start), please retry");
     }
 
     return Promise.reject(error);
