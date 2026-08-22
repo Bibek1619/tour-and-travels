@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/front/Navbar";
 import { HeroSection } from "@/components/front/HeroSection";
@@ -7,9 +7,10 @@ import DailyTripsBooking from "@/components/front/DailyTripsBooking";
 import { Footer } from "@/components/front/Footer";
 import Whyus from "@/components/front/Whyus";
 import TestimonialsSection from "@/components/front/TestimonialsSection";
-import { DestinationsSection } from "@/components/front/DestinationsSection";
-import BestSellingPackages from "@/components/front/BestSellingPackages";
-import PeakClimbingSection from "@/components/front/PeakClimbingSection";
+
+const DestinationsSection = lazy(() => import("@/components/front/DestinationsSection").then(m => ({ default: m.DestinationsSection })));
+const BestSellingPackages = lazy(() => import("@/components/front/BestSellingPackages"));
+const PeakClimbingSection = lazy(() => import("@/components/front/PeakClimbingSection"));
 
 // amount: 0.1 — only 10% of section needs to be visible to trigger animation
 // This prevents sections from staying hidden on short mobile screens
@@ -33,6 +34,12 @@ const Section = ({ children }) => (
   </motion.div>
 );
 
+const SectionLoader = () => (
+  <div className="py-20 flex justify-center items-center">
+    <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+  </div>
+);
+
 const Home = () => {
   return (
     <div>
@@ -42,11 +49,15 @@ const Home = () => {
       <Section><IntroSection /></Section>
 
       {/* No animation wrapper — renders immediately, no risk of staying hidden */}
-      <BestSellingPackages />
+      <Suspense fallback={<SectionLoader />}>
+        <BestSellingPackages />
+      </Suspense>
 
       {/* <Section><PeakClimbingSection /></Section> */}
       <Section><DailyTripsBooking /></Section>
-      <Section><DestinationsSection /></Section>
+      <Suspense fallback={<SectionLoader />}>
+        <Section><DestinationsSection /></Section>
+      </Suspense>
       <Section><TestimonialsSection /></Section>
       <Section><Whyus /></Section>
 
