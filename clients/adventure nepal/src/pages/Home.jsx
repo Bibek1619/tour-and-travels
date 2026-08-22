@@ -44,7 +44,7 @@ const Home = () => {
       {/* No animation wrapper — renders immediately, no risk of staying hidden */}
       <BestSellingPackages />
 
-      <Section><PeakClimbingSection /></Section>
+      {/* <Section><PeakClimbingSection /></Section> */}
       <Section><DailyTripsBooking /></Section>
       <Section><DestinationsSection /></Section>
       <Section><TestimonialsSection /></Section>
