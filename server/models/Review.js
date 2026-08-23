@@ -18,6 +18,11 @@ const reviewSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    title: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     email: {
       type: String,
       trim: true,
@@ -39,6 +44,10 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "approved"],
       default: "approved",
+    },
+    featuredOnHomepage: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

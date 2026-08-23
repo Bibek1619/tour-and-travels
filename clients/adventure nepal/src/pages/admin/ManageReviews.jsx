@@ -180,13 +180,20 @@ const ManageReviews = () => {
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className="text-lg font-bold text-gray-900">{r.name}</h3>
+                    {r.title && (
+                      <span className="text-sm text-gray-500 font-normal">— {r.title}</span>
+                    )}
                     <span
-                      className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${getStatusStyle(
-                        r.status
-                      )}`}
+                      className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${getStatusStyle(r.status)}`}
                     >
                       {r.status}
                     </span>
+                    {r.featuredOnHomepage && (
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200 flex items-center gap-1">
+                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        Homepage
+                      </span>
+                    )}
                   </div>
                   {r.tour?.title && (
                     <p className="text-sm text-orange-600 font-medium">
@@ -203,7 +210,23 @@ const ManageReviews = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Feature on Homepage toggle */}
+                  <button
+                    onClick={() =>
+                      updateMutation.mutate({ id: r._id, featuredOnHomepage: !r.featuredOnHomepage })
+                    }
+                    title={r.featuredOnHomepage ? "Remove from homepage" : "Feature on homepage"}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                      r.featuredOnHomepage
+                        ? "bg-yellow-50 border-yellow-300 text-yellow-700 hover:bg-yellow-100"
+                        : "bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100"
+                    }`}
+                  >
+                    <Star className={`h-3.5 w-3.5 ${r.featuredOnHomepage ? "fill-yellow-400 text-yellow-400" : ""}`} />
+                    {r.featuredOnHomepage ? "Featured" : "Feature"}
+                  </button>
+
                   <select
                     value={r.status}
                     onChange={(e) =>

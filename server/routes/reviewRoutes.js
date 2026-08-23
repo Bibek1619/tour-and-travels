@@ -6,11 +6,13 @@ const {
   getAllReviews,
   updateReview,
   deleteReview,
+  getFeaturedReviews,
 } = require("../controllers/reviewController");
 
 // Public routes
 router.post("/", createReview);
 router.get("/tour/:tourId", getReviewsByTour);
+router.get("/featured/homepage", getFeaturedReviews);
 
 // Admin routes
 router.get("/", getAllReviews);

@@ -29,6 +29,25 @@ const recomputeTourRating = async (tourId) => {
 };
 
 // =====================================================
+// GET FEATURED REVIEWS FOR HOMEPAGE
+// =====================================================
+exports.getFeaturedReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({
+      status: "approved",
+      featuredOnHomepage: true,
+    })
+      .populate("tour", "title slug")
+      .sort({ createdAt: -1 })
+      .limit(6);
+
+    res.status(200).json({ success: true, data: reviews });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// =====================================================
 // CREATE REVIEW (public - from tour detail page)
 // =====================================================
 exports.createReview = async (req, res) => {

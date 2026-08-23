@@ -24,3 +24,8 @@ export const deleteReviewApi = async (id) => {
   const res = await axiosInstance.delete(`/reviews/${id}`);
   return res.data;
 };
+
+export const getFeaturedReviewsApi = async () => {
+  const res = await axiosInstance.get("/reviews/featured/homepage");
+  return res.data;
+};
