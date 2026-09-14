@@ -1,0 +1,159 @@
+import { connectDB } from "@/lib/db";
+import { HomepageContent as HomepageContentModel } from "@/models/homepageContent";
+import { PageContent as PageContentModel } from "@/models/pageContent";
+import { TourPackage } from "@/models/tourPackage";
+import { Region } from "@/models/region";
+import { Review } from "@/models/review";
+import { mergeWithDefaults } from "@/lib/homepage-content";
+import { getPageContent } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
+import type {
+  HeroContent,
+  HomepageContent,
+  IntroContent,
+  Review as ReviewType,
+  Tour,
+  WhyUsContent,
+} from "@/lib/types";
+import { Navbar } from "@/components/navbar";
+import HeroSection from "@/components/hero-section";
+import IntroSection from "@/components/intro-section";
+import BestSellingPackages from "@/components/best-selling-packages";
+import BestTrip from "@/components/best-trip";
+import DestinationsSection from "@/components/destinations-section";
+import TestimonialsSection from "@/components/testimonials-section";
+import Whyus from "@/components/whyus";
+import Footer from "@/components/footer";
+import Section from "@/components/section";
+
+export const dynamic = "force-dynamic";
+
+export const metadata = buildMetadata({
+  title: "Home - Nepal Trekking, Tours & Travel Packages",
+  description:
+    "Hamro Yatra Adventure is a trusted Nepal tour operator with 26+ years of experience offering trekking packages, cultural tours, adventure activities, daily route seat bookings and vehicle rentals across Nepal.",
+  path: "/",
+  keywords: [
+    "Nepal tour packages",
+    "trekking in Nepal",
+    "Hamro Yatra Adventure",
+    "best Nepal travel agency",
+    "Everest Base Camp trek",
+    "Annapurna Circuit trek",
+    "Nepal adventure tours",
+    "car rent in Pokhara",
+    "Scorpio rent in Pokhara",
+    "Scorpio booking in Pokhara",
+    "car rental Pokhara",
+    "Scorpio hire Pokhara",
+    "vehicle rental Nepal",
+  ],
+  images: ["/images-5.jpg"],
+});
+
+export default async function Home() {
+  await connectDB();
+
+  const regions = await Region.find().select("_id").lean();
+  const regionIds = regions.map((r) => r._id);
+  const activeRegionFilter = { $in: [null, ...regionIds] };
+
+  const [
+    storedContent,
+    allPublished,
+    popularTours,
+    reviews,
+    homePageContent,
+    homePageContentRaw,
+  ] = await Promise.all([
+    HomepageContentModel.findOne().lean(),
+    TourPackage.find({
+      status: "published",
+      region: activeRegionFilter,
+    } as unknown as Parameters<typeof TourPackage.find>[0])
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean(),
+    TourPackage.find({ category: "tour", status: "published" })
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean(),
+    Review.find({ status: "approved", featuredOnHomepage: true })
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean(),
+    getPageContent("home"),
+    PageContentModel.findOne({ slug: "home" }).select("content").lean(),
+  ]);
+
+  const pcRaw: Record<string, unknown> = JSON.parse(
+    JSON.stringify(homePageContentRaw?.content ?? {})
+  );
+  const hasBlock = (k: string) =>
+    typeof pcRaw[k] === "object" && pcRaw[k] !== null && Object.keys(pcRaw[k] as Record<string, unknown>).length > 0;
+
+  const content: HomepageContent = mergeWithDefaults(
+    JSON.parse(JSON.stringify(storedContent)) as Partial<HomepageContent>
+  );
+
+  if (hasBlock("hero")) {
+    content.hero = homePageContent.hero as HeroContent;
+  }
+  if (hasBlock("intro")) {
+    content.intro = homePageContent.intro as IntroContent;
+  }
+  if (hasBlock("whyUs")) {
+    content.whyUs = homePageContent.whyUs as WhyUsContent;
+  }
+  const bestSellingTours = JSON.parse(
+    JSON.stringify(allPublished)
+  ) as Tour[];
+  const popularTourPackages = JSON.parse(
+    JSON.stringify(popularTours)
+  ) as Tour[];
+  const featuredReviews = JSON.parse(JSON.stringify(reviews)) as ReviewType[];
+  const homeSections = homePageContent.sections;
+
+  return (
+    <div>
+      <Navbar />
+
+      <Section>
+        <HeroSection content={content.hero} />
+      </Section>
+      <Section>
+        <IntroSection content={content.intro} />
+      </Section>
+
+      <Section>
+        <BestSellingPackages
+          tours={bestSellingTours}
+          content={homeSections.bestSelling}
+        />
+      </Section>
+
+      {/* Daily bus package section (daily-trips-booking) is commented out
+          and replaced with the BestTrip – Manang Trip spotlight section below. */}
+      <Section>
+        <BestTrip content={homeSections.bestTrip} />
+      </Section>
+      <Section>
+        <DestinationsSection
+          destinations={popularTourPackages}
+          content={homeSections.destinations}
+        />
+      </Section>
+      <Section>
+        <TestimonialsSection
+          reviews={featuredReviews}
+          content={homeSections.testimonials}
+        />
+      </Section>
+      <Section>
+        <Whyus content={content.whyUs} />
+      </Section>
+
+      <Footer />
+    </div>
+  );
+}
