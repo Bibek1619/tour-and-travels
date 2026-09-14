@@ -68,6 +68,7 @@ export default async function Home() {
   ] = await Promise.all([
     HomepageContentModel.findOne().lean(),
     TourPackage.find({
+      category: "trek",
       status: "published",
       region: activeRegionFilter,
     } as unknown as Parameters<typeof TourPackage.find>[0])

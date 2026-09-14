@@ -169,7 +169,7 @@ export function BestSellingPackages({
         {/* View All Button */}
         <div className="text-center mt-12">
           <Link
-            href="/tours"
+            href="/trek-packages"
             className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             View All Trekking Packages

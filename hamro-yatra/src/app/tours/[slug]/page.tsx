@@ -44,6 +44,7 @@ async function getTour(slug: string): Promise<Tour | null> {
   await connectDB();
   const tour = await TourPackage.findOne({
     slug,
+    category: "tour",
     status: "published",
   }).lean();
   if (!tour) return null;
