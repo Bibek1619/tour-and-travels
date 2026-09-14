@@ -384,10 +384,10 @@ export default async function About() {
                     <div>
                       <p className="font-semibold text-gray-900">Email</p>
                       <a
-                        href="mailto:info@adventurenepal.com"
+                        href="mailto:info@hamroyatra.com.np"
                         className="text-gray-600 transition-colors hover:text-orange-600"
                       >
-                        info@adventurenepal.com
+                        info@hamroyatra.com.np
                       </a>
                     </div>
                   </li>

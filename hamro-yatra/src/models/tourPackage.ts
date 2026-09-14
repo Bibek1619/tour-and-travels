@@ -18,6 +18,7 @@ const tourPackageSchema = new Schema(
     location: String,
     difficulty: String,
     durationDays: Number,
+    durationText: String,
     region: {
       type: Schema.Types.ObjectId,
       ref: "Region",

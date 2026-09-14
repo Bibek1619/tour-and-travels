@@ -25,6 +25,7 @@ export interface Tour {
   location?: string;
   difficulty?: string;
   durationDays?: number;
+  durationText?: string;
   region?: { _id?: string; name?: string; description?: string } | null;
   price?: number;
   maxAltitude?: string;

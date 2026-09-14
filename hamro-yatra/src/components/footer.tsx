@@ -296,8 +296,8 @@ Hamro Yatra Adventure
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                <a href="mailto:info@adventurenepal.com" className="text-muted-foreground hover:text-primary transition-colors">
-                  info@adventurenepal.com
+                <a href="mailto:info@hamroyatra.com.np" className="text-muted-foreground hover:text-primary transition-colors">
+                  info@hamroyatra.com.np
                 </a>
               </li>
             </ul>

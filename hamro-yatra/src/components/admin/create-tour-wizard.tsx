@@ -34,6 +34,7 @@ interface WizardFormData {
   difficulty: string;
   region: string;
   durationDays: string;
+  durationText: string;
   price: string;
   maxAltitude: string;
   bestSeason: string;
@@ -54,6 +55,7 @@ export interface WizardInitial {
   difficulty?: string;
   region?: string | { _id?: string };
   durationDays?: number;
+  durationText?: string;
   price?: number;
   maxAltitude?: string;
   bestSeason?: string;
@@ -73,6 +75,7 @@ const blankForm = (defaultCategory: string, defaultRegion: string): WizardFormDa
   difficulty: "",
   region: defaultRegion ?? "",
   durationDays: "",
+  durationText: "",
   price: "",
   maxAltitude: "",
   bestSeason: "",
@@ -99,6 +102,7 @@ function buildForm(
     region:
       typeof initial.region === "object" && initial.region ? initial.region._id ?? "" : initial.region ?? "",
     durationDays: initial.durationDays?.toString() ?? "",
+    durationText: initial.durationText ?? "",
     price: initial.price?.toString() ?? "",
     maxAltitude: initial.maxAltitude ?? "",
     bestSeason: initial.bestSeason ?? "",
@@ -318,6 +322,7 @@ export default function CreateTourWizard({
       difficulty: formData.difficulty || undefined,
       region: formData.category === "trek" && formData.region ? formData.region : null,
       durationDays: formData.durationDays ? Number(formData.durationDays) : undefined,
+      durationText: formData.durationText || undefined,
       price: formData.price ? Number(formData.price) : undefined,
       maxAltitude: formData.maxAltitude || undefined,
       bestSeason: formData.bestSeason || undefined,
@@ -609,6 +614,20 @@ export default function CreateTourWizard({
                     className={inputBase}
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Duration Text (optional)
+                </label>
+                <input
+                  type="text"
+                  name="durationText"
+                  value={formData.durationText}
+                  onChange={handleChange}
+                  placeholder="e.g., 2N/3D or 2 Nights / 3 Days"
+                  className={inputBase}
+                />
               </div>
 
               <div>

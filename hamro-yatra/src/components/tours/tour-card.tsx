@@ -93,7 +93,7 @@ export default function TourCard({ tours }: TourCardListProps) {
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-orange-600" />
                     <span className="font-semibold">
-                      {tour.durationDays} Days
+                      {tour.durationText || `${tour.durationDays} Days`}
                     </span>
                   </div>
                 </div>

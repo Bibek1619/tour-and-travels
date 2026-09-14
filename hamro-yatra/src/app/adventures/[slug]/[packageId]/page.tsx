@@ -279,7 +279,7 @@ export default async function AdventurePackageDetailPage({
                       </div>
                     </a>
                     <a
-                      href="mailto:info@adventurenepal.com"
+                      href="mailto:info@hamroyatra.com.np"
                       className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                     >
                       <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -288,7 +288,7 @@ export default async function AdventurePackageDetailPage({
                       <div>
                         <div className="text-xs text-gray-500">Email us</div>
                         <div className="font-semibold text-sm">
-                          info@adventurenepal.com
+                          info@hamroyatra.com.np
                         </div>
                       </div>
                     </a>

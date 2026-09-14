@@ -101,11 +101,11 @@ export default function VehicleBookingSidebar({
               +977 984-1480794
             </a>
             <a
-              href="mailto:info@adventurenepal.com"
+              href="mailto:info@hamroyatra.com.np"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
             >
               <Mail className="w-4 h-4 text-orange-600" />
-              info@adventurenepal.com
+              info@hamroyatra.com.np
             </a>
           </div>
         </div>

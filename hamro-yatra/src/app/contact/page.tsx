@@ -84,20 +84,20 @@ const defaultInfoItems = [
   {
     icon: MapPin,
     label: "Address",
-    value: "Thamel Marg, Kathmandu 44600, Nepal",
-    link: "https://maps.google.com/?q=Thamel,Kathmandu",
+    value: "Lakeside, Pokhara 33700, Nepal",
+    link: "https://maps.google.com/?q=Lakeside,Pokhara,Nepal",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+977 9841 234 567",
-    link: "tel:+9779841234567",
+    value: "+977 984-1480794",
+    link: "tel:+9779841480794",
   },
   {
     icon: Mail,
     label: "Email",
-    value: "info@adventurenepal.com.np",
-    link: "mailto:info@adventurenepal.com.np",
+    value: "info@hamroyatra.com.np",
+    link: "mailto:info@hamroyatra.com.np",
   },
   {
     icon: Clock,
@@ -161,19 +161,19 @@ export default async function Contact() {
               "@type": "Organization",
               name: SITE_NAME,
               url: SITE_URL,
-              email: "info@adventurenepal.com.np",
-              telephone: "+977-9841234567",
+              email: "info@hamroyatra.com.np",
+              telephone: "+977-9841480794",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Thamel Marg",
-                addressLocality: "Kathmandu",
-                postalCode: "44600",
+                streetAddress: "Lakeside",
+                addressLocality: "Pokhara",
+                postalCode: "33700",
                 addressCountry: "NP",
               },
               geo: {
                 "@type": "GeoCoordinates",
-                latitude: 27.7172,
-                longitude: 85.324,
+                latitude: 28.2096,
+                longitude: 83.9856,
               },
               openingHoursSpecification: {
                 "@type": "OpeningHoursSpecification",
@@ -190,8 +190,8 @@ export default async function Contact() {
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+977-9841234567",
-                contactType: "customer service",
+telephone: "+977-9841480794",
+              contactType: "customer service",
                 areaServed: "NP",
                 availableLanguage: ["English", "Nepali"],
               },
@@ -247,14 +247,14 @@ export default async function Contact() {
 
           <div className="rounded-xl overflow-hidden border border-gray-100 h-72 md:h-auto">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.361482345678!2d85.324!3d27.717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb197Thamel%2C%20Kathmandu%2044600!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2sus!4v1690000000000"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.345!2d83.985!3d28.210!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sLakeside%2C+Pokhara!5e0!3m2!1sen!2snp!4v1690000000000"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: 280 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Hamro Yatra Adventure Location"
+              title="Hamro Yatra Adventure Location - Pokhara"
             />
           </div>
         </section>
