@@ -44,7 +44,8 @@ const fallbackFeatured = {
   review:
     "Nepal changed my perspective on life. The mountains, the people, the culture — Hamro Yatra Adventure made sure I experienced it all in the most authentic way possible.",
   name: "David Thompson",
-  title: "CEO at Wanderlust Media",
+  location: "USA",
+  title: "Everest Base Camp Trek",
 };
 
 const fallbackCards: Review[] = [
@@ -53,30 +54,40 @@ const fallbackCards: Review[] = [
     review:
       "Hamro Yatra Adventure planned our entire Everest Base Camp trek flawlessly. The guides were incredibly knowledgeable, and every detail was taken care of.",
     name: "Sarah Mitchell",
-    title: "Travel Blogger, USA",
+    location: "USA",
+    title: "Everest Base Camp Trek",
   },
   {
     _id: "f2",
     review:
       "From the moment we landed in Kathmandu, everything was perfect. The cultural tour was beautifully organized, and the team was so warm and welcoming.",
     name: "James Wilson",
-    title: "Adventure Enthusiast, UK",
+    location: "UK",
+    title: "Nepal Cultural Tour",
   },
   {
     _id: "f3",
     review:
       "The Annapurna Circuit trek exceeded all my expectations. Our guide was passionate and made the journey unforgettable. I will definitely book again.",
     name: "Priya Sharma",
-    title: "Photographer, India",
+    location: "India",
+    title: "Annapurna Circuit Trek",
   },
   {
     _id: "f4",
     review:
       "We booked a family tour to Pokhara and Chitwan. The kids loved the jungle safari, and the whole trip was stress-free. Hamro Yatra Adventure truly cares.",
     name: "Emily Chen",
-    title: "Family Traveler, Australia",
+    location: "Australia",
+    title: "Pokhara & Chitwan Family Tour",
   },
 ];
+
+function entityLabel(review: Review): string {
+  return (
+    review.tour?.title || review.vehicle?.name || review.adventure?.name || ""
+  );
+}
 
 export function TestimonialsSection({
   reviews,
@@ -114,7 +125,8 @@ export function TestimonialsSection({
         videoThumbnail: apiReviews[0].videoThumbnail,
         review: apiReviews[0].review,
         name: apiReviews[0].name,
-        title: apiReviews[0].title || apiReviews[0].tour?.title || "",
+        location: apiReviews[0].location || "",
+        title: entityLabel(apiReviews[0]) || apiReviews[0].title || "",
       }
     : fallbackFeatured;
   const cards = apiReviews.length ? apiReviews.slice(1, 5) : fallbackCards;
@@ -205,6 +217,11 @@ export function TestimonialsSection({
                 <div>
                   <p className="font-semibold text-gray-900 text-sm">
                     {featured.name}
+                    {featured.location && (
+                      <span className="text-gray-500 font-normal">
+                        , {featured.location}
+                      </span>
+                    )}
                   </p>
                   <p className="text-xs text-gray-500">{featured.title}</p>
                 </div>
@@ -235,9 +252,16 @@ export function TestimonialsSection({
                 <div className="flex items-center gap-3">
                   <Avatar name={t.name} size="lg" />
                   <div>
-                    <p className="font-semibold text-gray-900">{t.name}</p>
+                    <p className="font-semibold text-gray-900">
+                      {t.name}
+                      {t.location && (
+                        <span className="text-gray-500 font-normal">
+                          , {t.location}
+                        </span>
+                      )}
+                    </p>
                     <p className="text-sm text-gray-500">
-                      {t.title || t.tour?.title}
+                      {entityLabel(t) || t.title}
                     </p>
                   </div>
                 </div>

@@ -24,7 +24,7 @@ export async function generateMetadata({
     tour.shortOverview ||
     `${tour.title} - ${tour.durationDays || ""} days in ${
       tour.location || "Nepal"
-    }. Price from $${tour.price}. Book with Hamro Yatra Adventure.`;
+    }. Price from Rs ${tour.price?.toLocaleString("en-IN")}. Book with Hamro Yatra Adventure.`;
   return buildMetadata({
     title: `${tour.title} - Tour Package`,
     description,
@@ -49,6 +49,18 @@ async function getTour(slug: string): Promise<Tour | null> {
   }).lean();
   if (!tour) return null;
   return JSON.parse(JSON.stringify(tour)) as Tour;
+}
+
+async function getSimilarTours(excludeSlug: string): Promise<Tour[]> {
+  const tours = await TourPackage.find({
+    category: "tour",
+    status: "published",
+    slug: { $ne: excludeSlug },
+  })
+    .limit(4)
+    .sort({ createdAt: -1 })
+    .lean();
+  return JSON.parse(JSON.stringify(tours)) as Tour[];
 }
 
 export default async function TourDetailPage({
@@ -81,10 +93,12 @@ export default async function TourDetailPage({
     );
   }
 
+  const similarTours = await getSimilarTours(slug);
+
   return (
     <div>
       <Navbar />
-      <TourDetailClient tour={tour} />
+      <TourDetailClient tour={tour} similarTours={similarTours} />
       <Footer />
     </div>
   );

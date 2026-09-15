@@ -14,6 +14,7 @@ import {
   Flame,
 } from "lucide-react";
 import { getHeroImage, getCardImage } from "@/lib/cloudinary";
+import { formatDuration } from "@/lib/types";
 
 interface FullOverview {
   intro?: string;
@@ -41,6 +42,7 @@ export function TourPackageView({
     location?: string;
     difficulty?: string;
     durationDays?: number;
+    durationText?: string;
     region?: { _id?: string; name?: string } | null;
     price?: number;
     maxAltitude?: string;
@@ -127,7 +129,7 @@ export function TourPackageView({
             {data.durationDays && (
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
-                {data.durationDays} Days
+                {formatDuration(data.durationDays, data.durationText)}
               </span>
             )}
             {data.difficulty && (
@@ -153,14 +155,14 @@ export function TourPackageView({
           <Calendar className="w-5 h-5 text-orange-600 mb-2" />
           <p className="text-xs text-gray-500">Duration</p>
           <p className="font-semibold text-gray-900 mt-1">
-            {data.durationDays ? `${data.durationDays} Days` : "—"}
+            {formatDuration(data.durationDays, data.durationText)}
           </p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4">
           <DollarSign className="w-5 h-5 text-orange-600 mb-2" />
           <p className="text-xs text-gray-500">Price</p>
           <p className="font-semibold text-gray-900 mt-1">
-            {data.price ? `$${data.price.toLocaleString()}` : "—"}
+            {data.price ? `Rs ${data.price.toLocaleString("en-IN")}` : "—"}
           </p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-4">

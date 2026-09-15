@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Star, Clock, MapPin, ChevronRight } from "lucide-react";
-import type { Tour } from "@/lib/types";
+import { formatDuration, type Tour } from "@/lib/types";
 
 interface TourCardListProps {
   tours: Tour[];
@@ -93,7 +93,7 @@ export default function TourCard({ tours }: TourCardListProps) {
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-orange-600" />
                     <span className="font-semibold">
-                      {tour.durationText || `${tour.durationDays} Days`}
+                      {formatDuration(tour.durationDays, tour.durationText)}
                     </span>
                   </div>
                 </div>
@@ -109,7 +109,7 @@ export default function TourCard({ tours }: TourCardListProps) {
                   <div>
                     <p className="text-sm text-gray-500">Starting from</p>
                     <p className="text-2xl font-bold text-orange-600">
-                      ${tour.price}
+                      Rs {tour.price?.toLocaleString("en-IN")}
                     </p>
                   </div>
                   <span className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm">

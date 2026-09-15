@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import RowActions from "@/components/admin/row-actions";
 import AdminLayout from "@/components/admin/admin-layout";
+import ReorderTable from "@/components/admin/reorder-table";
 import { connectDB } from "@/lib/db";
 import { Region } from "@/models/region";
 import { TourPackage } from "@/models/tourPackage";
@@ -23,7 +23,7 @@ export default async function AdminRegionTreksPage({
   const treks = JSON.parse(
     JSON.stringify(
       await TourPackage.find({ category: "trek", region: regionId })
-        .sort({ createdAt: -1 })
+        .sort({ sortOrder: 1, createdAt: -1 })
         .lean()
     )
   ) as {
@@ -31,6 +31,7 @@ export default async function AdminRegionTreksPage({
     title?: string;
     location?: string;
     durationDays?: number;
+    durationText?: string;
     difficulty?: string;
     price?: number;
     status?: string;
@@ -85,70 +86,15 @@ export default async function AdminRegionTreksPage({
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  <th className="px-6 py-3">Title</th>
-                  <th className="px-6 py-3">Location</th>
-                  <th className="px-6 py-3">Duration</th>
-                  <th className="px-6 py-3">Difficulty</th>
-                  <th className="px-6 py-3">Price</th>
-                  <th className="px-6 py-3">Status</th>
-                  <th className="px-6 py-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {treks.map((trek) => (
-                  <tr key={trek._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">
-                      <div className="flex items-center gap-3">
-                        {trek.images?.[0] && (
-                          <img
-                            src={trek.images[0]}
-                            alt=""
-                            className="h-10 w-14 rounded object-cover flex-shrink-0"
-                          />
-                        )}
-                        <span className="line-clamp-1">{trek.title}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {trek.location || "Nepal"}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {trek.durationDays ? `${trek.durationDays} Days` : "—"}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      {trek.difficulty || "—"}
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">
-                      ${trek.price?.toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                          trek.status === "published"
-                            ? "bg-green-50 text-green-700"
-                            : "bg-yellow-50 text-yellow-700"
-                        }`}
-                      >
-                        {trek.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <RowActions
-                        baseHref={`/admin/treks/${trek._id}`}
-                        endpoint={`/api/tours/${trek._id}`}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <ReorderTable
+          items={treks}
+          baseHref="/admin/treks"
+          endpoint="/api/tours"
+          showDifficulty
+          currencyPrefix="$"
+          currencyLocale="en-US"
+          info={{ reorderEndpoint: "/api/tours/reorder" }}
+        />
       )}
     </AdminLayout>
   );

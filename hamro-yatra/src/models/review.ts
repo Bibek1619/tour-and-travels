@@ -5,7 +5,16 @@ const reviewSchema = new Schema(
     tour: {
       type: Schema.Types.ObjectId,
       ref: "TourPackage",
-      required: true,
+      index: true,
+    },
+    vehicle: {
+      type: Schema.Types.ObjectId,
+      ref: "Vehicle",
+      index: true,
+    },
+    adventure: {
+      type: Schema.Types.ObjectId,
+      ref: "Adventure",
       index: true,
     },
     user: {
@@ -28,6 +37,10 @@ const reviewSchema = new Schema(
       trim: true,
       lowercase: true,
     },
+    location: {
+      type: String,
+      trim: true,
+    },
     rating: {
       type: Number,
       required: true,
@@ -43,7 +56,7 @@ const reviewSchema = new Schema(
     status: {
       type: String,
       enum: ["pending", "approved"],
-      default: "approved",
+      default: "pending",
     },
     featuredOnHomepage: {
       type: Boolean,

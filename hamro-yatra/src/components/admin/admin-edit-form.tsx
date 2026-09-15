@@ -237,19 +237,24 @@ function parseField(field: FieldDef, raw: string | boolean): unknown {
   }
 }
 
-function MediaFieldInput({
-  field,
-  value,
-  onChange,
+function isVideoUrl(url: string): boolean {
+  return /\.(mp4|webm|mov)(\?|$)/i.test(url) || /\/video\/upload\//i.test(url);
+}
+
+function UploadButton({
+  accept,
+  folder,
+  label,
+  onUploaded,
 }: {
-  field: FieldDef;
-  value: string;
-  onChange: (v: string) => void;
+  accept: string;
+  folder: string;
+  label: string;
+  onUploaded: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
-  const isVideo = field.type === "video";
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -259,17 +264,14 @@ function MediaFieldInput({
     try {
       const fd = new FormData();
       fd.append("file", file);
-      fd.append(
-        "folder",
-        field.folder ?? (isVideo ? "tour-travels/videos" : "tour-travels/sections")
-      );
+      fd.append("folder", folder);
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
         setError(json.message || "Upload failed");
         return;
       }
-      onChange(json.url);
+      onUploaded(json.url);
     } catch {
       setError("Failed to upload file");
     } finally {
@@ -278,6 +280,48 @@ function MediaFieldInput({
     }
   };
 
+  return (
+    <div className="flex flex-col gap-1">
+      <input
+        ref={fileRef}
+        type="file"
+        accept={accept}
+        onChange={handleFile}
+        className="hidden"
+      />
+      <button
+        type="button"
+        onClick={() => fileRef.current?.click()}
+        disabled={uploading}
+        className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white text-xs font-medium px-3 py-2 rounded-lg cursor-pointer transition-colors w-fit"
+      >
+        {uploading ? (
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+        ) : (
+          <Upload className="w-3.5 h-3.5" />
+        )}
+        {uploading ? "Uploading..." : label}
+      </button>
+      {error && <p className="text-xs text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function MediaFieldInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: FieldDef;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const isVideo = field.type === "video";
+  const folder =
+    field.folder ?? (isVideo ? "tour-travels/videos" : "tour-travels/sections");
+  const accept = isVideo
+    ? "video/mp4,video/webm,video/quicktime"
+    : "image/*";
   const isUrl = typeof value === "string" && /^https?:\/\//.test(value);
 
   return (
@@ -316,27 +360,12 @@ function MediaFieldInput({
         )}
 
         <div className="flex flex-wrap items-center gap-2">
-          <input
-            ref={fileRef}
-            id={`file-${field.name}`}
-            type="file"
-            accept={isVideo ? "video/mp4,video/webm,video/quicktime" : "image/*"}
-            onChange={handleFile}
-            className="hidden"
+          <UploadButton
+            accept={accept}
+            folder={folder}
+            label={`Upload ${isVideo ? "Video" : "Image"}`}
+            onUploaded={(url) => onChange(url)}
           />
-          <label
-            htmlFor={`file-${field.name}`}
-            className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer transition-colors"
-          >
-            {uploading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Upload className="w-4 h-4" />
-            )}
-            {uploading
-              ? `Uploading ${isVideo ? "video" : "image"}...`
-              : `Upload ${isVideo ? "Video" : "Image"}`}
-          </label>
           {value ? (
             <button
               type="button"
@@ -360,10 +389,177 @@ function MediaFieldInput({
         {field.help && (
           <p className="text-xs text-gray-500">{field.help}</p>
         )}
-        {error && (
-          <p className="text-xs text-red-600">{error}</p>
-        )}
       </div>
+    </div>
+  );
+}
+
+function RowsFieldInput({
+  field,
+  value,
+  onChange,
+}: {
+  field: FieldDef;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const columns = field.columns ?? [];
+
+  const loadRows = (raw: string): string[][] => {
+    const lines = (raw ?? "").split("\n");
+    const rows = lines.map((line) => line.split("\t"));
+    return rows.length > 0 ? rows : [[""]];
+  };
+
+  const [rows, setRows] = useState<string[][]>(() => loadRows(value));
+
+  const emit = (next: string[][]) => {
+    setRows(next);
+    onChange(
+      next
+        .map((row) => row.join("\t"))
+        .filter((line) => line.split("\t").some((p) => p.trim() !== ""))
+        .join("\n")
+    );
+  };
+
+  const updateCell = (ri: number, ci: number, cell: string) => {
+    emit(
+      rows.map((row, i) =>
+        i === ri ? row.map((c, j) => (j === ci ? cell : c)) : row
+      )
+    );
+  };
+
+  const addRow = () => emit([...rows, columns.map(() => "")]);
+  const removeRow = (ri: number) => emit(rows.filter((_, i) => i !== ri));
+
+  return (
+    <div className="md:col-span-2">
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        {field.label}
+        {field.required && <span className="text-red-500"> *</span>}
+      </label>
+
+      <div className="space-y-3">
+        {rows.map((row, ri) => (
+          <div
+            key={ri}
+            className="border border-gray-200 rounded-lg p-3 space-y-2"
+          >
+            <div className="grid gap-3 md:grid-cols-2">
+              {columns.map((col, ci) => {
+                const cell = row[ci] ?? "";
+
+                if (col.options) {
+                  return (
+                    <div key={col.key}>
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        {col.label}
+                      </label>
+                      <select
+                        value={cell}
+                        onChange={(e) => updateCell(ri, ci, e.target.value)}
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none"
+                      >
+                        {col.options.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  );
+                }
+
+                if (col.type) {
+                  const isUrl = /^https?:\/\//.test(cell);
+                  const isVideo =
+                    col.type === "video" ||
+                    (col.type === "media" && isVideoUrl(cell));
+                  const accept =
+                    col.type === "image"
+                      ? "image/*"
+                      : col.type === "video"
+                      ? "video/mp4,video/webm,video/quicktime"
+                      : "image/*,video/mp4,video/webm,video/quicktime";
+                  return (
+                    <div key={col.key} className="md:col-span-2 space-y-1.5">
+                      <label className="block text-xs font-medium text-gray-500 mb-1">
+                        {col.label}
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {isUrl && isVideo && (
+                          <video
+                            src={cell}
+                            controls
+                            preload="metadata"
+                            className="w-24 h-16 object-cover rounded border border-gray-200 bg-black"
+                          />
+                        )}
+                        {isUrl && !isVideo && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={cell}
+                            alt={col.label}
+                            className="w-24 h-16 object-cover rounded border border-gray-200"
+                          />
+                        )}
+                        <UploadButton
+                          accept={accept}
+                          folder={col.folder ?? "tour-travels/sections"}
+                          label="Upload"
+                          onUploaded={(url) => updateCell(ri, ci, url)}
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        value={cell}
+                        onChange={(e) => updateCell(ri, ci, e.target.value)}
+                        placeholder="or paste URL"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none"
+                      />
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={col.key}>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
+                      {col.label}
+                    </label>
+                    <input
+                      type="text"
+                      value={cell}
+                      onChange={(e) => updateCell(ri, ci, e.target.value)}
+                      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={() => removeRow(ri)}
+              className="text-xs text-red-600 hover:text-red-700 font-medium"
+            >
+              Remove slide
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={addRow}
+        className="mt-3 text-sm text-orange-600 hover:text-orange-700 font-medium"
+      >
+        + Add slide
+      </button>
+
+      {field.help && (
+        <p className="text-xs text-gray-500 mt-1">{field.help}</p>
+      )}
     </div>
   );
 }
@@ -439,8 +635,35 @@ function FieldInput({
     );
   }
 
-  if (field.type === "textarea" || field.type === "list" || field.type === "rows" || field.type === "images") {
-    const rows = field.type === "textarea" ? 4 : field.type === "rows" ? 6 : 4;
+  if (field.type === "rows") {
+    if ((field.columns ?? []).some((col) => col.type)) {
+      return (
+        <RowsFieldInput
+          field={field}
+          value={typeof value === "string" ? value : ""}
+          onChange={(v) => onChange(v)}
+        />
+      );
+    }
+    return (
+      <div className="md:col-span-2">
+        {label}
+        <textarea
+          id={field.name}
+          value={String(value ?? "")}
+          onChange={(e) => onChange(e.target.value)}
+          rows={6}
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none"
+        />
+        {field.help && (
+          <p className="text-xs text-gray-500 mt-1">{field.help}</p>
+        )}
+      </div>
+    );
+  }
+
+  if (field.type === "textarea" || field.type === "list" || field.type === "images") {
+    const rows = field.type === "textarea" ? 4 : 4;
     return (
       <div className="md:col-span-2">
         {label}

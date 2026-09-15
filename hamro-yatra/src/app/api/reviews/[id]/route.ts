@@ -1,6 +1,18 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Review } from "@/models/review";
+import { recomputeRating } from "@/lib/review-helpers";
+
+function toReviewTarget(review: {
+  tour?: unknown;
+  vehicle?: unknown;
+  adventure?: unknown;
+}) {
+  if (review.tour) return { type: "tour" as const, id: String(review.tour) };
+  if (review.vehicle) return { type: "vehicle" as const, id: String(review.vehicle) };
+  if (review.adventure) return { type: "adventure" as const, id: String(review.adventure) };
+  return null;
+}
 
 export const dynamic = "force-dynamic";
 
@@ -36,20 +48,35 @@ export async function PUT(
     await connectDB();
     const { id } = await params;
     const body = await request.json();
-    const review = await Review.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    }).lean();
+    const review = await Review.findById(id);
     if (!review) {
       return NextResponse.json(
         { success: false, message: "Review not found" },
         { status: 404 }
       );
     }
+    const previousStatus = review.status;
+    const target = toReviewTarget(review);
+    const updated = await Review.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    }).lean();
+    if (!updated) {
+      return NextResponse.json(
+        { success: false, message: "Review not found" },
+        { status: 404 }
+      );
+    }
+    const statusChanged =
+      previousStatus !== updated.status ||
+      (body.status && body.status !== previousStatus);
+    if (target && statusChanged) {
+      await recomputeRating(target);
+    }
     return NextResponse.json({
       success: true,
       message: "Review updated successfully",
-      data: review,
+      data: updated,
     });
   } catch (error) {
     console.error("Update review error:", error);
@@ -74,7 +101,11 @@ export async function DELETE(
         { status: 404 }
       );
     }
+    const target = toReviewTarget(review);
     await review.deleteOne();
+    if (target) {
+      await recomputeRating(target);
+    }
     return NextResponse.json({
       success: true,
       message: "Review deleted successfully",

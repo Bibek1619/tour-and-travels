@@ -13,6 +13,11 @@ import {
   ChevronLeft,
   ChevronRight,
   PlayCircle,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize,
   ArrowRight,
 } from "lucide-react";
 import type { WhyUsContent } from "@/lib/types";
@@ -81,11 +86,68 @@ export function Whyus({ content }: { content: WhyUsContent }) {
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(true);
+  const [videoMuted, setVideoMuted] = useState(true);
+  const [videoTime, setVideoTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
+  const [videoVolume, setVideoVolume] = useState(1);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const touchX = useRef<number | null>(null);
   const length = slides.length;
 
+  const fmtTime = (t: number) => {
+    if (!isFinite(t)) return "0:00";
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  const toggleVideoPlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) void v.play();
+    else v.pause();
+  };
+
+  const toggleVideoMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setVideoMuted(v.muted);
+  };
+
+  const seekVideo = (raw: string) => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = Number(raw);
+    setVideoTime(v.currentTime);
+  };
+
+  const changeVolume = (raw: string) => {
+    const v = videoRef.current;
+    if (!v) return;
+    const vol = Number(raw);
+    v.volume = vol;
+    v.muted = vol === 0;
+    setVideoVolume(vol);
+    setVideoMuted(v.muted);
+  };
+
+  const toggleFullscreen = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) void document.exitFullscreen();
+    else void el.requestFullscreen?.();
+  };
+
   const goTo = useCallback(
-    (i: number) => setIndex((i + length) % length),
+    (i: number) => {
+      setVideoPlaying(true);
+      setVideoMuted(true);
+      setVideoTime(0);
+      setVideoDuration(0);
+      setIndex((i + length) % length);
+    },
     [length]
   );
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
@@ -221,11 +283,24 @@ export function Whyus({ content }: { content: WhyUsContent }) {
                 >
                   {slide?.type === "video" ? (
                     <video
+                      ref={videoRef}
                       src={slide.src}
                       autoPlay
                       muted
                       loop
                       playsInline
+                      onPlay={() => setVideoPlaying(true)}
+                      onPause={() => setVideoPlaying(false)}
+                      onTimeUpdate={(e) => setVideoTime(e.currentTarget.currentTime)}
+                      onLoadedMetadata={(e) => {
+                        setVideoDuration(e.currentTarget.duration);
+                        if (!e.currentTarget.muted)
+                          setVideoVolume(e.currentTarget.volume);
+                      }}
+                      onVolumeChange={(e) => {
+                        setVideoMuted(e.currentTarget.muted);
+                        setVideoVolume(e.currentTarget.volume);
+                      }}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -288,6 +363,109 @@ export function Whyus({ content }: { content: WhyUsContent }) {
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
+            </div>
+
+            {/* ── Video control bar (below the video) ─────────────── */}
+            {slide?.type === "video" && (
+              <div className="mt-3 rounded-xl border border-gray-200 bg-gray-900 text-white px-4 py-2.5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={toggleVideoPlay}
+                    aria-label={videoPlaying ? "Pause video" : "Play video"}
+                    className="h-8 w-8 shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all cursor-pointer"
+                  >
+                    {videoPlaying ? (
+                      <Pause className="w-4 h-4" />
+                    ) : (
+                      <Play className="w-4 h-4 ml-0.5" />
+                    )}
+                  </button>
+
+                  <span className="text-xs tabular-nums text-gray-300 shrink-0">
+                    {fmtTime(videoTime)} / {fmtTime(videoDuration)}
+                  </span>
+
+                  <input
+                    type="range"
+                    min={0}
+                    max={Math.floor(videoDuration) || 0}
+                    step={1}
+                    value={Math.floor(videoTime)}
+                    onChange={(e) => seekVideo(e.target.value)}
+                    aria-label="Seek"
+                    className="flex-1 min-w-[80px] accent-green-500"
+                  />
+
+                  <button
+                    onClick={toggleVideoMute}
+                    aria-label={videoMuted ? "Unmute video" : "Mute video"}
+                    className="h-8 w-8 shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all cursor-pointer"
+                  >
+                    {videoMuted ? (
+                      <VolumeX className="w-4 h-4" />
+                    ) : (
+                      <Volume2 className="w-4 h-4" />
+                    )}
+                  </button>
+
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    value={videoMuted ? 0 : videoVolume}
+                    onChange={(e) => changeVolume(e.target.value)}
+                    aria-label="Volume"
+                    className="w-20 shrink-0 accent-green-500"
+                  />
+
+                  <button
+                    onClick={toggleFullscreen}
+                    aria-label="Fullscreen"
+                    className="h-8 w-8 shrink-0 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all cursor-pointer"
+                  >
+                    <Maximize className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── Thumbnails — previews of all slides ─────────────── */}
+            <div className="mt-4 flex gap-3 overflow-x-auto pb-1">
+              {slides.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Show slide ${i + 1}`}
+                  className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all cursor-pointer ${
+                    i === index
+                      ? "border-green-500 ring-2 ring-green-200"
+                      : "border-gray-200 opacity-80 hover:opacity-100 hover:border-green-300"
+                  }`}
+                >
+                  {s.type === "video" ? (
+                    <video
+                      src={s.src}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={s.src}
+                      alt={s.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                  {s.type === "video" && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <PlayCircle className="w-5 h-5 text-white" />
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
           </motion.div>
         </div>

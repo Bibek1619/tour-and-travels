@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
-import type { Tour } from "@/lib/types";
+import { formatDuration, type Tour } from "@/lib/types";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -60,7 +60,7 @@ async function getTreksByRegion(keyword: string): Promise<Tour[]> {
       { slug: { $regex: regex } },
     ],
   })
-    .sort({ createdAt: -1 })
+    .sort({ sortOrder: 1, createdAt: -1 })
     .lean();
   return JSON.parse(JSON.stringify(treks)) as Tour[];
 }
@@ -177,7 +177,7 @@ export default async function TrekRegionPage({
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
                             <Clock className="w-4 h-4 text-orange-600 flex-shrink-0" />
-                            <span>{trek.durationDays} Days</span>
+                            <span>{formatDuration(trek.durationDays, trek.durationText)}</span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
                             <TrendingUp className="w-4 h-4 text-orange-600 flex-shrink-0" />

@@ -20,6 +20,7 @@ import {
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import VehicleBookingSidebar from "@/components/vehicle-booking/vehicle-booking-sidebar";
+import ReviewSection from "@/components/reviews/review-section";
 import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
 
@@ -395,6 +396,15 @@ export default async function VehicleDetailPage({
                 totalReviews={vehicle.totalReviews}
               />
             </div>
+          </div>
+
+          <div className="mt-10">
+            <ReviewSection
+              entityType="vehicle"
+              entityId={vehicle._id}
+              entityTitle={vehicle.name ?? "Vehicle"}
+              noun="vehicle"
+            />
           </div>
         </div>
       </div>

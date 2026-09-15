@@ -5,13 +5,15 @@ import {
   Phone,
   Quote,
   Star,
+  User,
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Section from "@/components/section";
 import { buildMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { getPageContent } from "@/lib/page-content";
-import { getIcon, asList, toNumber } from "@/lib/icon-map";
+import { getIcon, toNumber } from "@/lib/icon-map";
+import CountUp from "@/components/count-up";
 
 export const dynamic = "force-dynamic";
 
@@ -182,7 +184,7 @@ export default async function About() {
                       <StatIcon className="h-6 w-6 text-orange-600" />
                     </div>
                     <h3 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-                      {stat.number}
+                      <CountUp value={stat.number} />
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">{stat.label}</p>
                   </div>
@@ -276,28 +278,30 @@ export default async function About() {
               <p className="mt-4 text-lg text-gray-600">{team.subtitle}</p>
             </div>
 
-            <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-14 grid gap-8 sm:grid-cols-2">
               {(team.members ?? []).map((rawMember, index) => {
                 const member = rawMember as {
                   name: string;
                   role: string;
-                  experience: string;
                   image: string;
-                  specialization: string;
-                  certifications: string | string[];
                 };
-                const certifications = asList(member.certifications);
                 return (
                   <div
                     key={index}
                     className="overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md"
                   >
-                    <div className="h-64">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="h-72">
+                      {member.image ? (
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gray-100">
+                          <User className="h-16 w-16 text-gray-300" />
+                        </div>
+                      )}
                     </div>
                     <div className="p-6">
                       <h3 className="text-lg font-bold text-gray-900">
@@ -306,27 +310,6 @@ export default async function About() {
                       <p className="text-sm font-medium text-orange-600">
                         {member.role}
                       </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
-                          {member.experience}
-                        </span>
-                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
-                          {member.specialization}
-                        </span>
-                      </div>
-                      {certifications.length > 0 && (
-                        <ul className="mt-4 space-y-1.5 border-t border-gray-100 pt-4">
-                          {certifications.map((cert, i) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-2 text-sm text-gray-600"
-                            >
-                              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500" />
-                              {cert}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </div>
                   </div>
                 );

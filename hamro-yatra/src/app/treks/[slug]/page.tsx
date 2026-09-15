@@ -51,6 +51,18 @@ async function getTrek(slug: string): Promise<Tour | null> {
   return JSON.parse(JSON.stringify(trek)) as Tour;
 }
 
+async function getSimilarTreks(excludeSlug: string): Promise<Tour[]> {
+  const treks = await TourPackage.find({
+    category: "trek",
+    status: "published",
+    slug: { $ne: excludeSlug },
+  })
+    .limit(4)
+    .sort({ createdAt: -1 })
+    .lean();
+  return JSON.parse(JSON.stringify(treks)) as Tour[];
+}
+
 export default async function TrekDetailPage({
   params,
 }: {
@@ -78,10 +90,12 @@ export default async function TrekDetailPage({
     );
   }
 
+  const similarTreks = await getSimilarTreks(slug);
+
   return (
     <div>
       <Navbar />
-      <TrekDetailClient trek={trek} />
+      <TrekDetailClient trek={trek} similarTreks={similarTreks} />
       <Footer />
     </div>
   );

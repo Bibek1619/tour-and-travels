@@ -51,6 +51,35 @@ export interface Tour {
   reviewsCount?: number;
 }
 
+export function formatDuration(days?: number, text?: string): string {
+  if (text?.trim()) return text.trim();
+  if (days) return `${days} Days`;
+  return "—";
+}
+
+export function formatSeason(season?: string): string {
+  if (!season?.trim()) return "All Year";
+  const shortMonths: Record<string, string> = {
+    January: "Jan",
+    February: "Feb",
+    March: "Mar",
+    April: "Apr",
+    May: "May",
+    June: "Jun",
+    July: "Jul",
+    August: "Aug",
+    September: "Sep",
+    October: "Oct",
+    November: "Nov",
+    December: "Dec",
+  };
+  let result = season.replace(/\s+to\s+/gi, "–");
+  for (const [full, short] of Object.entries(shortMonths)) {
+    result = result.replace(new RegExp(full, "gi"), short);
+  }
+  return result;
+}
+
 export interface Adventure {
   _id: string;
   name: string;
@@ -101,7 +130,10 @@ export interface Review {
   review: string;
   name: string;
   title?: string;
+  location?: string;
   tour?: { title?: string };
+  vehicle?: { name?: string };
+  adventure?: { name?: string };
   videoThumbnail?: string;
   rating?: number;
   status?: string;

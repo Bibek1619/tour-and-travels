@@ -139,11 +139,24 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
         { name: "whyUs.ctaLink", label: "CTA Link", type: "text" },
         {
           name: "whyUs.slides",
-          label: "Slides (Type [TAB] Video/Image URL [TAB] Title [TAB] Subtitle per line)",
+          label: "Slides",
           type: "rows",
+          help: "Use the Upload button to add the video/photo from Cloudinary.",
           columns: [
-            { key: "type", label: "Type (video/image)" },
-            { key: "src", label: "Video/Image URL" },
+            {
+              key: "type",
+              label: "Type",
+              options: [
+                { value: "video", label: "Video" },
+                { value: "image", label: "Image" },
+              ],
+            },
+            {
+              key: "src",
+              label: "Video / Photo",
+              type: "media",
+              folder: "tour-travels/homepage/slides",
+            },
             { key: "title", label: "Title" },
             { key: "subtitle", label: "Subtitle" },
           ],
@@ -258,15 +271,12 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
         { name: "team.subtitle", label: "Subtitle", type: "textarea" },
         {
           name: "team.members",
-          label: "Members (Name [TAB] Role [TAB] Experience [TAB] Image URL [TAB] Specialization [TAB] Certifications per line)",
+          label: "Members (Name [TAB] Role [TAB] Image URL per line)",
           type: "rows",
           columns: [
             { key: "name", label: "Name" },
             { key: "role", label: "Role" },
-            { key: "experience", label: "Experience" },
             { key: "image", label: "Image URL" },
-            { key: "specialization", label: "Specialization" },
-            { key: "certifications", label: "Certifications (comma separated)" },
           ],
         },
       ],

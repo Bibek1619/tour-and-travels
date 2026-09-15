@@ -16,13 +16,23 @@ export interface FieldOption {
   label: string;
 }
 
+export type RowColumnMediaType = "image" | "video" | "media";
+
+export interface RowColumn {
+  key: string;
+  label: string;
+  type?: RowColumnMediaType;
+  folder?: string;
+  options?: FieldOption[];
+}
+
 export interface FieldDef {
   name: string;
   label: string;
   type: FieldType;
   options?: FieldOption[];
   dynamic?: string;
-  columns?: { key: string; label: string }[];
+  columns?: RowColumn[];
   required?: boolean;
   help?: string;
   folder?: string;
@@ -129,6 +139,7 @@ const tourGroups: FieldGroup[] = [
       { name: "bestSeason", label: "Best Season", type: "text" },
       { name: "rating", label: "Rating", type: "number" },
       { name: "reviewsCount", label: "Reviews Count", type: "number" },
+      { name: "sortOrder", label: "Sort Order", type: "number" },
     ],
   },
   {
@@ -183,6 +194,7 @@ const trekGroups: FieldGroup[] = [
       { name: "region", label: "Region", type: "select", dynamic: "regions" },
       { name: "rating", label: "Rating", type: "number" },
       { name: "reviewsCount", label: "Reviews Count", type: "number" },
+      { name: "sortOrder", label: "Sort Order", type: "number" },
     ],
   },
   {

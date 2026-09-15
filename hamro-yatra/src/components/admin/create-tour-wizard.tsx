@@ -34,7 +34,6 @@ interface WizardFormData {
   difficulty: string;
   region: string;
   durationDays: string;
-  durationText: string;
   price: string;
   maxAltitude: string;
   bestSeason: string;
@@ -75,7 +74,6 @@ const blankForm = (defaultCategory: string, defaultRegion: string): WizardFormDa
   difficulty: "",
   region: defaultRegion ?? "",
   durationDays: "",
-  durationText: "",
   price: "",
   maxAltitude: "",
   bestSeason: "",
@@ -101,8 +99,8 @@ function buildForm(
     difficulty: initial.difficulty ?? "",
     region:
       typeof initial.region === "object" && initial.region ? initial.region._id ?? "" : initial.region ?? "",
-    durationDays: initial.durationDays?.toString() ?? "",
-    durationText: initial.durationText ?? "",
+    durationDays:
+      initial.durationText ?? initial.durationDays?.toString() ?? "",
     price: initial.price?.toString() ?? "",
     maxAltitude: initial.maxAltitude ?? "",
     bestSeason: initial.bestSeason ?? "",
@@ -276,7 +274,11 @@ export default function CreateTourWizard({
         }
         return true;
       case 2:
-        if (!formData.durationDays || !formData.price || !formData.shortOverview) {
+        if (
+          !formData.durationDays.trim() ||
+          !formData.price ||
+          !formData.shortOverview
+        ) {
           setError("Please fill in Duration, Price and Short Overview");
           return false;
         }
@@ -314,6 +316,9 @@ export default function CreateTourWizard({
     setSaving(true);
     setError("");
 
+    const durationRaw = formData.durationDays.trim();
+    const durationNum = durationRaw.match(/^\d+/)?.[0];
+
     const body = {
       title: formData.title,
       slug: formData.slug || undefined,
@@ -321,8 +326,10 @@ export default function CreateTourWizard({
       location: formData.location || undefined,
       difficulty: formData.difficulty || undefined,
       region: formData.category === "trek" && formData.region ? formData.region : null,
-      durationDays: formData.durationDays ? Number(formData.durationDays) : undefined,
-      durationText: formData.durationText || undefined,
+      durationDays: durationNum ? Number(durationNum) : undefined,
+      durationText: /^\d+$/.test(durationRaw)
+        ? ""
+        : durationRaw || undefined,
       price: formData.price ? Number(formData.price) : undefined,
       maxAltitude: formData.maxAltitude || undefined,
       bestSeason: formData.bestSeason || undefined,
@@ -564,27 +571,30 @@ export default function CreateTourWizard({
               <div className="grid grid-cols-4 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Duration (Days) <span className="text-red-500">*</span>
+                    Duration <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="durationDays"
                     value={formData.durationDays}
                     onChange={handleChange}
-                    placeholder="14"
+                    placeholder="e.g., 7, 2N/3D, 2 Nights / 3 Days"
                     className={inputBase}
                   />
+                  <p className="mt-1 text-xs text-gray-400">
+                    Enter a number (7) or a format like 2N/3D
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Price (USD) <span className="text-red-500">*</span>
+                    Price (NPR) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
                     name="price"
                     value={formData.price}
                     onChange={handleChange}
-                    placeholder="1200"
+                    placeholder="25000"
                     className={inputBase}
                   />
                 </div>
@@ -614,20 +624,6 @@ export default function CreateTourWizard({
                     className={inputBase}
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Duration Text (optional)
-                </label>
-                <input
-                  type="text"
-                  name="durationText"
-                  value={formData.durationText}
-                  onChange={handleChange}
-                  placeholder="e.g., 2N/3D or 2 Nights / 3 Days"
-                  className={inputBase}
-                />
               </div>
 
               <div>

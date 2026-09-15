@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Star, Clock, MapPin, TrendingUp, ChevronRight } from "lucide-react";
 import type { Tour } from "@/lib/types";
+import { formatDuration } from "@/lib/types";
 import { getCardImage } from "@/lib/cloudinary";
 
 const reviewsData = [
@@ -101,7 +102,7 @@ export function BestSellingPackages({
                     <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
                       <Clock className="w-4 h-4 text-orange-600" />
                       <span className="text-sm font-bold text-gray-900">
-                        {pkg.durationDays} Days
+                        {formatDuration(pkg.durationDays, pkg.durationText)}
                       </span>
                     </div>
                   </div>

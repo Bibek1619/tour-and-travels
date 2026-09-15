@@ -19,6 +19,7 @@ import {
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getAdventureCategory } from "@/lib/adventure-categories";
+import ReviewSection from "@/components/reviews/review-section";
 import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -296,6 +297,14 @@ export default async function AdventurePackageDetailPage({
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="mt-10">
+            <ReviewSection
+              entityType="adventure"
+              entityId={pkg._id}
+              entityTitle={pkg.name}
+            />
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import type { IntroContent } from "@/lib/types";
+import CountUp from "@/components/count-up";
 
 const TypingText = ({
   texts,
@@ -237,7 +238,9 @@ export function IntroSection({ content }: { content: IntroContent }) {
                   <StatIcon className={`w-10 h-10 ${iconColor}`} />
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    <CountUp value={stat.value} />
+                  </p>
                   <p className="text-gray-600 font-medium">{stat.label}</p>
                 </div>
               </div>

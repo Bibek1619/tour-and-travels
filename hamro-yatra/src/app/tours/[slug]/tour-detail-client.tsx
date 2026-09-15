@@ -14,9 +14,11 @@ import {
   MessageCircle,
   Send,
 } from "lucide-react";
-import type { Tour } from "@/lib/types";
+import { Tour, formatDuration } from "@/lib/types";
+import { getCardImage } from "@/lib/cloudinary";
+import ReviewSection from "@/components/reviews/review-section";
 
-export default function TourDetailClient({ tour }: { tour: Tour }) {
+export default function TourDetailClient({ tour, similarTours }: { tour: Tour; similarTours?: Tour[] }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -30,7 +32,7 @@ export default function TourDetailClient({ tour }: { tour: Tour }) {
   const whatsappMessage = encodeURIComponent(
     `Hi! I'm interested in booking the ${tour.title} tour.\n\n` +
       `Duration: ${tour.durationDays} days\n` +
-      `Price: $${tour.price} per person\n\n` +
+      `Price: Rs ${tour.price?.toLocaleString("en-IN")} per person\n\n` +
       `Can you help me with the booking process?`
   );
 
@@ -70,7 +72,7 @@ export default function TourDetailClient({ tour }: { tour: Tour }) {
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-orange-600" />
                   <span>
-                    {tour.durationText || `${tour.durationDays} Days`}
+                    {formatDuration(tour.durationDays, tour.durationText)}
                   </span>
                 </div>
                 {tour.rating !== undefined && tour.rating > 0 && (
@@ -262,7 +264,7 @@ export default function TourDetailClient({ tour }: { tour: Tour }) {
                   <p className="text-sm text-gray-600 mb-2">Starting from</p>
                   <div className="flex items-baseline justify-center gap-2 flex-wrap">
                     <span className="text-4xl sm:text-5xl font-bold text-orange-600 break-all">
-                      ${tour.price}
+                      Rs {tour.price?.toLocaleString("en-IN")}
                     </span>
                     <span className="text-gray-500">/person</span>
                   </div>
@@ -338,7 +340,7 @@ export default function TourDetailClient({ tour }: { tour: Tour }) {
                   <div className="flex justify-between pb-3 border-b">
                     <span className="text-gray-600">Duration</span>
                     <span className="font-semibold text-gray-800">
-                      {tour.durationText || `${tour.durationDays} Days`}
+                      {formatDuration(tour.durationDays, tour.durationText)}
                     </span>
                   </div>
                   <div className="flex justify-between pb-3 border-b">
@@ -356,32 +358,50 @@ export default function TourDetailClient({ tour }: { tour: Tour }) {
                 </div>
               </div>
 
-              {/* Why Choose Us */}
-              <div className="bg-white rounded-lg p-6 shadow">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">
-                  Why Choose Us
-                </h3>
-                <ul className="space-y-3 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-orange-600 flex-shrink-0" />
-                    <span>26+ Years of Experience</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-orange-600 flex-shrink-0" />
-                    <span>Best Price Guarantee</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-orange-600 flex-shrink-0" />
-                    <span>Expert Local Guides</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-orange-600 flex-shrink-0" />
-                    <span>24/7 Customer Support</span>
-                  </li>
-                </ul>
-              </div>
+              {/* Similar Tours */}
+              {similarTours && similarTours.length > 0 && (
+                <div className="bg-white rounded-lg p-6 shadow">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4">
+                    Similar Tour Packages
+                  </h3>
+                  <div className="space-y-4">
+                    {similarTours.slice(0, 3).map((item) => (
+                      <Link
+                        key={item._id}
+                        href={`/tours/${item.slug}`}
+                        className="flex gap-3 group"
+                      >
+                        <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={getCardImage(item.images?.[0])}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-orange-600 transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {formatDuration(item.durationDays, item.durationText)}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+        </div>
+
+        <div className="mt-10">
+          <ReviewSection
+            entityType="tour"
+            entityId={tour._id}
+            entityTitle={tour.title}
+          />
         </div>
       </div>
     </div>

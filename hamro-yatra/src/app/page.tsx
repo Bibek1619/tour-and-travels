@@ -72,14 +72,19 @@ export default async function Home() {
       status: "published",
       region: activeRegionFilter,
     } as unknown as Parameters<typeof TourPackage.find>[0])
-      .sort({ createdAt: -1 })
+      .sort({ sortOrder: 1, createdAt: -1 })
       .limit(6)
       .lean(),
     TourPackage.find({ category: "tour", status: "published" })
-      .sort({ createdAt: -1 })
+      .sort({ sortOrder: 1, createdAt: -1 })
       .limit(6)
       .lean(),
     Review.find({ status: "approved", featuredOnHomepage: true })
+      .populate([
+        { path: "tour", select: "title", strictPopulate: false },
+        { path: "vehicle", select: "name", strictPopulate: false },
+        { path: "adventure", select: "name", strictPopulate: false },
+      ])
       .sort({ createdAt: -1 })
       .limit(6)
       .lean(),
@@ -127,9 +132,9 @@ export default async function Home() {
       </Section>
 
       <Section>
-        <BestSellingPackages
-          tours={bestSellingTours}
-          content={homeSections.bestSelling}
+        <DestinationsSection
+          destinations={popularTourPackages}
+          content={homeSections.destinations}
         />
       </Section>
 
@@ -139,9 +144,9 @@ export default async function Home() {
         <BestTrip content={homeSections.bestTrip} />
       </Section>
       <Section>
-        <DestinationsSection
-          destinations={popularTourPackages}
-          content={homeSections.destinations}
+        <BestSellingPackages
+          tours={bestSellingTours}
+          content={homeSections.bestSelling}
         />
       </Section>
       <Section>

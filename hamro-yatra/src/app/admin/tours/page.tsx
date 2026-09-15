@@ -1,7 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import AdminLayout from "@/components/admin/admin-layout";
-import RowActions from "@/components/admin/row-actions";
+import ReorderTable from "@/components/admin/reorder-table";
 import Link from "next/link";
 import type { Tour } from "@/lib/types";
 
@@ -11,7 +11,7 @@ export default async function AdminToursPage() {
   await connectDB();
   const tours = JSON.parse(
     JSON.stringify(
-      await TourPackage.find({ category: "tour" }).sort({ createdAt: -1 }).lean()
+      await TourPackage.find({ category: "tour" }).sort({ sortOrder: 1, createdAt: -1 }).lean()
     )
   ) as Tour[];
 
@@ -41,73 +41,14 @@ export default async function AdminToursPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                <th className="px-6 py-3">Title</th>
-                <th className="px-6 py-3">Location</th>
-                <th className="px-6 py-3">Duration</th>
-                <th className="px-6 py-3">Price</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {tours.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-6 py-10 text-center text-gray-500">
-                    No tours found.
-                  </td>
-                </tr>
-              )}
-              {tours.map((tour) => (
-                <tr key={tour._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium text-gray-900">
-                    <div className="flex items-center gap-3">
-                      {tour.images?.[0] && (
-                        <img
-                          src={tour.images[0]}
-                          alt=""
-                          className="h-10 w-14 rounded object-cover flex-shrink-0"
-                        />
-                      )}
-                      <span className="line-clamp-1">{tour.title}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {tour.location || "Nepal"}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    {tour.durationDays ? `${tour.durationDays} Days` : "—"}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">
-                    ${tour.price?.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                        tour.status === "published"
-                          ? "bg-green-50 text-green-700"
-                          : "bg-yellow-50 text-yellow-700"
-                      }`}
-                    >
-                      {tour.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <RowActions
-                      baseHref={`/admin/tours/${tour._id}`}
-                      endpoint={`/api/tours/${tour._id}`}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <ReorderTable
+        items={tours}
+        baseHref="/admin/tours"
+        endpoint="/api/tours"
+        currencyPrefix="Rs"
+        currencyLocale="en-IN"
+        info={{ reorderEndpoint: "/api/tours/reorder" }}
+      />
     </AdminLayout>
   );
 }

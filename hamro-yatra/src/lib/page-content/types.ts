@@ -109,10 +109,10 @@ export interface AboutPageContent {
     members: {
       name: string;
       role: string;
-      experience: string;
       image: string;
-      specialization: string;
-      certifications: string[] | string;
+      experience?: string;
+      specialization?: string;
+      certifications?: string[] | string;
     }[];
   };
   testimonials: {

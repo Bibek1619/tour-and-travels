@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MapPin, Star, Clock, ChevronRight, Compass } from "lucide-react";
-import type { Tour } from "@/lib/types";
+import { formatDuration, type Tour } from "@/lib/types";
 import { getCardImage } from "@/lib/cloudinary";
 
 const reviewsData = [
@@ -84,7 +84,7 @@ export const DestinationsSection = ({
                   <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-lg">
                     <Clock className="w-4 h-4 text-green-600" />
                     <span className="text-sm font-bold text-gray-900">
-                      {dest.durationDays ? `${dest.durationDays} Days` : ""}
+                      {formatDuration(dest.durationDays, dest.durationText)}
                     </span>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export const DestinationsSection = ({
                         From
                       </span>
                       <span className="text-2xl font-bold text-gray-900">
-                        ${dest.price}
+                        Rs {dest.price?.toLocaleString("en-IN")}
                       </span>
                       <span className="text-gray-500 text-sm"> / person</span>
                     </div>

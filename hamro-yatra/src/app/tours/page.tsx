@@ -30,7 +30,7 @@ export const metadata = buildMetadata({
 async function getTours(): Promise<Tour[]> {
   await connectDB();
   const tours = await TourPackage.find({ category: "tour", status: "published" })
-    .sort({ createdAt: -1 })
+    .sort({ sortOrder: 1, createdAt: -1 })
     .lean();
   return JSON.parse(JSON.stringify(tours)) as Tour[];
 }
