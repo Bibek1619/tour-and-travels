@@ -15,8 +15,11 @@ import {
   Send,
 } from "lucide-react";
 import { Tour, formatDuration } from "@/lib/types";
-import { getCardImage } from "@/lib/cloudinary";
+import { getCardImage, getHeroImage } from "@/lib/cloudinary";
 import ReviewSection from "@/components/reviews/review-section";
+import FaqSection from "@/components/faq-section";
+import JsonLd from "@/components/json-ld";
+import { tripJsonLd } from "@/lib/jsonld";
 
 export default function TourDetailClient({ tour, similarTours }: { tour: Tour; similarTours?: Tour[] }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -38,6 +41,21 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      <JsonLd
+        data={tripJsonLd({
+          title: tour.title,
+          description: tour.shortOverview,
+          image: getHeroImage(images[0]),
+          url: `/tours/${tour.slug}`,
+          price: tour.price,
+          durationText: tour.durationText,
+          durationDays: tour.durationDays,
+          location: tour.location,
+          category: tour.category,
+          itineraryCount: tour.itinerary?.length,
+          faqs: tour.faqs,
+        })}
+      />
       {/* Breadcrumb */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -94,6 +112,8 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
                   src={images[selectedImage]}
                   alt={tour.title}
                   className="w-full h-full object-cover"
+                  decoding="async"
+                  fetchPriority="high"
                 />
               </div>
               {images.length > 1 && (
@@ -112,6 +132,8 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
                         src={img}
                         alt={`View ${idx + 1}`}
                         className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </button>
                   ))}
@@ -125,19 +147,18 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
                 <div className="flex overflow-x-auto">
                   {["overview", "itinerary", "included", "excluded"].map(
                     (tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className={`px-3 sm:px-6 py-4 text-sm sm:text-base font-semibold whitespace-nowrap border-b-2 transition-colors ${
-                          activeTab === tab
-                            ? "border-orange-600 text-orange-600"
-                            : "border-transparent text-gray-600 hover:text-gray-800"
-                        }`}
-                      >
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                      </button>
-                    )
-                  )}
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-3 sm:px-6 py-4 text-sm sm:text-base font-semibold whitespace-nowrap border-b-2 transition-colors ${
+                        activeTab === tab
+                          ? "border-orange-600 text-orange-600"
+                          : "border-transparent text-gray-600 hover:text-gray-800"
+                      }`}
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -261,6 +282,9 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
               {/* Booking Card */}
               <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-lg border border-orange-100">
                 <div className="text-center mb-6 pb-6 border-b border-orange-200">
+                  <p className="text-xs text-gray-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-3">
+                    Price varies with group size – contact us for a quote
+                  </p>
                   <p className="text-sm text-gray-600 mb-2">Starting from</p>
                   <div className="flex items-baseline justify-center gap-2 flex-wrap">
                     <span className="text-4xl sm:text-5xl font-bold text-orange-600 break-all">
@@ -395,6 +419,16 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
             </div>
           </div>
         </div>
+
+        {tour.faqs && tour.faqs.length > 0 && (
+          <div className="mt-12 mx-auto max-w-3xl">
+            <FaqSection
+              title="Frequently Asked Questions"
+              subtitle="Everything you need to know before booking this tour"
+              items={tour.faqs}
+            />
+          </div>
+        )}
 
         <div className="mt-10">
           <ReviewSection

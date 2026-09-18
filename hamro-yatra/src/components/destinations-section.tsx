@@ -38,6 +38,8 @@ export const DestinationsSection = ({
             src={section.image}
             alt={section.title}
             className="w-full max-h-64 object-cover rounded-xl mb-10"
+            loading="lazy"
+            decoding="async"
           />
         )}
         {/* Heading */}
@@ -72,6 +74,8 @@ export const DestinationsSection = ({
                     src={getCardImage(dest.images?.[0])}
                     alt={dest.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
@@ -127,6 +131,9 @@ export const DestinationsSection = ({
                   {/* Price & CTA */}
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                     <div>
+                      <span className="text-[11px] text-amber-600 font-medium block mb-1">
+                        Price varies with group size
+                      </span>
                       <span className="text-xs text-gray-500 uppercase tracking-wider block mb-1">
                         From
                       </span>

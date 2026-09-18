@@ -11,7 +11,7 @@ import { getHeroImage } from "@/lib/cloudinary";
 import { getIcon } from "@/lib/icon-map";
 import { getTrekRegions } from "@/lib/regions";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Trekking Packages in Nepal - Everest, Annapurna, Langtang",
@@ -103,6 +103,8 @@ export default async function TrekPackagesPage() {
                           src={region.image}
                           alt={region.name}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                          decoding="async"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         {trekCount > 0 && (

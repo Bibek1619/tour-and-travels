@@ -48,6 +48,12 @@ const tourPackageSchema = new Schema(
     ],
     included: [String],
     excluded: [String],
+    faqs: [
+      {
+        q: String,
+        a: String,
+      },
+    ],
     images: [String],
     status: {
       type: String,

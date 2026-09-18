@@ -137,9 +137,9 @@ export function IntroSection({ content }: { content: IntroContent }) {
           transition={{ duration: 0.6 }}
           className="text-center mb-7"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {renderWelcomeTitle()}
-          </h1>
+          </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 mx-auto mb-6"></div>
           <p className="text-xl font-semibold max-w-3xl mx-auto">
             <TypingText
@@ -192,6 +192,8 @@ export function IntroSection({ content }: { content: IntroContent }) {
                 src={intro.image}
                 alt="Nepal Mountains - Trekking and Tours"
                 className="w-full h-auto rounded-2xl object-cover"
+                decoding="async"
+                fetchPriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
 
@@ -257,6 +259,8 @@ export function IntroSection({ content }: { content: IntroContent }) {
                 src="/nepal-tourism-board.png"
                 alt="Nepal Tourism Board Certified"
                 className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -265,6 +269,8 @@ export function IntroSection({ content }: { content: IntroContent }) {
                 src="/taan.png"
                 alt="TAAN Member"
                 className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -273,6 +279,8 @@ export function IntroSection({ content }: { content: IntroContent }) {
                 src="/nma.png"
                 alt="Nepal Mountaineering Association"
                 className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}

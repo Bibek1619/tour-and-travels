@@ -25,6 +25,10 @@ const vehicleSchema = new Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      index: true,
+    },
     images: {
       type: [String],
       required: true,
@@ -62,6 +66,12 @@ const vehicleSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    faqs: [
+      {
+        q: String,
+        a: String,
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -10,7 +10,18 @@ import Footer from "@/components/footer";
 import TourDetailClient from "./tour-detail-client";
 import { buildMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  await connectDB();
+  const tours = await TourPackage.find({
+    category: "tour",
+    status: "published",
+  })
+    .select("slug")
+    .lean();
+  return tours.map((t) => ({ slug: String(t.slug) }));
+}
 
 export async function generateMetadata({
   params,
@@ -24,7 +35,9 @@ export async function generateMetadata({
     tour.shortOverview ||
     `${tour.title} - ${tour.durationDays || ""} days in ${
       tour.location || "Nepal"
-    }. Price from Rs ${tour.price?.toLocaleString("en-IN")}. Book with Hamro Yatra Adventure.`;
+    }. Price from Rs ${tour.price?.toLocaleString(
+      "en-IN"
+    )} per person. Book with Hamro Yatra Adventure.`;
   return buildMetadata({
     title: `${tour.title} - Tour Package`,
     description,

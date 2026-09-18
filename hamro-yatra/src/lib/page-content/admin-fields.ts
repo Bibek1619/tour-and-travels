@@ -10,6 +10,7 @@ export const PAGE_CONTENT_LABELS: Record<PageContentSlug, string> = {
   "seat-booking": "Seat Booking Page",
   "vehicle-booking": "Vehicle Booking Page",
   contact: "Contact Page",
+  footer: "Footer",
 };
 
 const iconHelp = "Icon name (e.g. Star, Users, MapPin, Clock, Award, Mountain, Bus)";
@@ -172,6 +173,24 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
             { key: "description", label: "Description" },
           ],
           help: "Descriptions cannot contain tabs.",
+        },
+      ],
+    },
+    {
+      title: "FAQ",
+      fields: [
+        { name: "sections.faq.eyebrow", label: "Eyebrow", type: "text" },
+        { name: "sections.faq.title", label: "Title", type: "text" },
+        { name: "sections.faq.subtitle", label: "Subtitle", type: "textarea" },
+        {
+          name: "sections.faq.items",
+          label: "FAQs (Question [TAB] Answer per line)",
+          type: "rows",
+          columns: [
+            { key: "q", label: "Question" },
+            { key: "a", label: "Answer" },
+          ],
+          help: "Answers cannot contain tabs.",
         },
       ],
     },
@@ -499,6 +518,146 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
             { key: "href", label: "URL" },
           ],
         },
+      ],
+    },
+  ],
+  footer: [
+    {
+      title: "Company",
+      fields: [
+        {
+          name: "company.logo",
+          label: "Logo",
+          type: "image",
+          folder: "tour-travels/footer",
+          help: "Shown above the company title in the footer.",
+        },
+        { name: "company.title", label: "Company Title", type: "text" },
+        { name: "company.description", label: "Company Description", type: "textarea" },
+      ],
+    },
+    {
+      title: "Quick Links",
+      fields: [
+        { name: "quickLinks.title", label: "Heading", type: "text" },
+        {
+          name: "quickLinks.items",
+          label: "Links (Label [TAB] URL per line)",
+          type: "rows",
+          columns: [
+            { key: "label", label: "Label" },
+            { key: "href", label: "URL" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Popular Tour Packages",
+      fields: [
+        { name: "popularTours.title", label: "Heading", type: "text" },
+        {
+          name: "popularTours.auto",
+          label: "Auto-populate from Tours & Treks in Database",
+          type: "checkbox",
+          help: "When enabled, the newest published tours and treks appear automatically. Disable to use the manual list below.",
+        },
+        {
+          name: "popularTours.limit",
+          label: "Max Auto Items",
+          type: "number",
+          help: "How many tours/treks to show when auto-populate is on.",
+        },
+        {
+          name: "popularTours.items",
+          label: "Manual Links (Label [TAB] URL per line)",
+          type: "rows",
+          columns: [
+            { key: "label", label: "Label" },
+            { key: "href", label: "URL" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Popular Adventures",
+      fields: [
+        { name: "popularAdventures.title", label: "Heading", type: "text" },
+        {
+          name: "popularAdventures.auto",
+          label: "Auto-populate from Adventures in Database",
+          type: "checkbox",
+          help: "When enabled, published adventures appear automatically. Disable to use the manual list below.",
+        },
+        {
+          name: "popularAdventures.limit",
+          label: "Max Auto Items",
+          type: "number",
+        },
+        {
+          name: "popularAdventures.items",
+          label: "Manual Links (Label [TAB] URL per line)",
+          type: "rows",
+          columns: [
+            { key: "label", label: "Label" },
+            { key: "href", label: "URL" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Contact Info",
+      fields: [
+        { name: "contact.title", label: "Heading", type: "text" },
+        { name: "contact.address", label: "Address", type: "text" },
+        { name: "contact.phone", label: "Phone", type: "text" },
+        { name: "contact.email", label: "Email", type: "text" },
+      ],
+    },
+    {
+      title: "Associations",
+      fields: [
+        { name: "associations.title", label: "Heading", type: "text" },
+        {
+          name: "associations.items",
+          label: "Logos (Image URL [TAB] Alt Text per line)",
+          type: "rows",
+          columns: [
+            { key: "image", label: "Image", type: "media", folder: "tour-travels/footer" },
+            { key: "alt", label: "Alt Text" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Payments",
+      fields: [
+        { name: "payments.title", label: "Heading", type: "text" },
+        {
+          name: "payments.items",
+          label: "Accepted Methods (one per line)",
+          type: "rows",
+          columns: [{ key: "label", label: "Label" }],
+        },
+      ],
+    },
+    {
+      title: "Social & Follow",
+      fields: [
+        { name: "follow.title", label: "Follow Heading", type: "text" },
+        { name: "social.facebook", label: "Facebook URL", type: "text" },
+        { name: "social.instagram", label: "Instagram URL", type: "text" },
+        { name: "social.tiktok", label: "TikTok URL", type: "text" },
+        { name: "social.youtube", label: "YouTube URL", type: "text" },
+      ],
+    },
+    {
+      title: "Bottom Bar",
+      fields: [
+        { name: "bottom.copyright", label: "Copyright Text", type: "text" },
+        { name: "bottom.privacy.label", label: "Privacy Link Label", type: "text" },
+        { name: "bottom.privacy.href", label: "Privacy Link URL", type: "text" },
+        { name: "bottom.terms.label", label: "Terms Link Label", type: "text" },
+        { name: "bottom.terms.href", label: "Terms Link URL", type: "text" },
       ],
     },
   ],

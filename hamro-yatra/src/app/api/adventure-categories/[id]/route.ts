@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { AdventureCategory } from "@/models/adventureCategory";
+import { revalidateAdventures } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +10,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     const { id } = await params;
     await connectDB();
@@ -34,6 +37,7 @@ export async function PUT(
         { status: 404 }
       );
     }
+    revalidateAdventures();
     return NextResponse.json(category);
   } catch (error) {
     return NextResponse.json(
@@ -47,6 +51,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     const { id } = await params;
     await connectDB();
@@ -57,6 +62,7 @@ export async function DELETE(
         { status: 404 }
       );
     }
+    revalidateAdventures();
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json(

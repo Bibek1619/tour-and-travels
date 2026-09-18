@@ -49,6 +49,8 @@ export default function TourCard({ tours }: TourCardListProps) {
                   }
                   alt={tour.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute top-4 left-4 bg-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
                   Popular
@@ -107,9 +109,16 @@ export default function TourCard({ tours }: TourCardListProps) {
                 {/* Price and Button */}
                 <div className="flex items-center justify-between">
                   <div>
+                    <p className="text-[11px] text-amber-600 font-medium mb-1">
+                      Price varies with group size
+                    </p>
                     <p className="text-sm text-gray-500">Starting from</p>
                     <p className="text-2xl font-bold text-orange-600">
                       Rs {tour.price?.toLocaleString("en-IN")}
+                      <span className="text-sm font-normal text-gray-500">
+                        {" "}
+                        / person
+                      </span>
                     </p>
                   </div>
                   <span className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm">

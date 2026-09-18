@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { AdventureCategory } from "@/models/adventureCategory";
+import { revalidateAdventures } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
@@ -52,6 +55,7 @@ export async function POST(request: Request) {
       image: String(body.image || ""),
       sortOrder: (maxOrder?.sortOrder ?? 0) + 1,
     });
+    revalidateAdventures();
     return NextResponse.json(category, { status: 201 });
   } catch (error) {
     if ((error as { code?: number })?.code === 11000) {

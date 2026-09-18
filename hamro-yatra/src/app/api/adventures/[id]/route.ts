@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Adventure } from "@/models/adventure";
+import { revalidateAdventures } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +13,10 @@ export async function GET(
   try {
     await connectDB();
     const { id } = await params;
-    const adventure = await Adventure.findById(id).lean();
+    const adventure = await Adventure.findOne({
+      _id: id,
+      status: "published",
+    }).lean();
 
     if (!adventure) {
       return NextResponse.json(
@@ -34,6 +39,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -48,6 +54,7 @@ export async function PUT(
         { status: 404 }
       );
     }
+    revalidateAdventures();
     return NextResponse.json({
       success: true,
       message: "Adventure updated successfully",
@@ -66,6 +73,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -77,6 +85,7 @@ export async function DELETE(
       );
     }
     await adventure.deleteOne();
+    revalidateAdventures();
     return NextResponse.json({
       success: true,
       message: "Adventure deleted successfully",

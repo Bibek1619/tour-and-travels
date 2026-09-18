@@ -155,6 +155,8 @@ export function BestTrip({ content }: { content: BestTripContent }) {
                 src={image}
                 alt={title}
                 className="w-full h-[480px] lg:h-[560px] object-cover group-hover:scale-105 transition-transform duration-700"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 

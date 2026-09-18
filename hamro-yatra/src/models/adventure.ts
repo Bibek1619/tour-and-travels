@@ -38,6 +38,12 @@ const adventureSchema = new Schema(
     },
     rating: { type: Number, default: 0, min: 0, max: 5 },
     reviewsCount: { type: Number, default: 0 },
+    faqs: [
+      {
+        q: String,
+        a: String,
+      },
+    ],
   },
   { timestamps: true }
 );

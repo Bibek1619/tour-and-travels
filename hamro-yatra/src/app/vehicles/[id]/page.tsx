@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/db";
+import mongoose from "mongoose";
 import { Vehicle } from "@/models/vehicle";
 import type { Vehicle as VehicleType } from "@/lib/types";
 import { notFound } from "next/navigation";
@@ -21,10 +22,20 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import VehicleBookingSidebar from "@/components/vehicle-booking/vehicle-booking-sidebar";
 import ReviewSection from "@/components/reviews/review-section";
+import FaqSection from "@/components/faq-section";
 import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
+import { slugify } from "@/lib/slugify";
+import JsonLd from "@/components/json-ld";
+import { vehicleJsonLd } from "@/lib/jsonld";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  await connectDB();
+  const vehicles = await Vehicle.find({}).select("_id slug").lean();
+  return vehicles.map((v) => ({ id: String(v.slug || v._id) }));
+}
 
 export async function generateMetadata({
   params,
@@ -35,10 +46,11 @@ export async function generateMetadata({
   const vehicle = await getVehicle(id);
   if (!vehicle) return { title: "Vehicle Not Found" };
   const name = vehicle.name ?? "Vehicle";
+  const canonicalSlug = vehicle.slug ?? id;
   return buildMetadata({
     title: `${name} - Hire & Rental in Nepal`,
     description: `Rent a ${name} in Nepal with Hamro Yatra Adventure. NPR ${(vehicle.dailyRate ?? 0).toLocaleString()} per day, ${vehicle.capacity ?? ""} seats, ${vehicle.luggage ?? "ample luggage space"}. Book online for tours, trips and airport pickups.`,
-    path: `/vehicles/${id}`,
+    path: `/vehicles/${canonicalSlug}`,
     keywords: [
       name,
       `${name} rent Nepal`,
@@ -52,7 +64,19 @@ export async function generateMetadata({
 
 async function getVehicle(id: string): Promise<VehicleType | null> {
   await connectDB();
-  const vehicle = await Vehicle.findById(id).lean();
+  const lookupId = mongoose.isValidObjectId(id) ? id : null;
+  let vehicle = await Vehicle.findOne({
+    $or: [
+      { slug: id },
+      ...(lookupId ? [{ _id: lookupId }] : []),
+    ],
+  }).lean();
+  if (!vehicle) {
+    const computed = slugify(id);
+    if (computed && computed !== id) {
+      vehicle = await Vehicle.findOne({ slug: computed }).lean();
+    }
+  }
   if (!vehicle) return null;
   return JSON.parse(JSON.stringify(vehicle)) as VehicleType;
 }
@@ -66,6 +90,8 @@ export default async function VehicleDetailPage({
   const vehicle = await getVehicle(id);
 
   if (!vehicle) notFound();
+
+  const canonicalSlug = vehicle.slug ?? id;
 
   const categoryLabel =
     vehicle.category === "jeep"
@@ -128,6 +154,21 @@ export default async function VehicleDetailPage({
 
   return (
     <div>
+      <JsonLd
+        data={vehicleJsonLd({
+          name: vehicle.name,
+          description: `Rent a ${vehicle.name ?? "vehicle"} in Nepal with Hamro Yatra Adventure.`,
+          image: getHeroImage(vehicle.images?.[0]),
+          url: `/vehicles/${canonicalSlug}`,
+          brand: vehicle.brand,
+          model: vehicle.model,
+          category: vehicle.category,
+          fuelType: vehicle.fuelType,
+          capacity: vehicle.capacity,
+          price: vehicle.dailyRate,
+          rating: vehicle.rating,
+        })}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-7xl mx-auto">
@@ -161,6 +202,8 @@ export default async function VehicleDetailPage({
                     src={getHeroImage(vehicle.images[0])}
                     alt={vehicle.name}
                     className="w-full h-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-400">
@@ -358,6 +401,25 @@ export default async function VehicleDetailPage({
                     <p key={p}>{p}</p>
                   ))}
                 </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mt-5">
+                  <p className="text-sm font-bold text-gray-900 mb-3">
+                    Points To Remember:
+                  </p>
+                  <ul className="space-y-2">
+                    {[
+                      "If you want to book the vehicle for 1–2 days, the rate is NPR 5,000 per day.",
+                      "If you want to book the vehicle for a specific tour, the price is set according to the tour.",
+                      "For any booking or enquiry, contact Hamro Yatra Adventure or message us on WhatsApp.",
+                    ].map((point) => (
+                      <li key={point} className="flex items-start gap-2">
+                        <span className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-blue-600" />
+                        </span>
+                        <span className="text-sm text-gray-700">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* Popular routes */}
@@ -385,6 +447,16 @@ export default async function VehicleDetailPage({
                   ))}
                 </div>
               </div>
+
+              {/* FAQ */}
+              {vehicle.faqs && vehicle.faqs.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+                  <FaqSection
+                    title="Frequently Asked Questions"
+                    items={vehicle.faqs}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Right column: fixed booking bar */}

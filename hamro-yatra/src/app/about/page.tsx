@@ -11,11 +11,12 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Section from "@/components/section";
 import { buildMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { serializeJsonLd } from "@/lib/jsonld";
 import { getPageContent } from "@/lib/page-content";
 import { getIcon, toNumber } from "@/lib/icon-map";
 import CountUp from "@/components/count-up";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "About Us - Trusted Nepal Trekking & Tour Company",
@@ -60,7 +61,7 @@ export default async function About() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: serializeJsonLd({
             "@context": "https://schema.org",
             "@type": "AboutPage",
             name: `About ${SITE_NAME}`,
@@ -153,11 +154,15 @@ export default async function About() {
                     src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80"
                     alt="Trekking in the Annapurna region near Pokhara, Nepal"
                     className="h-64 w-full rounded-2xl object-cover ring-4 ring-white/10"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
                     alt="The snowy Himalayas of Nepal"
                     className="h-64 w-full rounded-2xl object-cover ring-4 ring-white/10"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -296,6 +301,8 @@ export default async function About() {
                           src={member.image}
                           alt={member.name}
                           className="h-full w-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gray-100">

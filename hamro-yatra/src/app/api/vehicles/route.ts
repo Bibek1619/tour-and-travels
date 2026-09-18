@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Vehicle } from "@/models/vehicle";
+import { revalidateVehicles } from "@/lib/revalidation";
+import { slugify } from "@/lib/slugify";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -35,10 +38,23 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
+
+    if (!body.slug && body.name) {
+      const base = slugify(body.name);
+      let slug = base;
+      let n = 1;
+      while (await Vehicle.findOne({ slug })) {
+        slug = `${base}-${n++}`;
+      }
+      body.slug = slug;
+    }
+
     const vehicle = await Vehicle.create(body);
+    revalidateVehicles();
     return NextResponse.json(
       { success: true, message: "Vehicle created successfully", data: vehicle },
       { status: 201 }

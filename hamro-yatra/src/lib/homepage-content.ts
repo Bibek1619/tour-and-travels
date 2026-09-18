@@ -2,9 +2,9 @@ import type { HomepageContent } from "./types";
 
 export const defaultContent: HomepageContent = {
   hero: {
-    title: "Discover the Magic of Nepal",
+    title: "Nepal Tours, Treks & Vehicle Rentals",
     subtitle:
-      "Book your adventure with confidence - Vehicle rentals, seat reservations, tour packages, and hotels all in one place",
+      "Your trusted travel partner in Pokhara \u2013 book with confidence, travel with ease.",
     mediaType: "video",
     videoSrc: "/hero%20video.mp4",
     imageSrc: "/images-5.jpg",

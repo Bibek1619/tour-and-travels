@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Review } from "@/models/review";
 import { recomputeRating } from "@/lib/review-helpers";
+import { revalidateEntityType, revalidateReviews } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 function toReviewTarget(review: {
   tour?: unknown;
@@ -20,6 +22,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -44,6 +47,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -73,6 +77,11 @@ export async function PUT(
     if (target && statusChanged) {
       await recomputeRating(target);
     }
+    if (target) {
+      revalidateEntityType(target.type);
+    } else {
+      revalidateReviews();
+    }
     return NextResponse.json({
       success: true,
       message: "Review updated successfully",
@@ -91,6 +100,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -105,6 +115,11 @@ export async function DELETE(
     await review.deleteOne();
     if (target) {
       await recomputeRating(target);
+    }
+    if (target) {
+      revalidateEntityType(target.type);
+    } else {
+      revalidateReviews();
     }
     return NextResponse.json({
       success: true,

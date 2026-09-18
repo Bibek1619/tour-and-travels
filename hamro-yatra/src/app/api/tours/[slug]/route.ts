@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
+import { revalidateTourPackages } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +39,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { slug } = await params;
@@ -51,6 +54,7 @@ export async function PUT(
         { status: 404 }
       );
     }
+    revalidateTourPackages();
     return NextResponse.json({
       success: true,
       message: "Tour updated successfully",
@@ -66,9 +70,10 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { slug } = await params;
@@ -80,6 +85,7 @@ export async function DELETE(
       );
     }
     await tour.deleteOne();
+    revalidateTourPackages();
     return NextResponse.json({
       success: true,
       message: "Tour deleted successfully",

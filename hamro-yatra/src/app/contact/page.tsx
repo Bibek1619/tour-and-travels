@@ -12,9 +12,10 @@ import Section from "@/components/section";
 import ContactForm from "@/components/contact/contact-form";
 import FaqAccordion from "@/components/contact/faq-accordion";
 import { buildMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { serializeJsonLd } from "@/lib/jsonld";
 import { getPageContent } from "@/lib/page-content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Contact Us | Nepal Trekking & Tour Operator",
@@ -150,8 +151,8 @@ export default async function Contact() {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+dangerouslySetInnerHTML={{
+          __html: serializeJsonLd({
             "@context": "https://schema.org",
             "@type": "ContactPage",
             name: `Contact ${SITE_NAME}`,
@@ -190,8 +191,8 @@ export default async function Contact() {
               },
               contactPoint: {
                 "@type": "ContactPoint",
-telephone: "+977-9841480794",
-              contactType: "customer service",
+                telephone: "+977-9841480794",
+                contactType: "customer service",
                 areaServed: "NP",
                 availableLanguage: ["English", "Nepali"],
               },

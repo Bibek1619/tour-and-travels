@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
@@ -18,8 +18,42 @@ import {
   FileText,
   ClipboardList,
   CalendarCheck,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
+
+function AdminUserBox() {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const router = useRouter();
+  return (
+    <div className="border-t p-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <p className="truncate text-xs font-medium text-gray-700">
+            {user?.name ?? "Administrator"}
+          </p>
+          <p className="truncate text-xs text-gray-400">
+            {user?.email ?? "Signed in"}
+          </p>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Sign out"
+          onClick={async () => {
+            await authClient.signOut();
+            router.push("/login");
+            router.refresh();
+          }}
+        >
+          <LogOut className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -88,11 +122,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         })}
       </nav>
 
-      <div className="border-t p-4">
-        <p className="text-xs text-gray-400">
-          © 2025 Hamro Yatra Adventure
-        </p>
-      </div>
+      <AdminUserBox />
     </div>
   );
 

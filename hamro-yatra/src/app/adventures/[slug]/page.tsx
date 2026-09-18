@@ -12,10 +12,15 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { getAdventureCategory } from "@/lib/adventure-categories";
+import { getAdventureCategories, getAdventureCategory } from "@/lib/adventure-categories";
 import { buildMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const categories = await getAdventureCategories();
+  return categories.map((c) => ({ slug: c.id }));
+}
 
 export async function generateMetadata({
   params,
@@ -133,6 +138,8 @@ export default async function AdventureDetailPage({
                       src={getCardImage(pkg.images, category.image)}
                       alt={pkg.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     {pkg.difficulty && (

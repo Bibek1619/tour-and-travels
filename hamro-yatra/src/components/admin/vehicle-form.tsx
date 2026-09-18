@@ -6,12 +6,14 @@ import {
   Car,
   ChevronLeft,
   FileText,
+  HelpCircle,
   Image as ImageIcon,
   Loader2,
   Plus,
   Upload,
   X,
 } from "lucide-react";
+import FaqEditor from "./faq-editor";
 
 interface VehicleFormValues {
   category: string;
@@ -43,6 +45,7 @@ export interface VehicleInitial {
   availableCount?: number;
   isAvailable?: boolean;
   images?: string[];
+  faqs?: { q: string; a: string }[];
 }
 
 const blankForm: VehicleFormValues = {
@@ -126,6 +129,9 @@ export default function VehicleForm({
   );
   const [images, setImages] = useState<string[]>(
     initial?.images?.length ? initial.images : [""]
+  );
+  const [faqs, setFaqs] = useState<{ q: string; a: string }[]>(
+    initial?.faqs?.length ? initial.faqs : []
   );
   const [uploading, setUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -237,6 +243,7 @@ export default function VehicleForm({
         : 1,
       isAvailable: formData.isAvailable,
       images: images.filter(Boolean),
+      faqs: faqs.filter((f) => f.q.trim() || f.a.trim()),
     };
 
     try {
@@ -565,6 +572,18 @@ export default function VehicleForm({
           <Plus className="w-4 h-4" />
           Add Image URL
         </button>
+      </Section>
+
+      {/* FAQ */}
+      <Section
+        icon={HelpCircle}
+        title="Frequently Asked Questions"
+        subtitle="Common questions about this vehicle shown on the vehicle page"
+      >
+        <FaqEditor
+          value={faqs}
+          onChange={(next) => setFaqs(next)}
+        />
       </Section>
 
       {error && (

@@ -18,8 +18,11 @@ import {
   Send,
 } from "lucide-react";
 import { formatDuration, formatSeason, type Tour } from "@/lib/types";
-import { getCardImage } from "@/lib/cloudinary";
+import { getCardImage, getHeroImage } from "@/lib/cloudinary";
 import ReviewSection from "@/components/reviews/review-section";
+import FaqSection from "@/components/faq-section";
+import JsonLd from "@/components/json-ld";
+import { tripJsonLd } from "@/lib/jsonld";
 
 export default function TrekDetailClient({
   trek,
@@ -70,6 +73,21 @@ export default function TrekDetailClient({
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+      <JsonLd
+        data={tripJsonLd({
+          title: trek.title,
+          description: trek.shortOverview,
+          image: getHeroImage(images[0]),
+          url: `/treks/${trek.slug}`,
+          price: trek.price,
+          durationText: trek.durationText,
+          durationDays: trek.durationDays,
+          location: trek.location,
+          category: "trek",
+          itineraryCount: trek.itinerary?.length,
+          faqs: trek.faqs,
+        })}
+      />
       {/* Breadcrumb */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -142,6 +160,8 @@ export default function TrekDetailClient({
                   src={images[selectedImage]}
                   alt={trek.title}
                   className="w-full h-full object-cover"
+                  decoding="async"
+                  fetchPriority="high"
                 />
               </div>
               {images.length > 1 && (
@@ -161,6 +181,8 @@ export default function TrekDetailClient({
                         src={img}
                         alt={`View ${idx + 1}`}
                         className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </button>
                   ))}
@@ -172,8 +194,13 @@ export default function TrekDetailClient({
             <div className="bg-white rounded-lg shadow">
               <div className="border-b">
                 <div className="flex overflow-x-auto">
-                  {["overview", "itinerary", "included", "excluded", "guide"].map(
-                    (tab) => (
+                  {[
+                    "overview",
+                    "itinerary",
+                    "included",
+                    "excluded",
+                    "guide",
+                  ].map((tab) => (
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -317,6 +344,8 @@ export default function TrekDetailClient({
                               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"
                               alt="Guide"
                               className="w-full h-full object-cover"
+                              loading="lazy"
+                              decoding="async"
                             />
                           </div>
                           <div className="flex-1">
@@ -404,6 +433,8 @@ export default function TrekDetailClient({
                               src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300"
                               alt="Guide"
                               className="w-full h-full object-cover"
+                              loading="lazy"
+                              decoding="async"
                             />
                           </div>
                           <div className="flex-1">
@@ -484,7 +515,8 @@ export default function TrekDetailClient({
                     </div>
                   </div>
                 )}
-              </div>
+
+                </div>
             </div>
           </div>
 
@@ -610,6 +642,8 @@ export default function TrekDetailClient({
                             src={getCardImage(item.images?.[0])}
                             alt={item.title}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            loading="lazy"
+                            decoding="async"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -631,6 +665,16 @@ export default function TrekDetailClient({
             </div>
           </div>
         </div>
+
+        {trek.faqs && trek.faqs.length > 0 && (
+          <div className="mt-12 mx-auto max-w-3xl">
+            <FaqSection
+              title="Frequently Asked Questions"
+              subtitle="Everything you need to know before booking this trek"
+              items={trek.faqs}
+            />
+          </div>
+        )}
 
         <div className="mt-10">
           <ReviewSection

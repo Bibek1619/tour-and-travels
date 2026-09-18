@@ -8,7 +8,7 @@ import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
 import { getCardImage } from "@/lib/cloudinary";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Car Rental in Nepal - Mahindra Scorpio, SUV & Vehicle Hire",
@@ -92,16 +92,19 @@ export default async function VehiclesPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {vehicles.map((vehicle) => (
-                    <div
+                    <Link
                       key={vehicle._id}
-                      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                      href={`/vehicles/${vehicle.slug || vehicle._id}`}
+                      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
                     >
                       <div className="relative h-56 overflow-hidden">
                         {vehicle.images?.[0] ? (
                           <img
                             src={getCardImage(vehicle.images[0])}
                             alt={vehicle.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            loading="lazy"
+                            decoding="async"
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-400">
@@ -122,19 +125,16 @@ export default async function VehiclesPage() {
                       </div>
 
                       <div className="p-6 flex flex-col flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">
+                        <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-orange-600 transition-colors">
                           {vehicle.name}
                         </h3>
 
-                        <Link
-                          href={`/vehicles/${vehicle._id}`}
-                          className="mt-auto inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                        >
+                        <span className="mt-auto inline-flex items-center justify-center gap-2 bg-orange-600 group-hover:bg-orange-700 text-white font-semibold py-3 rounded-lg transition-colors">
                           View Details
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}

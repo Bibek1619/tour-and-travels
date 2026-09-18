@@ -22,6 +22,7 @@ export async function GET(
     const reviews = await Review.find(
       query as unknown as Parameters<typeof Review.find>[0]
     )
+      .select("-email -user")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);

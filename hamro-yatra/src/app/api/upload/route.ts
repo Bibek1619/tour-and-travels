@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,6 +15,7 @@ const ALLOWED_FORMATS = ["jpg", "jpeg", "png", "webp", "mp4", "webm", "mov"];
 const MAX_SIZE = 30 * 1024 * 1024;
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     const formData = await request.formData();
     const file = formData.get("file");

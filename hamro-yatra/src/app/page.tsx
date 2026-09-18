@@ -23,13 +23,16 @@ import BestTrip from "@/components/best-trip";
 import DestinationsSection from "@/components/destinations-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import Whyus from "@/components/whyus";
+import FaqSection from "@/components/faq-section";
 import Footer from "@/components/footer";
 import Section from "@/components/section";
+import JsonLd from "@/components/json-ld";
+import { travelAgencyJsonLd } from "@/lib/jsonld";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Home - Nepal Trekking, Tours & Travel Packages",
+  title: "Nepal Trekking, Tours & Travel Packages | Hamro Yatra Adventure",
   description:
     "Hamro Yatra Adventure is a trusted Nepal tour operator with 26+ years of experience offering trekking packages, cultural tours, adventure activities, daily route seat bookings and vehicle rentals across Nepal.",
   path: "/",
@@ -122,6 +125,7 @@ export default async function Home() {
 
   return (
     <div>
+      <JsonLd data={travelAgencyJsonLd()} />
       <Navbar />
 
       <Section>
@@ -157,6 +161,17 @@ export default async function Home() {
       </Section>
       <Section>
         <Whyus content={content.whyUs} />
+      </Section>
+      <Section>
+        <div className="max-w-7xl mx-auto px-4 py-16">
+          <div className="max-w-3xl mx-auto">
+            <FaqSection
+              title={homeSections.faq.title}
+              subtitle={homeSections.faq.subtitle}
+              items={homeSections.faq.items}
+            />
+          </div>
+        </div>
       </Section>
 
       <Footer />

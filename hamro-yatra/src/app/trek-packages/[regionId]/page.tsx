@@ -15,9 +15,14 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
-import { getTrekRegion, type TrekRegion } from "@/lib/regions";
+import { getTrekRegion, getTrekRegions, type TrekRegion } from "@/lib/regions";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const regions = await getTrekRegions();
+  return regions.map((r) => ({ regionId: r.id }));
+}
 
 export async function generateMetadata({
   params,
@@ -147,6 +152,8 @@ export default async function TrekRegionPage({
                           }
                           alt={trek.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                          decoding="async"
                         />
                         <div className="absolute top-3 right-3">
                           <span

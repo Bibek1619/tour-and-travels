@@ -64,7 +64,7 @@ export function buildMetadata({
         },
       ];
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title,
     description,
     keywords: [...BASE_KEYWORDS, ...keywords],
     authors: [{ name: SITE_NAME }],

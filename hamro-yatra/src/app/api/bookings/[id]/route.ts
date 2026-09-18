@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Booking } from "@/models/booking";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -32,6 +34,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -64,6 +67,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;

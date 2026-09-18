@@ -12,6 +12,7 @@ export async function GET() {
       status: "approved",
       featuredOnHomepage: true,
     })
+      .select("-email -user")
       .sort({ createdAt: -1 })
       .limit(6);
 

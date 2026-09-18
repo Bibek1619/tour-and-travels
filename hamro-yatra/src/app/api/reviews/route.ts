@@ -5,10 +5,14 @@ import { TourPackage } from "@/models/tourPackage";
 import { Vehicle } from "@/models/vehicle";
 import { Adventure } from "@/models/adventure";
 import { recomputeRating, type ReviewTarget } from "@/lib/review-helpers";
+import { revalidateEntityType } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
+import { cleanString, clampInt, isValidEmail, payloadTooLarge, MAX } from "@/lib/validate";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const sp = request.nextUrl.searchParams;
@@ -48,6 +52,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    if (payloadTooLarge(request.headers.get("content-length"))) {
+      return NextResponse.json(
+        { success: false, message: "Request body too large." },
+        { status: 413 }
+      );
+    }
     await connectDB();
     const body = await request.json();
     const {
@@ -58,7 +68,6 @@ export async function POST(request: NextRequest) {
       email,
       rating,
       review,
-      user,
       location,
     } = body;
 
@@ -68,6 +77,40 @@ export async function POST(request: NextRequest) {
           success: false,
           message: "Name, rating and review are required.",
         },
+        { status: 400 }
+      );
+    }
+
+    const cleanRating = clampInt(rating, 1, 5);
+    if (cleanRating === null) {
+      return NextResponse.json(
+        { success: false, message: "Rating must be a whole number from 1 to 5." },
+        { status: 400 }
+      );
+    }
+
+    const cleanName = cleanString(name, MAX.name);
+    const cleanLocation = location ? cleanString(location, MAX.location) : undefined;
+    const cleanTitle = body.title ? cleanString(body.title, MAX.name) : undefined;
+    const cleanEmail = email ? cleanString(email, MAX.email) : undefined;
+    if (!cleanName || !String(review).trim()) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Name, rating and review are required.",
+        },
+        { status: 400 }
+      );
+    }
+    if (cleanEmail !== undefined && !isValidEmail(cleanEmail)) {
+      return NextResponse.json(
+        { success: false, message: "Please provide a valid email address." },
+        { status: 400 }
+      );
+    }
+    if (String(review).trim().length > 2000) {
+      return NextResponse.json(
+        { success: false, message: "Review must be at most 2000 characters." },
         { status: 400 }
       );
     }
@@ -118,15 +161,18 @@ export async function POST(request: NextRequest) {
       tour: targets[0].type === "tour" ? targets[0].id : undefined,
       vehicle: targets[0].type === "vehicle" ? targets[0].id : undefined,
       adventure: targets[0].type === "adventure" ? targets[0].id : undefined,
-      user: user || null,
-      name: String(name).trim(),
-      email: email ? String(email).trim().toLowerCase() : undefined,
-      location: location ? String(location).trim() : undefined,
-      rating: Number(rating),
+      user: null,
+      name: cleanName,
+      email: cleanEmail,
+      location: cleanLocation,
+      title: cleanTitle,
+      rating: cleanRating,
       review: String(review).trim(),
     });
 
     await recomputeRating(targets[0]);
+
+    revalidateEntityType(targets[0].type);
 
     return NextResponse.json(
       {

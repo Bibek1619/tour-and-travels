@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Region } from "@/models/region";
+import { revalidateRegion } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -40,6 +43,7 @@ export async function PUT(
     if (!region) {
       return NextResponse.json({ error: "Region not found" }, { status: 404 });
     }
+    revalidateRegion(id);
     return NextResponse.json(region);
   } catch (error) {
     return NextResponse.json(
@@ -53,6 +57,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -60,6 +65,7 @@ export async function DELETE(
     if (!region) {
       return NextResponse.json({ error: "Region not found" }, { status: 404 });
     }
+    revalidateRegion(id);
     return NextResponse.json({ success: true, message: "Region deleted" });
   } catch (error) {
     return NextResponse.json(

@@ -1,10 +1,16 @@
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface Vehicle {
   _id: string;
   category?: string;
   fuelType?: string;
   brand?: string;
   model?: string;
-  name?: string;
+name?: string;
+  slug?: string;
   images?: string[];
   dailyRate?: number;
   capacity?: number;
@@ -15,6 +21,7 @@ export interface Vehicle {
   rating?: number;
   totalReviews?: number;
   isAvailable?: boolean;
+  faqs?: FaqItem[];
 }
 
 export interface Tour {
@@ -49,6 +56,7 @@ export interface Tour {
   status?: string;
   rating?: number;
   reviewsCount?: number;
+  faqs?: FaqItem[];
 }
 
 export function formatDuration(days?: number, text?: string): string {
@@ -103,6 +111,7 @@ export interface Adventure {
   status?: string;
   rating?: number;
   reviewsCount?: number;
+  faqs?: FaqItem[];
 }
 
 export interface DailyRoute {

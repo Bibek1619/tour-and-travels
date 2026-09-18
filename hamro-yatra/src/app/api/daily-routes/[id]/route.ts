@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { DailyRoute } from "@/models/dailyRoute";
+import { revalidateDailyRoutes } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +36,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -64,6 +67,7 @@ export async function PUT(
       runValidators: true,
     });
 
+    revalidateDailyRoutes();
     return NextResponse.json({
       success: true,
       message: "Route updated successfully",
@@ -82,6 +86,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -93,6 +98,7 @@ export async function DELETE(
       );
     }
     await route.deleteOne();
+    revalidateDailyRoutes();
     return NextResponse.json({
       success: true,
       message: "Route deleted successfully",

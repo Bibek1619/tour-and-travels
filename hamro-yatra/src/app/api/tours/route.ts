@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
+import { revalidateTourPackages } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -20,13 +22,12 @@ export async function GET(request: NextRequest) {
     const page = Number(sp.get("page") || 1);
     const limit = Number(sp.get("limit") || 10);
     const category = sp.get("category");
-    const status = sp.get("status");
     const search = sp.get("search");
     const region = sp.get("region");
 
     const query: Record<string, unknown> = {};
+    query.status = "published";
     if (category) query.category = category;
-    if (status) query.status = status;
     if (region) query.region = region;
     if (search) query.title = { $regex: search, $options: "i" };
 
@@ -58,6 +59,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
@@ -73,6 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     const tour = await TourPackage.create(body);
+    revalidateTourPackages();
     return NextResponse.json(
       { success: true, message: "Tour created successfully", data: tour },
       { status: 201 }

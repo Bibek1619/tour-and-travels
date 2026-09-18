@@ -9,7 +9,7 @@ import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
 import { getPageContent } from "@/lib/page-content";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Adventure Activities in Nepal - Rafting, Paragliding, Bungee & More",
@@ -64,6 +64,8 @@ export default async function AdventuresPage() {
                 src={hero.image}
                 alt={hero.title}
                 className="w-full h-auto block"
+                decoding="async"
+                fetchPriority="high"
               />
             </div>
             <div>
@@ -99,6 +101,8 @@ export default async function AdventuresPage() {
                     src={adventure.image}
                     alt={adventure.name}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
 

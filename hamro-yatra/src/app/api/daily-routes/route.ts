@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { DailyRoute } from "@/models/dailyRoute";
+import { revalidateDailyRoutes } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +54,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     const route = await DailyRoute.create(body);
+    revalidateDailyRoutes();
     return NextResponse.json(
       { success: true, message: "Daily route created successfully", data: route },
       { status: 201 }

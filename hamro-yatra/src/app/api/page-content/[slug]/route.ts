@@ -3,6 +3,8 @@ import { connectDB } from "@/lib/db";
 import { PageContent } from "@/models/pageContent";
 import { pageContentSlugs, deepMerge } from "@/lib/page-content";
 import { DEFAULT_PAGE_CONTENT } from "@/lib/page-content/defaults";
+import { revalidatePageContent } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +43,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     const { slug } = await params;
     if (!pageContentSlugs.includes(slug as (typeof pageContentSlugs)[number])) {
@@ -57,6 +60,8 @@ export async function PUT(
       { $set: { slug, content: body } },
       { new: true, upsert: true }
     );
+
+    revalidatePageContent(slug);
 
     return NextResponse.json({
       success: true,

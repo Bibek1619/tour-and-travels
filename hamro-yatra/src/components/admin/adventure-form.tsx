@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
   FileText,
+  HelpCircle,
   Image as ImageIcon,
   List,
   Loader2,
@@ -16,6 +17,7 @@ import {
   Upload,
   X,
 } from "lucide-react";
+import FaqEditor from "./faq-editor";
 
 const CATEGORIES = [
   { value: "rafting", label: "White Water Rafting" },
@@ -68,6 +70,7 @@ export interface AdventureInitial {
   featured?: boolean;
   status?: string;
   images?: string[];
+  faqs?: { q: string; a: string }[];
 }
 
 const blankForm: AdventureFormValues = {
@@ -246,6 +249,9 @@ export default function AdventureForm({
   const [images, setImages] = useState<string[]>(
     initial?.images?.length ? initial.images : [""]
   );
+  const [faqs, setFaqs] = useState<{ q: string; a: string }[]>(
+    initial?.faqs?.length ? initial.faqs : []
+  );
   const [uploading, setUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -392,6 +398,7 @@ export default function AdventureForm({
       featured: formData.featured,
       status: formData.status,
       images: images.filter(Boolean),
+      faqs: faqs.filter((f) => f.q.trim() || f.a.trim()),
     };
 
     try {
@@ -804,6 +811,15 @@ export default function AdventureForm({
           <Plus className="w-4 h-4" />
           Add Image URL
         </button>
+      </Section>
+
+      {/* FAQ */}
+      <Section
+        icon={HelpCircle}
+        title="Frequently Asked Questions"
+        subtitle="Common questions about this adventure shown on the package page"
+      >
+        <FaqEditor value={faqs} onChange={(next) => setFaqs(next)} />
       </Section>
 
       {error && (

@@ -3,11 +3,11 @@ import mongoose, { Schema, type InferSchemaType } from "mongoose";
 const homepageContentSchema = new Schema(
   {
     hero: {
-      title: { type: String, default: "Discover the Magic of Nepal" },
+      title: { type: String, default: "Nepal Tours, Treks & Vehicle Rentals" },
       subtitle: {
         type: String,
         default:
-          "Book your adventure with confidence - Vehicle rentals, seat reservations, tour packages, and hotels all in one place",
+          "Your trusted travel partner in Pokhara \u2013 book with confidence, travel with ease.",
       },
       mediaType: { type: String, enum: ["video", "image"], default: "video" },
       videoSrc: { type: String, default: "/hero video.mp4" },

@@ -69,6 +69,13 @@ export interface HomeWhyUsContent {
   features: { icon: string; title: string; badge: string; description: string }[];
 }
 
+export interface HomeFaqContent {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  items: { q: string; a: string }[];
+}
+
 export interface HomePageContent {
   hero: HomeHeroContent;
   intro: HomeIntroContent;
@@ -78,6 +85,7 @@ export interface HomePageContent {
     destinations: HomeSectionHeading & { image?: string };
     testimonials: HomeSectionHeading & { video?: string; videoThumbnail?: string };
     bestTrip: BestTripContent;
+    faq: HomeFaqContent;
   };
   whyUs: HomeWhyUsContent;
 }
@@ -182,6 +190,68 @@ export interface VehicleBookingPageContent {
   hero: { title: string };
 }
 
+export interface FooterLinkItem {
+  label: string;
+  href: string;
+}
+
+export interface FooterAssociationItem {
+  image: string;
+  alt: string;
+}
+
+export interface FooterPageContent {
+  company: {
+    logo: string;
+    title: string;
+    description: string;
+  };
+  quickLinks: {
+    title: string;
+    items: FooterLinkItem[];
+  };
+  popularTours: {
+    title: string;
+    auto: boolean;
+    limit: number;
+    items: FooterLinkItem[];
+  };
+  popularAdventures: {
+    title: string;
+    auto: boolean;
+    limit: number;
+    items: FooterLinkItem[];
+  };
+  contact: {
+    title: string;
+    address: string;
+    phone: string;
+    email: string;
+  };
+  associations: {
+    title: string;
+    items: FooterAssociationItem[];
+  };
+  payments: {
+    title: string;
+    items: { label: string }[];
+  };
+  follow: {
+    title: string;
+  };
+  social: {
+    facebook: string;
+    instagram: string;
+    tiktok: string;
+    youtube: string;
+  };
+  bottom: {
+    copyright: string;
+    privacy: { label: string; href: string };
+    terms: { label: string; href: string };
+  };
+}
+
 export interface ContactPageContent {
   hero: { eyebrow: string; title: string; subtitle: string };
   info: {
@@ -205,6 +275,7 @@ export interface PageContentMap {
   "seat-booking": SeatBookingPageContent;
   "vehicle-booking": VehicleBookingPageContent;
   contact: ContactPageContent;
+  footer: FooterPageContent;
 }
 
 export type PageContentSlug = keyof PageContentMap;

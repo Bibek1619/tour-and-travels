@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import SeatSelector from "@/components/seat-booking/seat-selector";
 import TripDetails from "@/components/seat-booking/trip-details";
 import BookingModal from "@/components/seat-booking/booking-modal";
-import { updateDailyRoute } from "@/lib/api";
 import { MessageCircle } from "lucide-react";
 
 interface SeatBookingClientProps {
@@ -52,7 +51,11 @@ export default function SeatBookingClient({
       const updatedBookedSeats = Array.from(
         new Set([...bookedSeats, ...selectedSeats])
       );
-      await updateDailyRoute(routeId, { bookedSeats: updatedBookedSeats });
+      await fetch(`/api/seat-booking/${routeId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookedSeats: updatedBookedSeats }),
+      });
       setSelectedSeats([]);
       setShowModal(false);
       router.refresh();

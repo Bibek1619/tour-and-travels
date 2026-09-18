@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Adventure } from "@/models/adventure";
+import { revalidateAdventures } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -19,14 +21,13 @@ export async function GET(request: NextRequest) {
     const page = Number(sp.get("page") || 1);
     const limit = Number(sp.get("limit") || 20);
     const category = sp.get("category");
-    const status = sp.get("status");
     const difficulty = sp.get("difficulty");
     const featured = sp.get("featured");
     const search = sp.get("search");
 
     const query: Record<string, unknown> = {};
+    query.status = "published";
     if (category) query.category = category;
-    if (status) query.status = status;
     if (difficulty) query.difficulty = difficulty;
     if (featured) query.featured = featured === "true";
     if (search)
@@ -63,6 +64,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
@@ -78,6 +80,7 @@ export async function POST(request: NextRequest) {
     }
 
     const adventure = await Adventure.create(body);
+    revalidateAdventures();
     return NextResponse.json(
       { success: true, message: "Adventure created successfully", data: adventure },
       { status: 201 }

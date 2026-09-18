@@ -173,6 +173,16 @@ const tourGroups: FieldGroup[] = [
           { key: "desc", label: "Description" },
         ],
       },
+      {
+        name: "faqs",
+        label: "FAQs (Question [TAB] Answer per line)",
+        type: "rows",
+        columns: [
+          { key: "q", label: "Question" },
+          { key: "a", label: "Answer" },
+        ],
+        help: "Answers cannot contain tabs.",
+      },
     ],
   },
 ];
@@ -228,6 +238,16 @@ const trekGroups: FieldGroup[] = [
           { key: "desc", label: "Description" },
         ],
       },
+      {
+        name: "faqs",
+        label: "FAQs (Question [TAB] Answer per line)",
+        type: "rows",
+        columns: [
+          { key: "q", label: "Question" },
+          { key: "a", label: "Answer" },
+        ],
+        help: "Answers cannot contain tabs.",
+      },
     ],
   },
 ];
@@ -249,6 +269,16 @@ const vehicleGroups: FieldGroup[] = [
       { name: "isAvailable", label: "Available", type: "checkbox" },
       { name: "features", label: "Features (one per line)", type: "list" },
       { name: "images", label: "Image URLs (one per line)", type: "images" },
+      {
+        name: "faqs",
+        label: "FAQs (Question [TAB] Answer per line)",
+        type: "rows",
+        columns: [
+          { key: "q", label: "Question" },
+          { key: "a", label: "Answer" },
+        ],
+        help: "Answers cannot contain tabs.",
+      },
     ],
   },
 ];
@@ -282,6 +312,16 @@ const adventureGroups: FieldGroup[] = [
       { name: "excluded", label: "Excluded (one per line)", type: "list" },
       { name: "requirements", label: "Requirements (one per line)", type: "list" },
       { name: "images", label: "Image URLs (one per line)", type: "images" },
+      {
+        name: "faqs",
+        label: "FAQs (Question [TAB] Answer per line)",
+        type: "rows",
+        columns: [
+          { key: "q", label: "Question" },
+          { key: "a", label: "Answer" },
+        ],
+        help: "Answers cannot contain tabs.",
+      },
     ],
   },
 ];

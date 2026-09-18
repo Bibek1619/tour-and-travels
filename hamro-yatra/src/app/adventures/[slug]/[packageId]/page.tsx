@@ -20,9 +20,24 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getAdventureCategory } from "@/lib/adventure-categories";
 import ReviewSection from "@/components/reviews/review-section";
+import FaqSection from "@/components/faq-section";
 import { buildMetadata } from "@/lib/seo";
+import { getHeroImage } from "@/lib/cloudinary";
+import JsonLd from "@/components/json-ld";
+import { adventureJsonLd } from "@/lib/jsonld";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  await connectDB();
+  const adventures = await Adventure.find({ status: "published" })
+    .select("_id category")
+    .lean();
+  return adventures.map((a) => ({
+    slug: String(a.category),
+    packageId: String(a._id),
+  }));
+}
 
 export async function generateMetadata({
   params,
@@ -107,6 +122,20 @@ export default async function AdventurePackageDetailPage({
 
   return (
     <div>
+      <JsonLd
+        data={adventureJsonLd({
+          name: pkg.name,
+          description: pkg.shortDescription,
+          image: getHeroImage(images[0]),
+          url: `/adventures/${slug}/${packageId}`,
+          category: category.name,
+          location: pkg.location,
+          duration: pkg.duration,
+          price,
+          rating: pkg.rating,
+          faqs: pkg.faqs,
+        })}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50">
         {/* Breadcrumb */}
@@ -188,6 +217,9 @@ export default async function AdventurePackageDetailPage({
                         src={img}
                         alt={`${pkg.name} ${idx + 1}`}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        loading={idx === 0 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={idx === 0 ? "high" : "low"}
                       />
                     </div>
                   ))}
@@ -217,6 +249,16 @@ export default async function AdventurePackageDetailPage({
                   </div>
                 )}
               </div>
+
+              {/* FAQ */}
+              {pkg.faqs && pkg.faqs.length > 0 && (
+                <div className="bg-white rounded-xl p-8 shadow-sm">
+                  <FaqSection
+                    title="Frequently Asked Questions"
+                    items={pkg.faqs}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}

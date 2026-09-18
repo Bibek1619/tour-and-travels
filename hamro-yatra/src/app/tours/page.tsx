@@ -10,7 +10,7 @@ import { getPageContent } from "@/lib/page-content";
 import { getHeroImage } from "@/lib/cloudinary";
 import { getIcon } from "@/lib/icon-map";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Nepal Tour Packages - Cultural & Sightseeing Tours",

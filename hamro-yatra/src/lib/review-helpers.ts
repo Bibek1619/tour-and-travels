@@ -27,9 +27,16 @@ const COUNT_FIELD: Record<ReviewTargetType, "reviewsCount" | "totalReviews"> = {
 export async function recomputeRating(target: ReviewTarget): Promise<void> {
   await connectDB();
   const field = TARGET_FIELD[target.type];
+  let id: Types.ObjectId = target.id as Types.ObjectId;
+  if (typeof target.id === "string") {
+    if (!Types.ObjectId.isValid(target.id)) {
+      throw new Error(`Invalid ${field} id`);
+    }
+    id = new Types.ObjectId(target.id);
+  }
 
   const result = await Review.aggregate([
-    { $match: { [field]: target.id, status: "approved" } },
+    { $match: { [field]: id, status: "approved" } },
     {
       $group: {
         _id: null,
@@ -48,10 +55,10 @@ export async function recomputeRating(target: ReviewTarget): Promise<void> {
   };
 
   if (target.type === "tour") {
-    await TourPackage.findByIdAndUpdate(target.id, update);
+    await TourPackage.findByIdAndUpdate(id, update);
   } else if (target.type === "vehicle") {
-    await Vehicle.findByIdAndUpdate(target.id, update);
+    await Vehicle.findByIdAndUpdate(id, update);
   } else if (target.type === "adventure") {
-    await Adventure.findByIdAndUpdate(target.id, update);
+    await Adventure.findByIdAndUpdate(id, update);
   }
 }

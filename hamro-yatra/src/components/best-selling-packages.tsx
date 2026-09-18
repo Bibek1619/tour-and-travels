@@ -42,6 +42,8 @@ export function BestSellingPackages({
             src={section.image}
             alt={section.title}
             className="w-full max-h-64 object-cover rounded-xl mb-10"
+            loading="lazy"
+            decoding="async"
           />
         )}
         {/* Section Header */}
@@ -90,6 +92,8 @@ export function BestSellingPackages({
                       src={getCardImage(pkg.images?.[0])}
                       alt={pkg.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 

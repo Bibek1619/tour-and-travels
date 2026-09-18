@@ -13,7 +13,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  HelpCircle,
 } from "lucide-react";
+import FaqEditor from "./faq-editor";
 
 interface RegionOption {
   _id: string;
@@ -41,6 +43,7 @@ interface WizardFormData {
   shortOverview: string;
   highlights: string[];
   itinerary: ItineraryDay[];
+  faqs: { q: string; a: string }[];
   images: string[];
   status: string;
 }
@@ -62,6 +65,7 @@ export interface WizardInitial {
   shortOverview?: string;
   highlights?: string[];
   itinerary?: ItineraryDay[];
+  faqs?: { q: string; a: string }[];
   images?: string[];
   status?: string;
 }
@@ -81,6 +85,7 @@ const blankForm = (defaultCategory: string, defaultRegion: string): WizardFormDa
   shortOverview: "",
   highlights: [""],
   itinerary: [{ day: 1, title: "", desc: "" }],
+  faqs: [],
   images: [""],
   status: "published",
 });
@@ -108,6 +113,7 @@ function buildForm(
     shortOverview: initial.shortOverview ?? "",
     highlights: initial.highlights?.length ? initial.highlights : [""],
     itinerary: initial.itinerary?.length ? initial.itinerary : [{ day: 1, title: "", desc: "" }],
+    faqs: initial.faqs?.length ? initial.faqs : [],
     images: initial.images?.length ? initial.images : [""],
     status: initial.status ?? "published",
   };
@@ -123,6 +129,7 @@ const steps = [
   { id: 2, name: "Details & Itinerary", icon: FileText },
   { id: 3, name: "Highlights", icon: List },
   { id: 4, name: "Images", icon: ImageIcon },
+  { id: 5, name: "FAQ", icon: HelpCircle },
 ];
 
 export default function CreateTourWizard({
@@ -302,7 +309,7 @@ export default function CreateTourWizard({
 
   const nextStep = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep((prev) => Math.min(prev + 1, 4));
+      setCurrentStep((prev) => Math.min(prev + 1, 5));
     }
   };
 
@@ -340,6 +347,7 @@ export default function CreateTourWizard({
       shortOverview: formData.shortOverview || undefined,
       highlights: formData.highlights.filter(Boolean),
       itinerary: formData.itinerary.filter((d) => d.title || d.desc),
+      faqs: formData.faqs.filter((f) => f.q.trim() || f.a.trim()),
       images: formData.images.filter(Boolean),
       status: formData.status,
     };
@@ -887,6 +895,25 @@ export default function CreateTourWizard({
               </button>
             </div>
           )}
+
+          {currentStep === 5 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Frequently Asked Questions
+                </h2>
+                <p className="text-gray-600">
+                  Add common questions travelers ask about this{" "}
+                  {isTrek ? "trek" : "tour"}
+                </p>
+              </div>
+
+              <FaqEditor
+                value={formData.faqs}
+                onChange={(faqs) => setFormData((prev) => ({ ...prev, faqs }))}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -908,7 +935,7 @@ export default function CreateTourWizard({
           Previous
         </button>
 
-        {currentStep < 4 ? (
+        {currentStep < 5 ? (
           <button
             onClick={nextStep}
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors"

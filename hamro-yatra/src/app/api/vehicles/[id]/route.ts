@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Vehicle } from "@/models/vehicle";
+import { revalidateVehicles } from "@/lib/revalidation";
+import { slugify } from "@/lib/slugify";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -34,10 +37,22 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
     const body = await request.json();
+
+    if (!body.slug && body.name) {
+      const base = slugify(body.name);
+      let slug = base;
+      let n = 1;
+      while (await Vehicle.findOne({ slug, _id: { $ne: id } })) {
+        slug = `${base}-${n++}`;
+      }
+      body.slug = slug;
+    }
+
     const vehicle = await Vehicle.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
@@ -48,6 +63,7 @@ export async function PUT(
         { status: 404 }
       );
     }
+    revalidateVehicles();
     return NextResponse.json({
       success: true,
       message: "Vehicle updated successfully",
@@ -66,6 +82,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const { id } = await params;
@@ -77,6 +94,7 @@ export async function DELETE(
       );
     }
     await vehicle.deleteOne();
+    revalidateVehicles();
     return NextResponse.json({
       success: true,
       message: "Vehicle deleted successfully",

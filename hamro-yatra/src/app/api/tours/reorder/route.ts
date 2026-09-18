@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
+import { revalidateTourPackages } from "@/lib/revalidation";
+import { requireAdmin, unauthorized } from "@/lib/admin-guard";
 
 export const dynamic = "force-dynamic";
 
 export async function PUT(request: Request) {
+  if (!(await requireAdmin())) return unauthorized();
   try {
     await connectDB();
     const body = await request.json();
@@ -23,6 +26,7 @@ export async function PUT(request: Request) {
       )
     );
 
+    revalidateTourPackages();
     return NextResponse.json({
       success: true,
       message: "Order saved successfully",

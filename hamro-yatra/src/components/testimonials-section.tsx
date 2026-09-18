@@ -185,6 +185,8 @@ export function TestimonialsSection({
                     src={videoThumb}
                     alt="Video testimonial"
                     className="w-full h-[200px] md:h-[240px] object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
                   <button

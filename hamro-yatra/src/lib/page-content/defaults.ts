@@ -9,6 +9,7 @@ export const pageContentSlugs = [
   "seat-booking",
   "vehicle-booking",
   "contact",
+  "footer",
 ] as const;
 
 export type { PageContentSlug };
@@ -16,9 +17,9 @@ export type { PageContentSlug };
 export const DEFAULT_PAGE_CONTENT: PageContentMap = {
   home: {
     hero: {
-      title: "Discover the Magic of Nepal",
+      title: "Nepal Tours, Treks & Vehicle Rentals",
       subtitle:
-        "Book your adventure with confidence - Vehicle rentals, seat reservations, tour packages, and hotels all in one place",
+        "Your trusted travel partner in Pokhara \u2013 book with confidence, travel with ease.",
       mediaType: "video",
       videoSrc: "/hero%20video.mp4",
       imageSrc: "/images-5.jpg",
@@ -76,6 +77,34 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
         highlight: "Travelers",
         video: "",
         videoThumbnail: "",
+      },
+      faq: {
+        eyebrow: "FAQs",
+        title: "Frequently Asked Questions",
+        subtitle:
+          "Answers to the most common questions about travelling with Hamro Yatra Adventure",
+        items: [
+          {
+            q: "How do I book a tour or trek?",
+            a: "Contact us via the enquiry form, phone or WhatsApp. We'll share a detailed itinerary and confirm your booking within 24 hours.",
+          },
+          {
+            q: "What payment methods do you accept?",
+            a: "Bank transfer, Visa/Mastercard, IME Pay, Khalti and cash on arrival for smaller bookings.",
+          },
+          {
+            q: "Can you customize my itinerary?",
+            a: "Yes — every tour and trek can be tailored for private groups, couples or solo travellers, including dates, duration and destinations.",
+          },
+          {
+            q: "Are your vehicles safe and well maintained?",
+            a: "Absolutely. All vehicles are licensed, freshly serviced and driven by experienced local drivers familiar with Nepal's mountain roads.",
+          },
+          {
+            q: "Do you offer travel insurance?",
+            a: "We strongly recommend comprehensive travel insurance and can help you arrange it for your trip.",
+          },
+        ],
       },
       bestTrip: {
         badge: "Best Trip",
@@ -419,6 +448,78 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
         { label: "YouTube", href: "https://youtube.com/@hamroyatradventure333" },
         { label: "TikTok", href: "https://www.tiktok.com/@hamroyatraadventucher" },
       ],
+    },
+  },
+  footer: {
+    company: {
+      logo: "/hamro yatra.jpeg",
+      title: "Hamro Yatra Adventure",
+      description:
+        "26+ years of experience in organizing trekking, tours, and transportation services across Nepal.",
+    },
+    quickLinks: {
+      title: "Quick Links",
+      items: [
+        { label: "About Us", href: "/about" },
+        { label: "Tour Packages", href: "/tours" },
+        { label: "Seat Booking", href: "/seat-booking" },
+        { label: "Vehicle Rental", href: "/vehicles" },
+        { label: "Hotels", href: "/hotels" },
+        { label: "Trekking packages", href: "/trek-packages" },
+        { label: "Blogs", href: "/blogs" },
+      ],
+    },
+    popularTours: {
+      title: "Popular Tour Packages",
+      auto: true,
+      limit: 4,
+      items: [
+        { label: "Rara Lake Tour", href: "/tours/rara" },
+        { label: "Pokhara Valley Tour", href: "/tours/pokhara" },
+        {
+          label: "Pokhara to Chitwan Jungle Safari",
+          href: "/tours/pokhara-to-chitwan-jungle-safari",
+        },
+        { label: "Kathmandu Valley Tour", href: "/tours/kathmandu-valley" },
+      ],
+    },
+    popularAdventures: {
+      title: "Popular Adventures",
+      auto: true,
+      limit: 4,
+      items: [],
+    },
+    contact: {
+      title: "Contact Us",
+      address: "Lakeside, Pokhara 33700, Nepal",
+      phone: "+977 984-1480794",
+      email: "info@hamroyatra.com.np",
+    },
+    associations: {
+      title: "We Are Associated With",
+      items: [
+        { image: "/nepal-tourism-board.png", alt: "Nepal Tourism Board" },
+        { image: "/taan.png", alt: "TAAN" },
+        { image: "/nma.png", alt: "Nepal Mountaineering Association" },
+      ],
+    },
+    payments: {
+      title: "We Accept",
+      items: [{ label: "VISA" }, { label: "Mastercard" }, { label: "Bank Transfer" }],
+    },
+    follow: {
+      title: "Find & Follow Us on",
+    },
+    social: {
+      facebook: "https://www.facebook.com/share/1EyvKahGsk/",
+      instagram: "https://www.instagram.com/hamro_yatra_adventure",
+      tiktok: "https://www.tiktok.com/@hamroyatraadventucher",
+      youtube: "https://youtube.com/@hamroyatradventure333",
+    },
+    bottom: {
+      copyright: "© 2025 Hamro Yatra Adventure. All rights reserved.",
+      privacy: { label: "Privacy Policy", href: "/privacy" },
+      terms: { label: "Terms & Conditions", href: "/terms" },
     },
   },
 };

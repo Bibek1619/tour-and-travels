@@ -308,6 +308,8 @@ export function Whyus({ content }: { content: WhyUsContent }) {
                       src={slide?.src}
                       alt={slide?.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
 
@@ -457,6 +459,8 @@ export function Whyus({ content }: { content: WhyUsContent }) {
                       src={s.src}
                       alt={s.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                   {s.type === "video" && (

@@ -53,26 +53,6 @@ export async function getDailyRouteById(id: string): Promise<DailyRoute | null> 
   return fetchJson<DailyRoute>(`/daily-routes/${id}`);
 }
 
-export async function updateDailyRoute(
-  id: string,
-  body: Partial<DailyRoute>
-): Promise<DailyRoute | null> {
-  try {
-    const res = await fetch(`/api/daily-routes/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return (json?.data ?? null) as DailyRoute | null;
-  } catch (error) {
-    console.log("[api] updateDailyRoute error:", error);
-    return null;
-  }
-}
-
 export async function getVehicles(
   params?: Record<string, string | number | boolean>
 ): Promise<Vehicle[]> {

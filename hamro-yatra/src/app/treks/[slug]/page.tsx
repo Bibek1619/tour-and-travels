@@ -10,7 +10,18 @@ import Footer from "@/components/footer";
 import TrekDetailClient from "./trek-detail-client";
 import { buildMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  await connectDB();
+  const treks = await TourPackage.find({
+    category: "trek",
+    status: "published",
+  })
+    .select("slug")
+    .lean();
+  return treks.map((t) => ({ slug: String(t.slug) }));
+}
 
 export async function generateMetadata({
   params,
