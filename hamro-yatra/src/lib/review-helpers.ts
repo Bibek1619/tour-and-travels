@@ -12,6 +12,14 @@ export type ReviewTarget = {
   id: string | Types.ObjectId;
 };
 
+export type ReviewView = {
+  _id: string;
+  name?: string;
+  rating?: number;
+  review?: string;
+  createdAt?: string;
+};
+
 const TARGET_FIELD: Record<ReviewTargetType, string> = {
   tour: "tour",
   vehicle: "vehicle",
@@ -23,6 +31,47 @@ const COUNT_FIELD: Record<ReviewTargetType, "reviewsCount" | "totalReviews"> = {
   vehicle: "totalReviews",
   adventure: "reviewsCount",
 };
+
+export async function getEntityReviews(
+  type: ReviewTargetType,
+  id: string | Types.ObjectId,
+  limit = 10
+): Promise<{ data: ReviewView[]; total: number; avgRating: number }> {
+  await connectDB();
+  const field = TARGET_FIELD[type];
+  let targetId: Types.ObjectId = id as Types.ObjectId;
+  if (typeof id === "string") {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new Error(`Invalid ${field} id`);
+    }
+    targetId = new Types.ObjectId(id);
+  }
+
+  const [reviews, agg] = await Promise.all([
+    Review.find({ [field]: targetId, status: "approved" })
+      .select("name rating review createdAt")
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .lean(),
+    Review.aggregate([
+      { $match: { [field]: targetId, status: "approved" } },
+      {
+        $group: {
+          _id: null,
+          avg: { $avg: "$rating" },
+          total: { $sum: 1 },
+        },
+      },
+    ]),
+  ]);
+
+  const row = agg[0] || { avg: 0, total: 0 };
+  return {
+    data: JSON.parse(JSON.stringify(reviews)) as ReviewView[],
+    total: row.total,
+    avgRating: Math.round(row.avg * 10) / 10,
+  };
+}
 
 export async function recomputeRating(target: ReviewTarget): Promise<void> {
   await connectDB();

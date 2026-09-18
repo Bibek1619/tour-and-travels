@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import TourDetailClient from "./tour-detail-client";
 import { buildMetadata } from "@/lib/seo";
+import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
 
@@ -107,11 +108,18 @@ export default async function TourDetailPage({
   }
 
   const similarTours = await getSimilarTours(slug);
+  const reviews = await getEntityReviews("tour", tour._id);
 
   return (
     <div>
       <Navbar />
-      <TourDetailClient tour={tour} similarTours={similarTours} />
+      <TourDetailClient
+        tour={tour}
+        similarTours={similarTours}
+        initialReviews={reviews.data}
+        initialTotalReviews={reviews.total}
+        initialAvgRating={reviews.avgRating}
+      />
       <Footer />
     </div>
   );

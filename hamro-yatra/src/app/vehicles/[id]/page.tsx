@@ -28,6 +28,7 @@ import { getHeroImage } from "@/lib/cloudinary";
 import { slugify } from "@/lib/slugify";
 import JsonLd from "@/components/json-ld";
 import { vehicleJsonLd } from "@/lib/jsonld";
+import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
 
@@ -92,6 +93,8 @@ export default async function VehicleDetailPage({
   if (!vehicle) notFound();
 
   const canonicalSlug = vehicle.slug ?? id;
+
+  const reviewData = await getEntityReviews("vehicle", vehicle._id);
 
   const categoryLabel =
     vehicle.category === "jeep"
@@ -472,10 +475,14 @@ export default async function VehicleDetailPage({
 
           <div className="mt-10">
             <ReviewSection
+              key={`vehicle-${vehicle._id}`}
               entityType="vehicle"
               entityId={vehicle._id}
               entityTitle={vehicle.name ?? "Vehicle"}
               noun="vehicle"
+              initialReviews={reviewData.data}
+              initialTotal={reviewData.total}
+              initialAvgRating={reviewData.avgRating}
             />
           </div>
         </div>

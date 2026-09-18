@@ -1,5 +1,8 @@
 import { connectDB } from "@/lib/db";
 import { Review } from "@/models/review";
+import "@/models/tourPackage";
+import "@/models/vehicle";
+import "@/models/adventure";
 import AdminLayout from "@/components/admin/admin-layout";
 import ReviewsManager from "@/components/admin/reviews-manager";
 import type { Review as ReviewType } from "@/lib/types";

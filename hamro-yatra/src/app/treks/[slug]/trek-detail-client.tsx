@@ -23,13 +23,20 @@ import ReviewSection from "@/components/reviews/review-section";
 import FaqSection from "@/components/faq-section";
 import JsonLd from "@/components/json-ld";
 import { tripJsonLd } from "@/lib/jsonld";
+import type { ReviewView } from "@/lib/review-helpers";
 
 export default function TrekDetailClient({
   trek,
   similarTreks,
+  initialReviews,
+  initialTotalReviews,
+  initialAvgRating,
 }: {
   trek: Tour;
   similarTreks?: Tour[];
+  initialReviews?: ReviewView[];
+  initialTotalReviews?: number;
+  initialAvgRating?: number;
 }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(0);
@@ -129,6 +136,9 @@ export default function TrekDetailClient({
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-semibold">{trek.rating}</span>
+                    <span className="text-sm">
+                      ({trek.reviewsCount} reviews)
+                    </span>
                   </div>
                 )}
               </div>
@@ -678,10 +688,14 @@ export default function TrekDetailClient({
 
         <div className="mt-10">
           <ReviewSection
+            key={`trek-${trek._id}`}
             entityType="tour"
             entityId={trek._id}
             entityTitle={trek.title}
             noun="trek"
+            initialReviews={initialReviews}
+            initialTotal={initialTotalReviews}
+            initialAvgRating={initialAvgRating}
           />
         </div>
       </div>

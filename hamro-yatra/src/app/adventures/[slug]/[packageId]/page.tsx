@@ -25,6 +25,7 @@ import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
 import JsonLd from "@/components/json-ld";
 import { adventureJsonLd } from "@/lib/jsonld";
+import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
 
@@ -109,6 +110,8 @@ export default async function AdventurePackageDetailPage({
       </div>
     );
   }
+
+  const reviewData = await getEntityReviews("adventure", packageId);
 
   const images =
     pkg.images && pkg.images.length > 0 ? pkg.images : [category.image];
@@ -343,9 +346,13 @@ export default async function AdventurePackageDetailPage({
 
           <div className="mt-10">
             <ReviewSection
+              key={`adventure-${pkg._id}`}
               entityType="adventure"
               entityId={pkg._id}
               entityTitle={pkg.name}
+              initialReviews={reviewData.data}
+              initialTotal={reviewData.total}
+              initialAvgRating={reviewData.avgRating}
             />
           </div>
         </div>

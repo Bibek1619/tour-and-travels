@@ -2,8 +2,27 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Play, Quote } from "lucide-react";
+import { Play, Quote, Star } from "lucide-react";
 import type { Review } from "@/lib/types";
+
+function StarRow({ rating }: { rating?: number }) {
+  const r = rating ?? 0;
+  if (r <= 0) return null;
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`w-3.5 h-3.5 ${
+            i < Math.floor(r)
+              ? "fill-yellow-400 text-yellow-400"
+              : "text-gray-300"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
 
 // ── Name-initial avatar ───────────────────────────────────────────
 const COLORS = [
@@ -45,6 +64,7 @@ const fallbackFeatured = {
     "Nepal changed my perspective on life. The mountains, the people, the culture — Hamro Yatra Adventure made sure I experienced it all in the most authentic way possible.",
   name: "David Thompson",
   location: "USA",
+  rating: 5,
   title: "Everest Base Camp Trek",
 };
 
@@ -126,6 +146,7 @@ export function TestimonialsSection({
         review: apiReviews[0].review,
         name: apiReviews[0].name,
         location: apiReviews[0].location || "",
+        rating: apiReviews[0].rating,
         title: entityLabel(apiReviews[0]) || apiReviews[0].title || "",
       }
     : fallbackFeatured;
@@ -211,6 +232,9 @@ export function TestimonialsSection({
             {/* Big Quote card */}
             <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100">
               <Quote className="w-7 h-7 text-orange-200 mb-3" />
+              <div className="mb-2">
+                <StarRow rating={featured.rating} />
+              </div>
               <p className="text-lg md:text-xl font-bold text-gray-900 leading-snug mb-4">
                 &ldquo;{featured.review}&rdquo;
               </p>
@@ -248,9 +272,12 @@ export function TestimonialsSection({
                 transition={{ duration: 0.5, delay: 0.1 * i }}
                 className="bg-white rounded-2xl p-7 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
               >
-                <p className="text-gray-600 text-base leading-relaxed mb-6">
+                <p className="text-gray-600 text-base leading-relaxed mb-4">
                   &ldquo;{t.review}&rdquo;
                 </p>
+                <div className="mb-3">
+                  <StarRow rating={t.rating} />
+                </div>
                 <div className="flex items-center gap-3">
                   <Avatar name={t.name} size="lg" />
                   <div>

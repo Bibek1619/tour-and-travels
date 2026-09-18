@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import TrekDetailClient from "./trek-detail-client";
 import { buildMetadata } from "@/lib/seo";
+import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
 
@@ -102,11 +103,18 @@ export default async function TrekDetailPage({
   }
 
   const similarTreks = await getSimilarTreks(slug);
+  const reviews = await getEntityReviews("tour", trek._id);
 
   return (
     <div>
       <Navbar />
-      <TrekDetailClient trek={trek} similarTreks={similarTreks} />
+      <TrekDetailClient
+        trek={trek}
+        similarTreks={similarTreks}
+        initialReviews={reviews.data}
+        initialTotalReviews={reviews.total}
+        initialAvgRating={reviews.avgRating}
+      />
       <Footer />
     </div>
   );

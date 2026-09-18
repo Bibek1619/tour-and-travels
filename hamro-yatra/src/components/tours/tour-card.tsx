@@ -8,20 +8,6 @@ interface TourCardListProps {
   tours: Tour[];
 }
 
-const getReviewData = (index: number) => {
-  const reviews = [
-    { rating: 5.0, count: 7 },
-    { rating: 4.9, count: 12 },
-    { rating: 5.0, count: 5 },
-    { rating: 4.8, count: 9 },
-    { rating: 5.0, count: 11 },
-    { rating: 4.9, count: 6 },
-    { rating: 4.7, count: 8 },
-    { rating: 5.0, count: 4 },
-  ];
-  return reviews[index % reviews.length];
-};
-
 export default function TourCard({ tours }: TourCardListProps) {
   if (tours.length === 0) {
     return (
@@ -35,8 +21,9 @@ export default function TourCard({ tours }: TourCardListProps) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tours.map((tour, index) => {
-        const reviewData = getReviewData(index);
+      {tours.map((tour) => {
+        const rating = tour.rating ?? 0;
+        const reviewCount = tour.reviewsCount ?? 0;
         return (
           <Link key={tour._id} href={`/tours/${tour.slug}`}>
             <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full">
@@ -60,26 +47,28 @@ export default function TourCard({ tours }: TourCardListProps) {
               {/* Content Section */}
               <div className="p-6">
                 {/* Rating */}
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < Math.floor(reviewData.rating)
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
+                {(rating > 0 || reviewCount > 0) && (
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < Math.floor(rating)
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-bold text-gray-900">{rating}</span>
+                    {reviewCount > 0 && (
+                      <span className="text-sm text-gray-500">
+                        ({reviewCount} reviews)
+                      </span>
+                    )}
                   </div>
-                  <span className="font-bold text-gray-900">
-                    {reviewData.rating}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    ({reviewData.count} reviews)
-                  </span>
-                </div>
+                )}
 
                 {/* Title */}
                 <h3 className="font-bold text-xl text-gray-800 mb-4 line-clamp-2 hover:text-orange-600 transition-colors">

@@ -20,8 +20,21 @@ import ReviewSection from "@/components/reviews/review-section";
 import FaqSection from "@/components/faq-section";
 import JsonLd from "@/components/json-ld";
 import { tripJsonLd } from "@/lib/jsonld";
+import type { ReviewView } from "@/lib/review-helpers";
 
-export default function TourDetailClient({ tour, similarTours }: { tour: Tour; similarTours?: Tour[] }) {
+export default function TourDetailClient({
+  tour,
+  similarTours,
+  initialReviews,
+  initialTotalReviews,
+  initialAvgRating,
+}: {
+  tour: Tour;
+  similarTours?: Tour[];
+  initialReviews?: ReviewView[];
+  initialTotalReviews?: number;
+  initialAvgRating?: number;
+}) {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -432,9 +445,13 @@ export default function TourDetailClient({ tour, similarTours }: { tour: Tour; s
 
         <div className="mt-10">
           <ReviewSection
+            key={`tour-${tour._id}`}
             entityType="tour"
             entityId={tour._id}
             entityTitle={tour.title}
+            initialReviews={initialReviews}
+            initialTotal={initialTotalReviews}
+            initialAvgRating={initialAvgRating}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Star,
   X,
@@ -24,17 +24,26 @@ export default function ReviewSection({
   entityId,
   entityTitle,
   noun = "experience",
+  initialReviews,
+  initialTotal,
+  initialAvgRating,
 }: {
   entityType: "tour" | "vehicle" | "adventure";
   entityId: string;
   entityTitle: string;
   noun?: string;
+  initialReviews?: ReviewItem[];
+  initialTotal?: number;
+  initialAvgRating?: number;
 }) {
-  const [reviews, setReviews] = useState<ReviewItem[]>([]);
-  const [totalReviews, setTotalReviews] = useState(0);
-  const [avgRating, setAvgRating] = useState(0);
-  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [reviews, setReviews] = useState<ReviewItem[]>(initialReviews ?? []);
+  const [totalReviews, setTotalReviews] = useState(initialTotal ?? 0);
+  const [avgRating, setAvgRating] = useState(initialAvgRating ?? 0);
+  const [loadingReviews, setLoadingReviews] = useState(
+    initialReviews === undefined
+  );
   const [refreshKey, setRefreshKey] = useState(0);
+  const hasInitial = useRef(initialReviews !== undefined);
 
   const [showReview, setShowReview] = useState(false);
   const [name, setName] = useState("");
@@ -50,6 +59,11 @@ export default function ReviewSection({
   useEffect(() => {
     let cancelled = false;
     if (!entityId) return;
+
+    if (hasInitial.current) {
+      hasInitial.current = false;
+      return;
+    }
 
     (async () => {
       try {

@@ -4,17 +4,6 @@ import type { Tour } from "@/lib/types";
 import { formatDuration } from "@/lib/types";
 import { getCardImage } from "@/lib/cloudinary";
 
-const reviewsData = [
-  { rating: 5.0, count: 7 },
-  { rating: 4.9, count: 12 },
-  { rating: 5.0, count: 5 },
-  { rating: 4.8, count: 9 },
-  { rating: 5.0, count: 11 },
-  { rating: 4.9, count: 6 },
-];
-
-const getReviewData = (index: number) => reviewsData[index % reviewsData.length];
-
 export function BestSellingPackages({
   tours,
   content,
@@ -74,8 +63,9 @@ export function BestSellingPackages({
         {/* Packages Grid */}
         {packages.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => {
-              const reviewData = getReviewData(index);
+            {packages.map((pkg) => {
+              const rating = pkg.rating ?? 0;
+              const reviewCount = pkg.reviewsCount ?? 0;
               return (
                 <Link
                   key={pkg._id}
@@ -114,26 +104,28 @@ export function BestSellingPackages({
                   {/* Content */}
                   <div className="p-6">
                     {/* Rating */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(reviewData.rating)
-                                ? "fill-yellow-400 text-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
+                    {(rating > 0 || reviewCount > 0) && (
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < Math.floor(rating)
+                                  ? "fill-yellow-400 text-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="font-bold text-gray-900">{rating}</span>
+                        {reviewCount > 0 && (
+                          <span className="text-sm text-gray-500">
+                            ({reviewCount} reviews)
+                          </span>
+                        )}
                       </div>
-                      <span className="font-bold text-gray-900">
-                        {reviewData.rating}
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        ({reviewData.count} reviews)
-                      </span>
-                    </div>
+                    )}
 
                     {/* Title */}
                     <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors line-clamp-2">

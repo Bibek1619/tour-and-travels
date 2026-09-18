@@ -3,17 +3,6 @@ import { MapPin, Star, Clock, ChevronRight, Compass } from "lucide-react";
 import { formatDuration, type Tour } from "@/lib/types";
 import { getCardImage } from "@/lib/cloudinary";
 
-const reviewsData = [
-  { rating: 4.8, count: 128 },
-  { rating: 4.7, count: 98 },
-  { rating: 4.6, count: 65 },
-  { rating: 4.9, count: 210 },
-  { rating: 5.0, count: 85 },
-  { rating: 4.8, count: 142 },
-];
-
-const getReviewData = (index: number) => reviewsData[index % reviewsData.length];
-
 export const DestinationsSection = ({
   destinations,
   content,
@@ -60,8 +49,9 @@ export const DestinationsSection = ({
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinations.map((dest, index) => {
-            const reviewData = getReviewData(index);
+          {destinations.map((dest) => {
+            const rating = dest.rating ?? 0;
+            const reviewCount = dest.reviewsCount ?? 0;
             return (
               <Link
                 key={dest._id}
@@ -96,26 +86,28 @@ export const DestinationsSection = ({
                 {/* Content */}
                 <div className="p-6">
                   {/* Rating */}
+                  {(rating > 0 || reviewCount > 0) && (
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Math.floor(reviewData.rating)
+                            i < Math.floor(rating)
                               ? "fill-yellow-400 text-yellow-400"
                               : "text-gray-300"
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="font-bold text-gray-900">
-                      {reviewData.rating}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      ({reviewData.count} reviews)
-                    </span>
+                    <span className="font-bold text-gray-900">{rating}</span>
+                    {reviewCount > 0 && (
+                      <span className="text-sm text-gray-500">
+                        ({reviewCount} reviews)
+                      </span>
+                    )}
                   </div>
+                  )}
 
                   {/* Title */}
                   <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">

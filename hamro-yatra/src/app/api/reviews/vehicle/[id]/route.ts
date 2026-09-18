@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { Review } from "@/models/review";
+import { Types } from "mongoose";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,7 @@ export async function GET(
       query as unknown as Parameters<typeof Review.countDocuments>[0]
     );
     const ratingAgg = await Review.aggregate([
-      { $match: query },
+      { $match: { vehicle: new Types.ObjectId(id), status: "approved" } },
       { $group: { _id: null, avg: { $avg: "$rating" } } },
     ]);
 
