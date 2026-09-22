@@ -31,7 +31,7 @@ export function travelAgencyJsonLd(): JsonLdObject {
     image: `${SITE_URL}/images-5.jpg`,
     telephone: "+977-61-452193",
     email: "info@hamroyatraadventure.com",
-    description: "Leading vehicle rental and tour operator in Pokhara, Nepal. Specializing in car rentals (Scorpio, Hiace), Nepal tour packages, trekking expeditions, and adventure activities like paragliding and bungee jumping.",
+    description: "Leading vehicle rental and tour operator in Pokhara, Nepal. Specializing in Mahindra Scorpio rentals, Nepal tour packages, trekking expeditions, and adventure activities like paragliding and bungee jumping.",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Lakeside Road, Baidam",
@@ -85,18 +85,23 @@ export function travelAgencyJsonLd(): JsonLdObject {
           itemListElement: [
             {
               "@type": "Offer",
+              priceCurrency: "NPR",
+              availability: "https://schema.org/InStock",
               itemOffered: {
                 "@type": "Product",
                 name: "Mahindra Scorpio Rental",
                 description: "7-seater SUV rental in Pokhara",
-              },
-            },
-            {
-              "@type": "Offer",
-              itemOffered: {
-                "@type": "Product",
-                name: "Toyota Hiace Rental",
-                description: "13-seater van rental for group tours",
+                brand: {
+                  "@type": "Brand",
+                  name: "Mahindra"
+                },
+                offers: {
+                  "@type": "AggregateOffer",
+                  priceCurrency: "NPR",
+                  lowPrice: "8000",
+                  highPrice: "12000",
+                  offerCount: "1"
+                }
               },
             },
           ],

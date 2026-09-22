@@ -34,15 +34,16 @@ export const revalidate = 3600;
 export const metadata = buildMetadata({
   title: "Car Rental Pokhara & Nepal Tours | Vehicle Hire, Trek & Adventure Packages",
   description:
-    "Hamro Yatra Adventure - #1 vehicle rental in Pokhara & Nepal tour operator with 26+ years. Rent Scorpio, Hiace, cars. Book tours, treks, adventure activities: paragliding, bungee jumping, rafting. Book your perfect Nepal adventure on Hamro Yatra Adventure.",
+    "Hamro Yatra Adventure - #1 Scorpio rental in Pokhara & Nepal tour operator with 26+ years. Rent Mahindra Scorpio SUV. Book tours, treks, adventure activities: paragliding, bungee jumping, rafting. Book your perfect Nepal adventure on Hamro Yatra Adventure.",
   path: "/",
   keywords: [
     "car rental Pokhara",
     "Scorpio rent in Pokhara",
+    "Mahindra Scorpio rental Pokhara",
     "vehicle rental Nepal",
     "Scorpio booking Pokhara",
     "car hire Pokhara",
-    "Hiace rental Pokhara",
+    "SUV rental Pokhara",
     "Pokhara to Kathmandu car",
     "Nepal vehicle booking",
     "Pokhara car service",
