@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_NAME = "Hamro Yatra Adventure";
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://hamroyatraadventure.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.hamroyatraadventure.com";
 
 const BASE_KEYWORDS = [
   "Hamro Yatra Adventure",
