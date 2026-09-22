@@ -133,7 +133,6 @@ export function buildMetadata({
     verification: {
       google: undefined, // Add your Google Search Console verification code here
       yandex: undefined,
-      bing: undefined,
     },
     ...(geo
       ? {

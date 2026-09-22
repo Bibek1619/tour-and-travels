@@ -1,31 +1,13 @@
 import Link from "next/link";
-import type { ComponentType } from "react";
 import {
-  Mountain,
-  MapPin,
-  Clock,
-  Flame,
-  Calendar,
   ArrowRight,
-  TrendingUp,
-  Sparkles,
-  Star,
-  Award,
-  Users,
-  Compass,
+  Check,
 } from "lucide-react";
 import { asList } from "@/lib/icon-map";
 import type { BestTripContent } from "@/lib/page-content/types";
 
 const DEFAULT_IMAGE =
   "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1600&q=80";
-
-const DEFAULT_STATS: { icon: string; label: string; value: string }[] = [
-  { icon: "Mountain", label: "Altitude", value: "3,519 m" },
-  { icon: "Clock", label: "Duration", value: "8 Days" },
-  { icon: "Flame", label: "Difficulty", value: "Moderate" },
-  { icon: "Calendar", label: "Best Season", value: "Mar–May" },
-];
 
 const DEFAULT_HIGHLIGHTS = [
   "Panoramic Annapurna II & Gangapurna views",
@@ -34,156 +16,132 @@ const DEFAULT_HIGHLIGHTS = [
   "High-altitude yak pastures & trails",
 ];
 
-const DEFAULT_DESCRIPTION =
-  "Manang Village sits at 3,519m on the legendary Annapurna Circuit. Wander through alpine valleys dotted with yak pastures, soak in the turquoise Gangapurna Lake and explore Buddhist monasteries of the ancient Manangi people — all beneath the towering Himalaya of Annapurna II and Gangapurna. This is our team's most loved journey in Nepal.";
-
-const STAT_ICONS: Record<string, ComponentType<{ className?: string }>> = {
-  Mountain,
-  MapPin,
-  Clock,
-  Flame,
-  Calendar,
-  Star,
-  Award,
-  Users,
-  Compass,
-  TrendingUp,
-};
-
 export function BestTrip({ content }: { content: BestTripContent }) {
   const image = content?.image || DEFAULT_IMAGE;
-  const title = content?.title || "Manang Trip";
-  const location = content?.location || "Manang, Annapurna Region, Nepal";
-  const description = content?.description || DEFAULT_DESCRIPTION;
-  const badge = content?.badge || "Best Trip";
-  const badgeSub = content?.badgeSub || "Most Loved by Travelers";
+  const title = content?.title || "Manang Valley";
+  const location = content?.location || "Annapurna, Nepal";
   const ctaHref = content?.ctaHref || "/tours";
-  const ctaText = content?.ctaText || "View Details";
-  const stats =
-    content?.stats && content.stats.length > 0 ? content.stats : DEFAULT_STATS;
+  const ctaText = content?.ctaText || "Discover Journey";
   const highlights = asList(content?.highlights);
   const highlightList = highlights.length > 0 ? highlights : DEFAULT_HIGHLIGHTS;
-  const whatsappNumber = content?.whatsappNumber || "9779826689739";
-  const whatsappMessage =
-    content?.whatsappMessage || "Hi, I am interested in the Manang Trip";
-  const duration =
-    stats.find((s) => /duration/i.test(s.label))?.value ?? "8 Days";
+  
+  // Extract duration from stats (look for "Duration" or "Clock" icon)
+  const durationStat = content?.stats?.find(
+    (s) => s.label.toLowerCase().includes('duration') || s.icon === 'Clock'
+  );
+  const duration = durationStat?.value || "8 Days";
+
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-orange-50/50 to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Content */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="inline-flex items-center gap-2 bg-orange-600 text-white text-sm font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg shadow-orange-600/30">
-                <Star className="w-4 h-4 fill-current" />
-                {badge}
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-orange-600 font-semibold text-sm">
-                <TrendingUp className="w-4 h-4" />
-                {badgeSub}
-              </span>
+    <section className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      
+      {/* Subtle animated background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Simple Badge */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full">
+            <span className="text-xs font-semibold">Featured Destination</span>
+          </div>
+        </div>
+
+        {/* Split Screen Layout */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+          
+          {/* LEFT SIDE - Content */}
+          <div className="space-y-6 lg:pr-6">
+            
+            {/* Title */}
+            <div className="space-y-2">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                {title}
+              </h2>
+              <div className="flex items-center gap-3">
+                <p className="text-lg sm:text-xl text-gray-400">
+                  {location}
+                </p>
+                <span className="text-gray-500">•</span>
+                <p className="text-lg sm:text-xl text-orange-400 font-semibold">
+                  {duration}
+                </p>
+              </div>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 text-balance">
-              {title}
-            </h2>
+            {/* Simple line separator */}
+            <div className="w-16 h-0.5 bg-orange-500 rounded-full" />
 
-            <div className="flex items-center gap-2 text-gray-600 mb-6">
-              <MapPin className="w-5 h-5 text-orange-500" />
-              <span className="font-medium">{location}</span>
-            </div>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-8 max-w-xl text-pretty">
-              {description}
-            </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              {stats.map(({ icon, label, value }) => {
-                const Icon = STAT_ICONS[icon] ?? Mountain;
-                return (
-                  <div
-                    key={label}
-                    className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 text-center"
-                  >
-                    <Icon className="w-5 h-5 text-orange-600 mx-auto mb-2" />
-                    <p className="text-sm font-bold text-gray-900">{value}</p>
-                    <p className="text-xs text-gray-500">{label}</p>
+            {/* Highlights List */}
+            <div className="space-y-3">
+              {highlightList.map((highlight, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-2.5 group"
+                >
+                  <div className="flex-shrink-0 w-5 h-5 bg-orange-500/20 rounded-md flex items-center justify-center mt-0.5">
+                    <Check className="w-3.5 h-3.5 text-orange-400" />
                   </div>
-                );
-              })}
+                  <span className="text-gray-300 text-sm leading-relaxed group-hover:text-white transition-colors">
+                    {highlight}
+                  </span>
+                </div>
+              ))}
             </div>
 
-            {/* Highlights */}
-            <ul className="space-y-3 mb-8">
-              {highlightList.map((h) => (
-                <li key={h} className="flex items-start gap-3">
-                  <span className="mt-1 flex-shrink-0 w-5 h-5 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center">
-                    <Sparkles className="w-3 h-3" />
-                  </span>
-                  <span className="text-gray-700">{h}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* CTA */}
-            <div className="flex flex-wrap items-center gap-4">
+            {/* CTA Button - Simpler */}
+            <div className="pt-2">
               <Link
                 href={ctaHref}
-                className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg shadow-orange-600/30 hover:shadow-xl hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30"
               >
                 {ctaText}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white border-2 border-gray-200 hover:border-green-500 hover:text-green-600 text-gray-700 px-7 py-3.5 rounded-xl font-semibold transition-colors"
-              >
-                <span className="text-green-600">Message us</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
 
-          {/* Image */}
-          <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-orange-900/20 group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-[480px] lg:h-[560px] object-cover group-hover:scale-105 transition-transform duration-700"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          {/* RIGHT SIDE - Image */}
+          <div className="relative animate-[float_4s_ease-in-out_infinite]">
+            
+            {/* Subtle glow elements */}
+            <div className="absolute -top-4 -right-4 w-20 h-20 bg-orange-500/10 rounded-full blur-2xl" />
+            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-blue-500/10 rounded-full blur-2xl" />
 
-              {/* Top badge */}
-              <div className="absolute top-5 left-5 inline-flex items-center gap-1.5 bg-white/95 backdrop-blur px-4 py-2 rounded-full shadow-lg">
-                <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                <span className="text-sm font-bold text-gray-900">
-                  Top Himalayan Destination
-                </span>
+            {/* Main image container */}
+            <div className="relative group">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/40 transition-all duration-500 group-hover:shadow-orange-500/20 group-hover:-translate-y-1">
+                
+                {/* Image */}
+                <div className="relative aspect-[4/5]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  
+                  {/* Subtle overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  
+                  {/* Available badge */}
+                  <div className="absolute top-4 right-4">
+                    <div className="bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-lg">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-xs font-semibold text-gray-900">Open Year-Round</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Bottom info card */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-white font-bold text-2xl mb-1">{title}</p>
-                  <p className="text-white/90 text-sm inline-flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4" />
-                    {location}
-                  </p>
-                </div>
-                <div className="bg-orange-600 rounded-xl px-4 py-3 text-center shadow-lg">
-                  <p className="text-white font-extrabold text-lg leading-none">
-                    {duration}
-                  </p>
-                  <p className="text-orange-100 text-xs mt-1">Annapurna Circuit</p>
-                </div>
-              </div>
+              {/* Subtle shadow */}
+              <div className="absolute inset-0 bg-orange-500/5 rounded-xl blur-xl -z-10 translate-y-3" />
             </div>
           </div>
         </div>
