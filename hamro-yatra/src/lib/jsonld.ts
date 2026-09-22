@@ -23,11 +23,15 @@ const CONTACT = {
 export function travelAgencyJsonLd(): JsonLdObject {
   return {
     "@context": "https://schema.org",
-    "@type": "TravelAgency",
+    "@type": ["TravelAgency", "RentalCarAgency"],
     name: SITE_NAME,
+    alternateName: "Hamro Yatra",
     url: SITE_URL,
+    logo: `${SITE_URL}/hamro yatra.jpeg`,
+    image: `${SITE_URL}/images-5.jpg`,
     telephone: "+977-61-452193",
     email: "info@hamroyatraadventure.com",
+    description: "Leading vehicle rental and tour operator in Pokhara, Nepal. Specializing in car rentals (Scorpio, Hiace), Nepal tour packages, trekking expeditions, and adventure activities like paragliding and bungee jumping.",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Lakeside Road, Baidam",
@@ -40,10 +44,83 @@ export function travelAgencyJsonLd(): JsonLdObject {
       "@type": "AggregateRating",
       ratingValue: "4.9",
       reviewCount: "120",
+      bestRating: "5",
     },
     contactPoint: CONTACT,
-    areaServed: "Nepal",
-    sameAs: [],
+    areaServed: {
+      "@type": "Country",
+      name: "Nepal",
+    },
+    priceRange: "$$",
+    paymentAccepted: "Cash, Bank Transfer, Credit Card",
+    currenciesAccepted: "NPR, USD",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "07:00",
+        closes: "20:00",
+      },
+    ],
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "28.2096",
+      longitude: "83.9856",
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Travel Services",
+      itemListElement: [
+        {
+          "@type": "OfferCatalog",
+          name: "Vehicle Rental Services",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Product",
+                name: "Mahindra Scorpio Rental",
+                description: "7-seater SUV rental in Pokhara",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Product",
+                name: "Toyota Hiace Rental",
+                description: "13-seater van rental for group tours",
+              },
+            },
+          ],
+        },
+        {
+          "@type": "OfferCatalog",
+          name: "Tour Packages",
+        },
+        {
+          "@type": "OfferCatalog",
+          name: "Trekking Expeditions",
+        },
+        {
+          "@type": "OfferCatalog",
+          name: "Adventure Activities",
+        },
+      ],
+    },
+    sameAs: [
+      // Add your social media URLs here
+      "https://www.facebook.com/hamroyatraadventure",
+      "https://www.instagram.com/hamroyatraadventure",
+      "https://twitter.com/HamroYatra",
+    ],
   };
 }
 
@@ -252,5 +329,54 @@ export function adventureJsonLd({
         }
       : {}),
     ...(faq ? { mainEntityOfPage: faq } : {}),
+  };
+}
+
+export function breadcrumbJsonLd(items: { name: string; url: string }[]): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.url}`,
+    })),
+  };
+}
+
+export function reviewJsonLd({
+  itemName,
+  itemType = "Product",
+  rating,
+  reviewBody,
+  author,
+  datePublished,
+}: {
+  itemName: string;
+  itemType?: string;
+  rating: number;
+  reviewBody: string;
+  author: string;
+  datePublished: string;
+}): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    itemReviewed: {
+      "@type": itemType,
+      name: itemName,
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: Math.min(rating, 5).toString(),
+      bestRating: "5",
+    },
+    author: {
+      "@type": "Person",
+      name: author,
+    },
+    reviewBody,
+    datePublished,
   };
 }

@@ -6,27 +6,47 @@ export const SITE_URL =
 
 const BASE_KEYWORDS = [
   "Hamro Yatra Adventure",
+  // Vehicle Rental Keywords (PRIMARY BUSINESS)
+  "car rental Pokhara",
+  "vehicle rental Nepal",
+  "Scorpio rent in Pokhara",
+  "Scorpio booking Pokhara",
+  "Scorpio hire Pokhara",
+  "car hire Pokhara",
+  "Hiace rental Pokhara",
+  "Mahindra Scorpio rental",
+  "SUV rental Nepal",
+  "Pokhara to Kathmandu car",
+  "Nepal car booking",
+  "Pokhara car service",
+  "vehicle hire Nepal",
+  "car rent Nepal",
+  "Pokhara vehicle booking",
+  
+  // Tour Packages (SECOND PRIORITY)
   "Nepal tour packages",
-  "trekking in Nepal",
   "Nepal travel agency",
   "Kathmandu tours",
-  "Himalaya trekking",
-  "Nepal adventure tourism",
-  "tour operator Nepal",
-  "Everest trekking",
-  "Annapurna trekking",
-  
+  "Pokhara tours",
   "Nepal holiday packages",
-  "vehicle rental Nepal",
-  "car rent in Pokhara",
-  "Scorpio rent in Pokhara",
-  "Scorpio booking in Pokhara",
-  "Scorpio hire Pokhara",
-  "Scorpio rent pokhara",
-  "car rental Pokhara",
-  "luxury car rent Pokhara",
-  "scarpio hire Nepal",
+  "tour operator Nepal",
+  "Nepal sightseeing tour",
+  "cultural tours Nepal",
   
+  // Trekking (THIRD PRIORITY)
+  "trekking in Nepal",
+  "Himalaya trekking",
+  "Everest Base Camp trek",
+  "Annapurna Circuit trek",
+  "Langtang trek",
+  "Nepal trekking packages",
+  
+  // Adventure Activities (FOURTH PRIORITY)
+  "paragliding Pokhara",
+  "bungee jumping Nepal",
+  "Nepal adventure tourism",
+  "rafting Nepal",
+  "Nepal adventure activities",
 ];
 
 interface SeoOptions {
@@ -73,7 +93,12 @@ export function buildMetadata({
     publisher: SITE_NAME,
     applicationName: SITE_NAME,
     category,
-    alternates: { canonical: path },
+    alternates: { 
+      canonical: path,
+      languages: {
+        'en-US': path,
+      },
+    },
     metadataBase: new URL(SITE_URL),
     openGraph: {
       title,
@@ -87,6 +112,7 @@ export function buildMetadata({
     twitter: {
       card: "summary_large_image",
       site: "@HamroYatra",
+      creator: "@HamroYatra",
       title,
       description,
       images: ogImages,
@@ -94,12 +120,20 @@ export function buildMetadata({
     robots: {
       index: true,
       follow: true,
+      nocache: false,
       googleBot: {
         index: true,
         follow: true,
+        noimageindex: false,
         "max-image-preview": "large",
         "max-snippet": -1,
+        "max-video-preview": -1,
       },
+    },
+    verification: {
+      google: undefined, // Add your Google Search Console verification code here
+      yandex: undefined,
+      bing: undefined,
     },
     ...(geo
       ? {

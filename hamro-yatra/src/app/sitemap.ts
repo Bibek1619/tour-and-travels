@@ -13,12 +13,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/tours`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/trek-packages`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/vehicles`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/adventures`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/vehicles`, changeFrequency: "daily", priority: 0.95 }, // HIGHEST - Main business
+    { url: `${base}/tours`, changeFrequency: "weekly", priority: 0.9 }, // Second priority
+    { url: `${base}/trek-packages`, changeFrequency: "weekly", priority: 0.85 }, // Third priority
+    { url: `${base}/adventures`, changeFrequency: "weekly", priority: 0.8 }, // Fourth priority
     { url: `${base}/about`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.7 }, // Higher - leads to bookings
   ];
 
   try {
@@ -50,14 +50,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${base}/tours/${t.slug}`,
     lastModified: lastmodFor(t),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.75, // Good for SEO but not main business
   }));
 
   const trekRoutes = treks.map((t) => ({
     url: `${base}/treks/${t.slug}`,
     lastModified: lastmodFor(t),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.7, // Third priority
   }));
 
   const regionRoutes = regions.map((r) => ({
@@ -80,14 +80,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${base}/adventures/${a.category}/${a._id}`,
     lastModified: lastmodFor(a),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.65, // Fourth priority
   }));
 
   const vehicleRoutes = vehicles.map((v) => ({
     url: `${base}/vehicles/${String(v.slug || v._id)}`,
     lastModified: lastmodFor(v),
     changeFrequency: "weekly" as const,
-    priority: 0.8,
+    priority: 0.9, // HIGHEST - Main business
   }));
 
   return [

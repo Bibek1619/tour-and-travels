@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Block admin and API routes
+Disallow: /admin/
+Disallow: /api/auth/
+
+# Sitemap location
+Sitemap: https://www.hamroyatraadventure.com/sitemap.xml

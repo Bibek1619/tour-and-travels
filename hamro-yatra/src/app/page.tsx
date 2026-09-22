@@ -32,24 +32,27 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Nepal Trekking, Tours & Travel Packages | Hamro Yatra Adventure",
+  title: "scarpio Rental Pokhara & Nepal Tours | Vehicle Hire, Trek Packages",
   description:
-    "Hamro Yatra Adventure is a trusted Nepal tour operator with 26+ years of experience offering trekking packages, cultural tours, adventure activities, daily route seat bookings and vehicle rentals across Nepal.",
+    "Hamro Yatra Adventure - #1 vehicle rental in Pokhara & Nepal tour operator with 26+ years. Rent Scorpio, Hiace, cars. Book tours, treks, paragliding, bungee jumping. Best rates guaranteed.",
   path: "/",
   keywords: [
+    "car rental Pokhara",
+    "Scorpio rent in Pokhara",
+    "vehicle rental Nepal",
+    "Scorpio booking Pokhara",
+    "car hire Pokhara",
+    "Hiace rental Pokhara",
+    "Pokhara to Kathmandu car",
+    "Nepal vehicle booking",
+    "Pokhara car service",
     "Nepal tour packages",
     "trekking in Nepal",
     "Hamro Yatra Adventure",
-    "best Nepal travel agency",
     "Everest Base Camp trek",
-    "Annapurna Circuit trek",
+    "paragliding Pokhara",
+    "bungee jumping Nepal",
     "Nepal adventure tours",
-    "car rent in Pokhara",
-    "Scorpio rent in Pokhara",
-    "Scorpio booking in Pokhara",
-    "car rental Pokhara",
-    "Scorpio hire Pokhara",
-    "vehicle rental Nepal",
   ],
   images: ["/images-5.jpg"],
 });
