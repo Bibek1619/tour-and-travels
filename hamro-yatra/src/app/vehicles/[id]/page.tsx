@@ -13,9 +13,7 @@ import {
   Fuel,
   Check,
   Car,
-  Clock,
   ShieldCheck,
-  MapPin,
   ChevronRight,
 } from "lucide-react";
 import Navbar from "@/components/navbar";
@@ -29,6 +27,7 @@ import { slugify } from "@/lib/slugify";
 import JsonLd from "@/components/json-ld";
 import { vehicleJsonLd } from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
+import VehicleRoutes from "@/components/vehicle-routes";
 
 export const revalidate = 3600;
 
@@ -115,9 +114,8 @@ export default async function VehicleDetailPage({
   ];
 
   const costParagraphs = [
-    "Scorpio is somewhat more expensive than other usual cars or jeeps as you can have a more exciting and fun travel. As it can carry seven people, sharing the price among people will not be that expensive for you.",
-    "Also, it varies upon the distance of your destination and the duration of your travel. Well, if you are worried about the extra baggage of luggage, we can always free the space on the top of the Scorpio making sure the luggage is safe.",
-    "Therefore, to hire the best Scorpio vehicle in Pokhara, make sure to contact Hamro Yatra Adventure.",
+    "The price depends on where you want to go and the size of your group. Anywhere in Nepal, we will give you the best minimal price that we can afford.",
+    "Tell us your destination and the number of people travelling, and we will share the lowest fare as soon as possible.",
   ];
 
   const goodToKnow = [
@@ -266,6 +264,12 @@ export default async function VehicleDetailPage({
                 </div>
               </div>
 
+              {/* Popular routes */}
+              <VehicleRoutes
+                vehicleName={vehicle.name ?? "Vehicle"}
+                vehicleId={vehicle._id}
+              />
+
               {/* Overview */}
               <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -383,70 +387,14 @@ export default async function VehicleDetailPage({
                 </ul>
               </div>
 
-              {/* Cost */}
+{/* Cost */}
               <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">
                   Cost of {vehicle.name} Hiring in Pokhara
                 </h2>
-                <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-6 mb-5 text-center">
-                  <p className="text-sm text-gray-600 mb-1">
-                    Per Day Rate
-                  </p>
-                  <p className="text-4xl font-bold text-orange-600">
-                    NPR {(vehicle.dailyRate ?? 0).toLocaleString()}
-                    <span className="text-lg font-semibold text-gray-500 ml-2">
-                      / day
-                    </span>
-                  </p>
-                </div>
                 <div className="prose prose-gray space-y-4 text-gray-700">
                   {costParagraphs.map((p) => (
                     <p key={p}>{p}</p>
-                  ))}
-                </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mt-5">
-                  <p className="text-sm font-bold text-gray-900 mb-3">
-                    Points To Remember:
-                  </p>
-                  <ul className="space-y-2">
-                    {[
-                      "If you want to book the vehicle for 1–2 days, the rate is NPR 5,000 per day.",
-                      "If you want to book the vehicle for a specific tour, the price is set according to the tour.",
-                      "For any booking or enquiry, contact Hamro Yatra Adventure or message us on WhatsApp.",
-                    ].map((point) => (
-                      <li key={point} className="flex items-start gap-2">
-                        <span className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-3 h-3 text-blue-600" />
-                        </span>
-                        <span className="text-sm text-gray-700">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Popular routes */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-orange-600" />
-                  Popular Trips With This Vehicle
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
-                    "Pokhara to Kathmandu (Airport Transfer)",
-                    "Pokhara City & Sarangkot Sightseeing",
-                    "Jomsom & Mustang Road Trip",
-                    "Bandipur & Manang Round Trip",
-                    "Lumbini Spiritual Tour",
-                    "Annapurna Base Camp Jeep Tour",
-                  ].map((trip) => (
-                    <div
-                      key={trip}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-gray-50"
-                    >
-                      <Clock className="w-4 h-4 text-orange-600 shrink-0" />
-                      <span className="text-sm text-gray-700">{trip}</span>
-                    </div>
                   ))}
                 </div>
               </div>

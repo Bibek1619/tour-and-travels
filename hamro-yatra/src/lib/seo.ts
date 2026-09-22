@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_NAME = "Hamro Yatra Adventure";
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://hamroyatra.com.np";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://hamroyatraadventure.com";
 
 const BASE_KEYWORDS = [
   "Hamro Yatra Adventure",
@@ -15,17 +15,18 @@ const BASE_KEYWORDS = [
   "tour operator Nepal",
   "Everest trekking",
   "Annapurna trekking",
+  
   "Nepal holiday packages",
   "vehicle rental Nepal",
   "car rent in Pokhara",
   "Scorpio rent in Pokhara",
   "Scorpio booking in Pokhara",
   "Scorpio hire Pokhara",
-  "Mahindra Scorpio Nepal rent",
+  "Scorpio rent pokhara",
   "car rental Pokhara",
   "luxury car rent Pokhara",
-  "SUV hire Nepal",
-  "daily route seat booking Nepal",
+  "scarpio hire Nepal",
+  
 ];
 
 interface SeoOptions {

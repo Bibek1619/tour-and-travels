@@ -27,7 +27,7 @@ export function travelAgencyJsonLd(): JsonLdObject {
     name: SITE_NAME,
     url: SITE_URL,
     telephone: "+977-61-452193",
-    email: "info@hamroyatra.com.np",
+    email: "info@hamroyatraadventure.com",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Lakeside Road, Baidam",

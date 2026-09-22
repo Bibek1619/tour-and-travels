@@ -97,8 +97,8 @@ const defaultInfoItems = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@hamroyatra.com.np",
-    link: "mailto:info@hamroyatra.com.np",
+    value: "info@hamroyatraadventure.com",
+    link: "mailto:info@hamroyatraadventure.com",
   },
   {
     icon: Clock,
@@ -162,7 +162,7 @@ dangerouslySetInnerHTML={{
               "@type": "Organization",
               name: SITE_NAME,
               url: SITE_URL,
-              email: "info@hamroyatra.com.np",
+              email: "info@hamroyatraadventure.com",
               telephone: "+977-9841480794",
               address: {
                 "@type": "PostalAddress",

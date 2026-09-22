@@ -399,7 +399,7 @@ export default function TrekDetailClient({
                                 </svg>
                               </a>
                               <a
-                                href="mailto:guide@hamroyatra.com.np"
+                                href="mailto:guide@hamroyatraadventure.com"
                                 className="w-8 h-8 bg-gray-700 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-colors"
                               >
                                 <Mail className="w-4 h-4" />
@@ -488,7 +488,7 @@ export default function TrekDetailClient({
                                 </svg>
                               </a>
                               <a
-                                href="mailto:guide@hamroyatra.com.np"
+                                href="mailto:guide@hamroyatraadventure.com"
                                 className="w-8 h-8 bg-gray-700 hover:bg-gray-800 text-white rounded-full flex items-center justify-center transition-colors"
                               >
                                 <Mail className="w-4 h-4" />
@@ -590,7 +590,7 @@ export default function TrekDetailClient({
                     </div>
                   </a>
                   <a
-                    href="mailto:info@hamroyatra.com.np"
+                    href="mailto:info@hamroyatraadventure.com"
                     className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                   >
                     <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -599,7 +599,7 @@ export default function TrekDetailClient({
                     <div>
                       <div className="text-xs text-gray-500">Email us</div>
                       <div className="font-semibold text-sm">
-                        info@hamroyatra.com.np
+                        info@hamroyatraadventure.com
                       </div>
                     </div>
                   </a>
