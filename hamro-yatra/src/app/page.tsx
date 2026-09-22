@@ -32,9 +32,9 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Car Rental Pokhara & Nepal Tours | Vehicle Hire, Trek & Adventure Packages",
+  title: "Vehicle Rental Pokhara & Nepal Tours | Scorpio Hire, Trek & Adventure",
   description:
-    "Hamro Yatra Adventure - #1 Scorpio rental in Pokhara & Nepal tour operator with 26+ years. Rent Mahindra Scorpio SUV. Book tours, treks, adventure activities: paragliding, bungee jumping, rafting. Book your perfect Nepal adventure on Hamro Yatra Adventure.",
+    "Rent Scorpio in Pokhara. 26+ years Nepal tour operator offering vehicle rental, trekking, tours & adventure activities. Book your Nepal adventure today.",
   path: "/",
   keywords: [
     "car rental Pokhara",

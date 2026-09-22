@@ -96,7 +96,8 @@ export function buildMetadata({
     alternates: { 
       canonical: path,
       languages: {
-        'en-US': path,
+        'x-default': path,
+        'en': path,
       },
     },
     metadataBase: new URL(SITE_URL),

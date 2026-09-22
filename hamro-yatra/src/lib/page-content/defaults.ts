@@ -17,9 +17,9 @@ export type { PageContentSlug };
 export const DEFAULT_PAGE_CONTENT: PageContentMap = {
   home: {
     hero: {
-      title: "Nepal Tours, Treks & Vehicle Rentals",
+      title: "Vehicle Rental Pokhara | Nepal Tours & Treks",
       subtitle:
-        "Your trusted travel partner in Pokhara \u2013 book with confidence, travel with ease.",
+        "Rent Mahindra Scorpio SUV for your journey. Your trusted travel partner in Pokhara – book with confidence, travel with ease.",
       mediaType: "video",
       videoSrc: "/hero%20video.mp4",
       imageSrc: "/images-5.jpg",
@@ -34,9 +34,9 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       welcomeHighlight: "Namaste",
       subtitle: "Your Gateway to the Majestic Himalayas",
       description1:
-        "Hamro Yatra Adventure is a trusted travel agency with over 26 years of experience in crafting unforgettable journeys across Nepal. From the towering Himalayas to ancient temples, we bring you the best of this incredible land.",
+        "Hamro Yatra Adventure is your trusted vehicle rental and tour operator in Pokhara with over 26 years of experience. Rent our Mahindra Scorpio SUV for comfortable travel across Nepal. We also specialize in Nepal tour packages, trekking expeditions, and adventure activities from the Himalayas to ancient temples.",
       description2:
-        "Explore diverse landscapes, vibrant cultures, and warm hospitality. Our expertly designed tours cover trekking, wildlife safaris, cultural tours, and adventure sports - all tailored to your preferences.",
+        "Looking for vehicle rental in Pokhara? Our Scorpio hire service offers reliable SUV rentals for city tours, mountain trips, and long-distance travel. Explore diverse landscapes, vibrant cultures, and warm hospitality with our expertly designed tours covering trekking, wildlife safaris, cultural tours, and adventure sports.",
       description3:
         "Whether you seek thrilling mountain treks, peaceful spiritual retreats, or cultural immersion, Nepal has something extraordinary waiting for you. Let us be your guide to this magical destination.",
       ctaText: "Discover Our Story",
