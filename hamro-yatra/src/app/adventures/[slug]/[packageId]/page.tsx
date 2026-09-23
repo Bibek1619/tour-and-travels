@@ -298,7 +298,7 @@ export default async function AdventurePackageDetailPage({
                     </Link>
 
                     <a
-                      href={`https://wa.me/9779841480794?text=${whatsappMessage}`}
+                      href={`https://wa.me/9779826689739?text=${whatsappMessage}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
@@ -313,7 +313,7 @@ export default async function AdventurePackageDetailPage({
                       Or reach us directly
                     </div>
                     <a
-                      href="tel:+9779841480794"
+                      href="tel:+9779856006671"
                       className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                     >
                       <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">

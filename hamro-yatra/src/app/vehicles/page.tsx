@@ -77,7 +77,7 @@ export default async function VehiclesPage() {
                   </p>
                 </div>
                 <a
-                  href="tel:+9779841480794"
+                  href="tel:+9779856006671"
                   className="hidden md:inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
                   <Fuel className="w-5 h-5" />

@@ -89,7 +89,7 @@ export default async function About() {
               ],
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+977-9841480794",
+                telephone: "+977-9856006671",
                 contactType: "customer service",
                 areaServed: "NP",
                 availableLanguage: ["English", "Nepali"],
@@ -360,7 +360,7 @@ export default async function About() {
                     <div>
                       <p className="font-semibold text-gray-900">Phone</p>
                       <a
-                        href="tel:+9779841480794"
+                        href="tel:+9779856006671"
                         className="text-gray-600 transition-colors hover:text-orange-600"
                       >
                         +977 984-1480794

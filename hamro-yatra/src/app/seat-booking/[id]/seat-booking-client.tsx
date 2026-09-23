@@ -69,7 +69,7 @@ export default function SeatBookingClient({
   };
 
   const handleWhatsAppInquiry = () => {
-    const phoneNumber = "9779841480794";
+    const phoneNumber = "9778826689739";
     const message = encodeURIComponent(
       `Hi! I'm interested in booking seats for:\n\n` +
         `Vehicle: ${vehicleName}\n` +

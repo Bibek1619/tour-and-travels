@@ -91,8 +91,8 @@ const defaultInfoItems = [
   {
     icon: Phone,
     label: "Phone",
-    value: "+977 984-1480794",
-    link: "tel:+9779841480794",
+    value: "+977 9856006671",
+    link: "tel:+9779856006671",
   },
   {
     icon: Mail,
@@ -163,7 +163,7 @@ dangerouslySetInnerHTML={{
               name: SITE_NAME,
               url: SITE_URL,
               email: "info@hamroyatraadventure.com",
-              telephone: "+977-9841480794",
+              telephone: "+977-9856006671",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Lakeside",
@@ -191,7 +191,7 @@ dangerouslySetInnerHTML={{
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+977-9841480794",
+                telephone: "+977-9856006671",
                 contactType: "customer service",
                 areaServed: "NP",
                 availableLanguage: ["English", "Nepali"],

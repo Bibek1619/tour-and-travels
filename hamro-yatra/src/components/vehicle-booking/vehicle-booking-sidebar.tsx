@@ -56,11 +56,11 @@ export default function VehicleBookingSidebar({
 
           <div className="pt-4 border-t space-y-3 text-sm">
             <a
-              href="tel:+9779841480794"
+              href="tel:+9779856006671"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
             >
               <Phone className="w-4 h-4 text-orange-600" />
-              +977 984-1480794
+              +977 9856006671
             </a>
             <a
               href="mailto:info@hamroyatraadventure.com"
