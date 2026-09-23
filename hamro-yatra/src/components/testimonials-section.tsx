@@ -156,7 +156,7 @@ export function TestimonialsSection({
   const videoThumb =
     section.videoThumbnail ||
     featured.videoThumbnail ||
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80";
+    "/images-5.jpg";
 
   return (
     <section className="bg-gray-50 py-20 px-4">

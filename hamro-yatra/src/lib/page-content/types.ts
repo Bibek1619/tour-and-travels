@@ -18,7 +18,7 @@ export interface BestTripContent {
   whatsappNumber?: string;
   whatsappMessage?: string;
   stats: { icon: string; label: string; value: string }[];
-  highlights: string[] | string;
+  highlights: string[];
 }
 
 export interface HomeHeroContent {
