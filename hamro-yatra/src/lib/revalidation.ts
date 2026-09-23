@@ -9,8 +9,6 @@ const FOOTER_PATHS = [
   "/trek-packages",
   "/trek-packages/[regionId]",
   "/treks/[slug]",
-  "/seat-booking",
-  "/seat-booking/[id]",
   "/vehicle-booking",
   "/vehicles",
   "/vehicles/[id]",
@@ -46,12 +44,6 @@ export function revalidateAdventures() {
   revalidatePath("/adventures/[slug]", "page");
   revalidatePath("/adventures/[slug]/[packageId]", "page");
   revalidateFooter();
-}
-
-export function revalidateDailyRoutes() {
-  revalidatePath("/");
-  revalidatePath("/seat-booking");
-  revalidatePath("/seat-booking/[id]", "page");
 }
 
 export function revalidateRegion(regionId?: string) {

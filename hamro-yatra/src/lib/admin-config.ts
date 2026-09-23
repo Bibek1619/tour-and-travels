@@ -92,12 +92,6 @@ export const DIFFICULTY_OPTIONS: FieldOption[] = [
   { value: "Expert", label: "Expert" },
 ];
 
-export const ROUTE_STATUS_OPTIONS: FieldOption[] = [
-  { value: "active", label: "Active" },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
-];
-
 export const ENQUIRY_STATUS_OPTIONS: FieldOption[] = [
   { value: "new", label: "New" },
   { value: "contacted", label: "Contacted" },
@@ -326,36 +320,6 @@ const adventureGroups: FieldGroup[] = [
   },
 ];
 
-const dailyRouteGroups: FieldGroup[] = [
-  {
-    title: "Route Details",
-    fields: [
-      { name: "routeName", label: "Route Name", type: "text", required: true },
-      { name: "vehicle", label: "Vehicle", type: "select", dynamic: "vehicles" },
-      { name: "status", label: "Status", type: "select", options: ROUTE_STATUS_OPTIONS },
-      { name: "departureDate", label: "Departure Date", type: "date" },
-      { name: "returnDate", label: "Return Date", type: "date" },
-      { name: "duration", label: "Duration", type: "text" },
-      { name: "price", label: "Price ($)", type: "number" },
-      { name: "totalSeats", label: "Total Seats", type: "number" },
-      { name: "availableSeats", label: "Available Seats", type: "number" },
-      { name: "featured", label: "Featured", type: "checkbox" },
-    ],
-  },
-  {
-    title: "Stops",
-    fields: [
-      { name: "departure.location", label: "Departure Location", type: "text" },
-      { name: "departure.time", label: "Departure Time", type: "text" },
-      { name: "arrival.location", label: "Arrival Location", type: "text" },
-      { name: "arrival.time", label: "Arrival Time", type: "text" },
-      { name: "stops", label: "Stops (one per line)", type: "list" },
-      { name: "amenities", label: "Amenities (one per line)", type: "list" },
-      { name: "description", label: "Description", type: "textarea" },
-    ],
-  },
-];
-
 const enquiryGroups: FieldGroup[] = [
   {
     title: "Enquiry Details",
@@ -452,7 +416,6 @@ export const ADMIN_CONFIG: Record<string, AdminEntityConfig> = {
   treks: { entity: "treks", label: "Trek", apiBase: "/api/tours", groups: trekGroups },
   vehicles: { entity: "vehicles", label: "Vehicle", apiBase: "/api/vehicles", groups: vehicleGroups },
   adventures: { entity: "adventures", label: "Adventure", apiBase: "/api/adventures", groups: adventureGroups },
-  "daily-routes": { entity: "daily-routes", label: "Daily Route", apiBase: "/api/daily-routes", groups: dailyRouteGroups },
   enquiries: { entity: "enquiries", label: "Enquiry", apiBase: "/api/enquiries", groups: enquiryGroups },
   bookings: { entity: "bookings", label: "Booking Request", apiBase: "/api/bookings", groups: bookingGroups },
   "custom-trips": { entity: "custom-trips", label: "Custom Trip", apiBase: "/api/custom-trips", groups: customTripGroups },

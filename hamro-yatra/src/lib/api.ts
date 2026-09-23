@@ -1,5 +1,5 @@
 import { mergeWithDefaults } from "./homepage-content";
-import type { DailyRoute, HomepageContent, Review, Tour, Vehicle } from "./types";
+import type { HomepageContent, Review, Tour, Vehicle } from "./types";
 
 async function fetchJson<T>(path: string): Promise<T | null> {
   try {
@@ -35,22 +35,9 @@ export async function getTours(
   return data ?? [];
 }
 
-export async function getDailyRoutes(
-  params: Record<string, string | number | boolean>
-): Promise<DailyRoute[]> {
-  const data = await fetchJson<DailyRoute[]>(
-    withParams("/daily-routes", params)
-  );
-  return data ?? [];
-}
-
 export async function getFeaturedReviews(): Promise<Review[]> {
   const data = await fetchJson<Review[]>("/reviews/featured/homepage");
   return data ?? [];
-}
-
-export async function getDailyRouteById(id: string): Promise<DailyRoute | null> {
-  return fetchJson<DailyRoute>(`/daily-routes/${id}`);
 }
 
 export async function getVehicles(

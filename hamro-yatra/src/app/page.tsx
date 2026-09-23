@@ -152,8 +152,6 @@ export default async function Home() {
         />
       </Section>
 
-      {/* Daily bus package section (daily-trips-booking) is commented out
-          and replaced with the BestTrip – Manang Trip spotlight section below. */}
       <Section>
         <BestTrip content={homeSections.bestTrip} />
       </Section>

@@ -2,7 +2,6 @@ import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import { Vehicle } from "@/models/vehicle";
 import { Adventure } from "@/models/adventure";
-import { DailyRoute } from "@/models/dailyRoute";
 import { Enquiry } from "@/models/enquiry";
 import { Review } from "@/models/review";
 import AdminLayout from "@/components/admin/admin-layout";
@@ -28,7 +27,6 @@ export default async function AdminDashboard() {
     totalTreks,
     totalVehicles,
     totalAdventures,
-    totalRoutes,
     totalEnquiries,
     newEnquiries,
     totalReviews,
@@ -38,7 +36,6 @@ export default async function AdminDashboard() {
     TourPackage.countDocuments({ category: "trek" }),
     Vehicle.countDocuments(),
     Adventure.countDocuments(),
-    DailyRoute.countDocuments(),
     Enquiry.countDocuments(),
     Enquiry.countDocuments({ status: "new" }),
     Review.countDocuments(),
@@ -137,12 +134,6 @@ export default async function AdminDashboard() {
               iconBg="bg-violet-100 text-violet-600"
               label="Adventure Packages"
               value={totalAdventures}
-            />
-            <SummaryRow
-              icon={Car}
-              iconBg="bg-orange-100 text-orange-600"
-              label="Daily Routes"
-              value={totalRoutes}
             />
             <SummaryRow
               icon={Users}

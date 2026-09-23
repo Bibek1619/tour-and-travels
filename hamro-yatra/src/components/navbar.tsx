@@ -9,7 +9,6 @@ import { Button } from "./ui/button";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/seat-booking", label: "Seat Booking" },
   { href: "/vehicles", label: "Vehicle Rental" },
   { href: "/tours", label: "Tour Packages" },
   { href: "/trek-packages", label: "Trek Packages" },

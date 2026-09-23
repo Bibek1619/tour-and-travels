@@ -114,26 +114,6 @@ export interface Adventure {
   faqs?: FaqItem[];
 }
 
-export interface DailyRoute {
-  _id: string;
-  routeName?: string;
-  vehicle?: { name?: string; images?: string[] };
-  departure?: { location?: string; time?: string };
-  arrival?: { location?: string; time?: string };
-  departureDate?: string;
-  returnDate?: string;
-  duration?: string;
-  price?: number;
-  availableSeats?: number;
-  totalSeats?: number;
-  bookedSeats?: number[];
-  stops?: string[];
-  amenities?: string[];
-  description?: string;
-  status?: "active" | "completed" | "cancelled";
-  featured?: boolean;
-}
-
 export interface Review {
   _id: string;
   review: string;

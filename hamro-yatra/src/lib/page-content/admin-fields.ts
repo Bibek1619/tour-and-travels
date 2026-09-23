@@ -7,7 +7,6 @@ export const PAGE_CONTENT_LABELS: Record<PageContentSlug, string> = {
   adventures: "Adventures Page",
   tours: "Tours Page",
   "trek-packages": "Trek Packages Page",
-  "seat-booking": "Seat Booking Page",
   "vehicle-booking": "Vehicle Booking Page",
   contact: "Contact Page",
   footer: "Footer",
@@ -72,13 +71,6 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
         { name: "sections.bestSelling.title", label: "Title", type: "text" },
         { name: "sections.bestSelling.subtitle", label: "Subtitle", type: "textarea" },
         { name: "sections.bestSelling.image", label: "Section Image (optional)", type: "image" },
-      ],
-    },
-    {
-      title: "Daily Bus Services",
-      fields: [
-        { name: "sections.dailyTrips.title", label: "Title", type: "text" },
-        { name: "sections.dailyTrips.subtitle", label: "Subtitle", type: "textarea" },
       ],
     },
     {
@@ -434,33 +426,6 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
             { key: "description", label: "Description" },
           ],
         },
-      ],
-    },
-  ],
-  "seat-booking": [
-    {
-      title: "Hero",
-      fields: [
-        { name: "hero.title", label: "Title", type: "text" },
-        {
-          name: "hero.badges",
-          label: "Badges (Icon [TAB] Label per line)",
-          type: "rows",
-          columns: [
-            { key: "icon", label: "Icon" },
-            { key: "label", label: "Label" },
-          ],
-          help: iconHelp,
-        },
-        { name: "hero.subtitle", label: "Subtitle", type: "textarea" },
-      ],
-    },
-    {
-      title: "Routes Section",
-      fields: [
-        { name: "section.title", label: "Title", type: "text" },
-        { name: "empty.title", label: "Empty State Title", type: "text" },
-        { name: "empty.message", label: "Empty State Message", type: "textarea" },
       ],
     },
   ],

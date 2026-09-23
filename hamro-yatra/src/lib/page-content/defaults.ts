@@ -6,7 +6,6 @@ export const pageContentSlugs = [
   "adventures",
   "tours",
   "trek-packages",
-  "seat-booking",
   "vehicle-booking",
   "contact",
   "footer",
@@ -59,10 +58,6 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
         title: "Best Selling Trekking Packages",
         subtitle: "Walk along the best selling trekking routes in the Himalayas of Nepal",
         image: "",
-      },
-      dailyTrips: {
-        title: "Daily Bus Services",
-        subtitle: "Book your seat on our comfortable daily departures",
       },
       destinations: {
         eyebrow: "Explore Nepal",
@@ -391,23 +386,6 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       ],
     },
   },
-  "seat-booking": {
-    hero: {
-      title: "Daily Route Seat Booking",
-      badges: [
-        { icon: "Bus", label: "All Routes" },
-        { icon: "CalendarCheck", label: "Daily Departures" },
-        { icon: "Armchair", label: "Comfortable Travel" },
-      ],
-      subtitle:
-        "Book your seat for a comfortable journey. Choose your preferred route, vehicle and departure date.",
-    },
-    section: { title: "Available Routes" },
-    empty: {
-      title: "No Routes Available",
-      message: "There are currently no active routes. Please check back later.",
-    },
-  },
   "vehicle-booking": {
     hero: { title: "Vehicle Booking" },
   },
@@ -476,7 +454,6 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       items: [
         { label: "About Us", href: "/about" },
         { label: "Tour Packages", href: "/tours" },
-        { label: "Seat Booking", href: "/seat-booking" },
         { label: "Vehicle Rental", href: "/vehicles" },
         { label: "Hotels", href: "/hotels" },
         { label: "Trekking packages", href: "/trek-packages" },

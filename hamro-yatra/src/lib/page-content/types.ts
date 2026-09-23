@@ -81,7 +81,6 @@ export interface HomePageContent {
   intro: HomeIntroContent;
   sections: {
     bestSelling: HomeSectionHeading & { image?: string };
-    dailyTrips: { title?: string; subtitle?: string };
     destinations: HomeSectionHeading & { image?: string };
     testimonials: HomeSectionHeading & { video?: string; videoThumbnail?: string };
     bestTrip: BestTripContent;
@@ -186,16 +185,6 @@ export interface TrekPackagesPageContent {
   };
 }
 
-export interface SeatBookingPageContent {
-  hero: {
-    title: string;
-    badges: { icon: string; label: string }[];
-    subtitle: string;
-  };
-  section: { title: string };
-  empty: { title: string; message: string };
-}
-
 export interface VehicleBookingPageContent {
   hero: { title: string };
 }
@@ -283,7 +272,6 @@ export interface PageContentMap {
   adventures: AdventuresPageContent;
   tours: ToursPageContent;
   "trek-packages": TrekPackagesPageContent;
-  "seat-booking": SeatBookingPageContent;
   "vehicle-booking": VehicleBookingPageContent;
   contact: ContactPageContent;
   footer: FooterPageContent;
