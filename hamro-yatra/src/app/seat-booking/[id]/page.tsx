@@ -9,6 +9,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import SeatBookingClient from "./seat-booking-client";
 import { buildMetadata } from "@/lib/seo";
+import JsonLd from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const dynamic = "force-dynamic";
 
@@ -25,13 +27,16 @@ export async function generateMetadata({
   const routeName =
     route.routeName || (from && to ? `${from} to ${to}` : "Daily Route");
   return buildMetadata({
-    title: `${routeName} - Seat Booking`,
+    title: `${routeName} - Online Seat Booking`,
     description: `Book a seat on the ${routeName} daily route. Seats from ${route.availableSeats ?? 0}/${route.totalSeats ?? 0} available. Price $${route.price}. Safe travel with Hamro Yatra Adventure.`,
     path: `/seat-booking/${id}`,
     keywords: [
       routeName,
       `${from} to ${to} seat booking`,
-      `${from} to ${to} bus`,
+      `${from} to ${to} tourist bus`,
+      `${from} to ${to} ticket online`,
+      `sofa seat ${from} to ${to}`,
+      "online bus ticket Nepal",
       "Nepal daily route booking",
       "bus seat booking Nepal",
     ],
@@ -64,6 +69,8 @@ export default async function SeatBookingDetailPage({
   const vehicleType = getVehicleType(route.totalSeats ?? 20);
   const from = route.departure?.location ?? "";
   const to = route.arrival?.location ?? "";
+  const routeName =
+    route.routeName || (from && to ? `${from} to ${to}` : "Daily Route");
   const departureDate = route.departureDate
     ? new Intl.DateTimeFormat("en-US", {
         month: "short",
@@ -75,8 +82,15 @@ export default async function SeatBookingDetailPage({
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Seat Booking", url: "/seat-booking" },
+          { name: routeName, url: `/seat-booking/${id}` },
+        ])}
+      />
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <Link
             href="/seat-booking"
@@ -86,7 +100,9 @@ export default async function SeatBookingDetailPage({
             Back to All Routes
           </Link>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Book Your Seats</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            {routeName} - Online Seat Booking
+          </h1>
 
           {/* Trip Info Card */}
           <div className="bg-white rounded-xl border p-6 mb-8">
@@ -173,7 +189,7 @@ export default async function SeatBookingDetailPage({
             vehicleName={route.routeName ?? ""}
           />
         </div>
-      </div>
+      </main>
       <Footer />
     </div>
   );

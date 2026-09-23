@@ -8,22 +8,29 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
 import { getPageContent } from "@/lib/page-content";
+import JsonLd from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Adventure Activities in Nepal - Rafting, Paragliding, Bungee & More",
+  title: "Adventure Activities Nepal 2026 – Paragliding, Bungee, Rafting & More",
   description:
-    "Explore thrilling adventure activities in Nepal: white water rafting, kayaking, paragliding, bungee jumping, ziplining and canyoning with Hamro Yatra Adventure's expert guides.",
+    "Book thrilling adventure activities in Nepal: paragliding in Pokhara, bungee jumping in Kushma, white water rafting, ziplining & canyoning. Expert guides, safety certified. Book online today!",
   path: "/adventures",
   keywords: [
     "adventure activities Nepal",
-    "rafting in Nepal",
-    "paragliding in Pokhara",
+    "adventure sports Nepal 2026",
+    "paragliding Pokhara",
+    "paragliding Pokhara price",
     "bungee jumping Nepal",
+    "bungee jumping Nepal Kushma",
+    "white water rafting Nepal",
     "ziplining Nepal",
     "kayaking Nepal",
     "canyoning Nepal",
+    "adventure booking Nepal",
+    "Visit Nepal 2026",
   ],
 });
 
@@ -51,8 +58,15 @@ export default async function AdventuresPage() {
   const cta = content.cta;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Adventures", url: "/adventures" },
+        ])}
+      />
       <Navbar />
+      <main className="min-h-screen bg-gray-50">
 
       {/* Hero */}
       <section className="bg-emerald-700 text-white px-6 md:px-16 py-12 md:py-16">
@@ -152,6 +166,7 @@ export default async function AdventuresPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer />
     </div>

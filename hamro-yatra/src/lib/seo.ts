@@ -6,46 +6,68 @@ export const SITE_URL =
 
 const BASE_KEYWORDS = [
   "Hamro Yatra Adventure",
-  // Vehicle Rental Keywords (PRIMARY BUSINESS)
-  "car rental Pokhara",
-  "vehicle rental Nepal",
+
+  // Vehicle Rental Keywords (PRIMARY BUSINESS — #1 revenue)
+  "Scorpio jeep hire in Pokhara",
+  "Scorpio rental Pokhara",
   "Scorpio rent in Pokhara",
   "Scorpio booking Pokhara",
-  "Scorpio hire Pokhara",
+  "Scorpio jeep with driver Pokhara",
+  "Mahindra Scorpio rental Nepal",
+  "car rental Pokhara",
+  "car rental in Pokhara",
+  "jeep rental Pokhara",
+  "4WD jeep hire Pokhara",
+  "private jeep hire Pokhara",
+  "vehicle rental Nepal",
   "car hire Pokhara",
-  "Hiace rental Pokhara",
-  "Mahindra Scorpio rental",
+  "SUV rental Pokhara",
   "SUV rental Nepal",
+  "Hiace rental Pokhara",
+  "tourist vehicle rental Pokhara",
+  "Pokhara to Kathmandu private car",
   "Pokhara to Kathmandu car",
+  "off-road vehicle rental Nepal",
+  "Pokhara airport car rental",
   "Nepal car booking",
   "Pokhara car service",
   "vehicle hire Nepal",
   "car rent Nepal",
-  "Pokhara vehicle booking",
-  
+
   // Tour Packages (SECOND PRIORITY)
   "Nepal tour packages",
+  "Nepal tour packages 2026",
   "Nepal travel agency",
+  "Kathmandu Pokhara tour package",
   "Kathmandu tours",
   "Pokhara tours",
   "Nepal holiday packages",
   "tour operator Nepal",
   "Nepal sightseeing tour",
   "cultural tours Nepal",
-  
+  "best time to visit Nepal",
+  "Visit Nepal 2026",
+
   // Trekking (THIRD PRIORITY)
   "trekking in Nepal",
   "Himalaya trekking",
   "Everest Base Camp trek",
+  "Everest Base Camp trek cost",
   "Annapurna Circuit trek",
-  "Langtang trek",
+  "Langtang Valley trek",
+  "Manaslu Circuit trek",
   "Nepal trekking packages",
-  
+  "best trekking company in Nepal",
+  "Nepal trekking permits",
+
   // Adventure Activities (FOURTH PRIORITY)
   "paragliding Pokhara",
+  "paragliding Pokhara price",
   "bungee jumping Nepal",
+  "bungee jumping Nepal Kushma",
+  "white water rafting Nepal",
   "Nepal adventure tourism",
-  "rafting Nepal",
+  "adventure sports Nepal",
   "Nepal adventure activities",
 ];
 

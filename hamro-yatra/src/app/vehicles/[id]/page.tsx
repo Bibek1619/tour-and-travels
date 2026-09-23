@@ -25,7 +25,7 @@ import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
 import { slugify } from "@/lib/slugify";
 import JsonLd from "@/components/json-ld";
-import { vehicleJsonLd } from "@/lib/jsonld";
+import { vehicleJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
 import VehicleRoutes from "@/components/vehicle-routes";
 
@@ -48,16 +48,20 @@ export async function generateMetadata({
   const name = vehicle.name ?? "Vehicle";
   const canonicalSlug = vehicle.slug ?? id;
   return buildMetadata({
-    title: `${name} - Hire & Rental in Nepal`,
-    description: `Rent a ${name} in Nepal with Hamro Yatra Adventure. NPR ${(vehicle.dailyRate ?? 0).toLocaleString()} per day, ${vehicle.capacity ?? ""} seats, ${vehicle.luggage ?? "ample luggage space"}. Book online for tours, trips and airport pickups.`,
+    title: `${name} Hire in Pokhara & Nepal – Rent with Driver | Hamro Yatra`,
+    description: `Rent a ${name} in Pokhara & Nepal with experienced driver. NPR ${(vehicle.dailyRate ?? 0).toLocaleString()} per day, ${vehicle.capacity ?? ""} seats. Book online for tours, trekking trips, airport transfers & long-distance travel.`,
     path: `/vehicles/${canonicalSlug}`,
     keywords: [
       name,
-      `${name} rent Nepal`,
       `${name} hire Pokhara`,
-      `${name} booking`,
-      "car rental Nepal",
-      "SUV hire Nepal",
+      `${name} jeep hire Pokhara`,
+      `${name} rent Nepal`,
+      `${name} with driver Nepal`,
+      `rent ${name} Pokhara`,
+      `private ${name} hire`,
+      "car rental Pokhara",
+      "jeep rental Pokhara",
+      "tourist vehicle Pokhara",
     ],
   });
 }
@@ -170,8 +174,15 @@ export default async function VehicleDetailPage({
           rating: vehicle.rating,
         })}
       />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Vehicles", url: "/vehicles" },
+          { name: vehicle.name ?? "Vehicle", url: `/vehicles/${canonicalSlug}` },
+        ])}
+      />
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <main className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <Link
             href="/vehicles"
@@ -201,7 +212,7 @@ export default async function VehicleDetailPage({
                 {vehicle.images?.[0] ? (
                   <img
                     src={getHeroImage(vehicle.images[0])}
-                    alt={vehicle.name}
+                    alt={`${vehicle.name} for Hire in Pokhara Nepal - Car & Jeep Rental`}
                     className="w-full h-full object-cover"
                     decoding="async"
                     fetchPriority="high"
@@ -224,7 +235,7 @@ export default async function VehicleDetailPage({
               {/* Title + rating */}
               <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
                 <h1 className="text-3xl font-bold text-gray-900">
-                  {vehicle.name}
+                  {vehicle.name} Rental in Pokhara
                 </h1>
                 {vehicle.bestFor && (
                   <p className="text-gray-500 mt-2">
@@ -434,7 +445,7 @@ export default async function VehicleDetailPage({
             />
           </div>
         </div>
-      </div>
+      </main>
       <Footer />
     </div>
   );

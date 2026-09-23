@@ -12,16 +12,19 @@ import { getIcon } from "@/lib/icon-map";
 export const dynamic = "force-dynamic";
 
 export const metadata = buildMetadata({
-  title: "Daily Route Seat Booking - Bus & Van Tickets in Nepal",
+  title: "Bus & Van Seat Booking Nepal – Pokhara to Kathmandu Online Tickets",
   description:
-    "Book daily route bus and van seats online in Nepal. Check routes, departure times, prices and book your seat for popular destinations with Hamro Yatra Adventure.",
+    "Book tourist bus, sofa seat & van tickets online in Nepal. Pokhara to Kathmandu, daily routes, real-time seat availability. Affordable prices with Hamro Yatra Adventure.",
   path: "/seat-booking",
   keywords: [
+    "Pokhara to Kathmandu tourist bus ticket online",
+    "online bus booking Nepal",
+    "sofa seat bus Pokhara to Kathmandu",
     "daily route seat booking Nepal",
-    "Nepal bus booking online",
-    "van seat booking",
+    "van seat booking Nepal",
     "bus tickets Nepal",
     "Pokhara to Kathmandu bus booking",
+    "best tourist bus Nepal",
     "Nepal travel transport",
   ],
 });

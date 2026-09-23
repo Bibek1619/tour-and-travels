@@ -38,15 +38,19 @@ export async function generateMetadata({
       trek.location || "Nepal"
     }. Price from $${trek.price}. Book with Hamro Yatra Adventure.`;
   return buildMetadata({
-    title: `${trek.title} - Trek Package`,
+    title: `${trek.title} - Nepal Trek Package`,
     description,
     path: `/treks/${slug}`,
     keywords: [
       trek.title,
       `${trek.title.toLowerCase()} trekking`,
       `${trek.title.toLowerCase()} cost`,
+      `${trek.title.toLowerCase()} guide`,
+      `${trek.title.toLowerCase()} permit`,
+      `book ${trek.title.toLowerCase()}`,
       "Himalaya trekking",
       "Nepal trekking package",
+      "best trekking company in Nepal",
     ],
     images: trek.images || [],
   });

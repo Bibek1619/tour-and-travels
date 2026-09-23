@@ -18,9 +18,9 @@ import { getPageContent } from "@/lib/page-content";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Contact Us | Nepal Trekking & Tour Operator",
+  title: "Contact Us – Car Rental & Tour Booking Pokhara | Hamro Yatra Adventure",
   description:
-    "Contact Hamro Yatra Adventure in Kathmandu, Nepal. Get a free quote for trekking, tours, car and Scorpio rental in Pokhara, daily route seat booking and adventure activities.",
+    "Contact Hamro Yatra Adventure for Scorpio jeep hire, car rental, trekking & tour bookings in Pokhara and Nepal. WhatsApp, call or email for instant free quote.",
   path: "/contact",
   category: "Contact",
   keywords: [
@@ -29,15 +29,19 @@ export const metadata = buildMetadata({
     "Kathmandu travel agency",
     "book trekking in Nepal",
     "car rental booking Nepal",
-    "Scorpio booking contact",
-    "scarpio rent in pokhara",
-    "veichles rent in pokhara"
+    "Scorpio jeep hire booking",
+    "Scorpio rental Pokhara",
+    "vehicles rent in Pokhara",
+    "car rental quote Pokhara",
+    "tour booking Nepal",
+    "trekking booking Nepal",
   ],
   images: [
     "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200&q=80",
   ],
-  geo: { region: "NP-03", placename: "Kathmandu, Nepal", position: "27.7172;85.3240" },
+  geo: { region: "NP-P4", placename: "Pokhara, Nepal", position: "28.2096;83.9856" },
 });
+
 
 function FacebookIcon({ className }: { className?: string }) {
   return (

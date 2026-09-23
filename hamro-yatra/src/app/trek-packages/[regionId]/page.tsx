@@ -32,7 +32,7 @@ export async function generateMetadata({
   const { regionId } = await params;
   const region = (await getTrekRegion(regionId)) ?? DEFAULT_REGION;
   return buildMetadata({
-    title: `${region.name} - Trekking Packages`,
+    title: `${region.name} - Trekking Packages Nepal`,
     description: region.description,
     path: `/trek-packages/${regionId}`,
     keywords: [
@@ -40,6 +40,10 @@ export async function generateMetadata({
       `${region.keyword} trek package`,
       `${region.keyword} trail Nepal`,
       `${region.keyword} trek cost`,
+      `best ${region.keyword} treks`,
+      `${region.keyword} trek guide`,
+      `${region.keyword} trek permit`,
+      "Nepal trekking packages",
     ],
   });
 }

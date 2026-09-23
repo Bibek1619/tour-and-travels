@@ -30,13 +30,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const category = await getAdventureCategory(slug);
   return buildMetadata({
-    title: `${category.name} in Nepal - Adventure Packages`,
+    title: `${category.name} in Nepal - Adventure Packages & Booking`,
     description: category.description,
     path: `/adventures/${slug}`,
     keywords: [
       `${category.name.toLowerCase()} in Nepal`,
       `${category.name.toLowerCase()} packages`,
       `${category.name.toLowerCase()} price Nepal`,
+      `best ${category.name.toLowerCase()} Nepal`,
+      `book ${category.name.toLowerCase()} Nepal`,
       "Nepal adventure activities",
     ],
     images: [category.image],

@@ -10,22 +10,31 @@ import { getPageContent } from "@/lib/page-content";
 import { getHeroImage } from "@/lib/cloudinary";
 import { getIcon } from "@/lib/icon-map";
 import { getTrekRegions } from "@/lib/regions";
+import JsonLd from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Trekking Packages in Nepal - Everest, Annapurna, Langtang",
+  title: "Nepal Trekking Packages 2026 – Everest, Annapurna, Langtang & Manaslu",
   description:
-    "Book trekking packages in Nepal: Everest Base Camp, Annapurna Circuit, Langtang Valley and Manaslu treks with experienced guides, best price and 26+ years of expertise.",
+    "Book Nepal trekking packages with the best trekking company: Everest Base Camp, Annapurna Circuit, Langtang Valley & Manaslu treks. Expert guides, permits included, 26+ years experience.",
   path: "/trek-packages",
   keywords: [
     "trekking packages Nepal",
+    "Nepal trekking packages 2026",
     "Everest Base Camp trek package",
+    "Everest Base Camp trek cost",
     "Annapurna Circuit trekking",
     "Langtang Valley trek",
     "Manaslu Circuit trek",
     "Himalaya treks",
+    "best trekking company in Nepal",
     "Nepal trekking agency",
+    "Nepal trekking cost",
+    "trekking with guide Nepal",
+    "Nepal trekking permits",
+    "Visit Nepal 2026",
   ],
 });
 
@@ -56,8 +65,14 @@ export default async function TrekPackagesPage() {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Trek Packages", url: "/trek-packages" },
+        ])}
+      />
       <Navbar />
-      <div className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section
           className="relative h-[400px] bg-cover bg-center"
@@ -154,7 +169,7 @@ export default async function TrekPackagesPage() {
             </div>
           </div>
         </section>
-      </div>
+      </main>
       <Footer />
     </div>
   );

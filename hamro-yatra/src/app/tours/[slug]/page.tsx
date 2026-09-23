@@ -40,15 +40,17 @@ export async function generateMetadata({
       "en-IN"
     )} per person. Book with Hamro Yatra Adventure.`;
   return buildMetadata({
-    title: `${tour.title} - Tour Package`,
+    title: `${tour.title} - Nepal Tour Package`,
     description,
     path: `/tours/${slug}`,
     keywords: [
       tour.title,
-      `${tour.location || "Nepal"} tour`,
       `${tour.title.toLowerCase()} price`,
-      "Nepal tour package",
-      "seen & sightseeing Nepal",
+      `${tour.location || "Nepal"} tour`,
+      `${tour.location || "Nepal"} tour package`,
+      "sightseeing tour Nepal",
+      "book tour Nepal",
+      "Nepal tour cost",
     ],
     images: tour.images || [],
   });

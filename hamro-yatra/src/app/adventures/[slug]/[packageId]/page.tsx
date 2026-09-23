@@ -53,13 +53,16 @@ export async function generateMetadata({
     pkg.shortDescription ||
     `${pkg.name} - ${pkg.duration || ""} in ${pkg.location || "Nepal"}. Price NPR ${pkg.price}. Book with Hamro Yatra Adventure.`;
   return buildMetadata({
-    title: `${pkg.name} - ${category.name} Package`,
+    title: `${pkg.name} - ${category.name} Package Nepal`,
     description,
     path: `/adventures/${slug}/${packageId}`,
     keywords: [
       pkg.name,
       `${pkg.name.toLowerCase()} price`,
+      `book ${pkg.name.toLowerCase()}`,
+      `${pkg.name.toLowerCase()} cost`,
       `${category.name.toLowerCase()} in Nepal`,
+      `${category.name.toLowerCase()} booking Nepal`,
       "Nepal adventure package",
       `${pkg.location || "Nepal"} adventure`,
     ],

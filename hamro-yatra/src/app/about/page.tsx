@@ -19,9 +19,9 @@ import CountUp from "@/components/count-up";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "About Us - Trusted Nepal Trekking & Tour Company",
+  title: "About Hamro Yatra Adventure – Best Car Rental & Trekking Company Pokhara",
   description:
-    "Learn about Hamro Yatra Adventure - a licensed Nepal trekking and tour operator with 26+ years of experience, certified guides, and 10,000+ happy clients exploring the Himalayas.",
+    "Hamro Yatra Adventure — licensed Nepal tour operator & car rental company in Pokhara. 26+ years experience, certified guides, 10,000+ happy clients. Scorpio jeep hire, treks & tours.",
   path: "/about",
   category: "About",
   keywords: [
@@ -30,14 +30,15 @@ export const metadata = buildMetadata({
     "licensed trekking agency Nepal",
     "Nepal certified guides",
     "Himalayan travel experts",
-    "car rent in pokhara",
-    "car book in  pokhara"
-    ,
+    "best car rental company Pokhara",
+    "trusted tour operator Nepal",
+    "Scorpio jeep hire Pokhara",
+    "Visit Nepal 2026",
   ],
   images: [
     "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200&q=80",
   ],
-  geo: { region: "NP-24", placename: "Pokhara, Nepal", position: "28.2096;83.9856" },
+  geo: { region: "NP-P4", placename: "Pokhara, Nepal", position: "28.2096;83.9856" },
 });
 
 export default async function About() {

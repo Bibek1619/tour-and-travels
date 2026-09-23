@@ -7,22 +7,31 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
 import { getCardImage } from "@/lib/cloudinary";
+import JsonLd from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Car Rental in Nepal - Mahindra Scorpio, SUV & Vehicle Hire",
+  title: "Car Rental Pokhara – Scorpio Jeep, Hiace & SUV Hire Nepal | Best Rates",
   description:
-    "Hire a Mahindra Scorpio or SUV in Pokhara and across Nepal with Hamro Yatra Adventure. Comfortable, reliable vehicles with experienced drivers for short and long trips.",
+    "Hire Scorpio jeep, Toyota Hiace, SUV or 4WD vehicle in Pokhara with experienced driver. Best rates for tourist vehicle rental, airport transfers & long-distance trips across Nepal.",
   path: "/vehicles",
   keywords: [
-    "Scorpio rent in Pokhara",
-    "Scorpio booking in Pokhara",
-    "Scorpio hire Pokhara",
-    "Mahindra Scorpio Nepal rent",
-    "car rent in Pokhara",
-    "car rental Pokhara",
-    "SUV hire Nepal",
+    "Scorpio jeep hire in Pokhara",
+    "Scorpio rental Pokhara",
+    "Scorpio jeep with driver Pokhara",
+    "jeep rental Pokhara",
+    "4WD jeep hire Pokhara",
+    "private jeep hire Pokhara",
+    "Mahindra Scorpio rental Nepal",
+    "car rental in Pokhara",
+    "tourist vehicle rental Pokhara",
+    "SUV rental Pokhara",
+    "Hiace rental Pokhara",
+    "off-road vehicle rental Nepal",
+    "Pokhara airport car rental",
+    "Pokhara to Kathmandu private car",
     "vehicle booking Nepal",
   ],
 });
@@ -43,6 +52,12 @@ export default async function VehiclesPage() {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Vehicles", url: "/vehicles" },
+        ])}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50">
         <main>
@@ -55,7 +70,7 @@ export default async function VehiclesPage() {
                 Pokhara &amp; Throughout Nepal
               </span>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Vehicle Rental in Nepal
+                Car Rental & Jeep Hire in Pokhara
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl">
                 Comfortable Mahindra Scorpio and SUVs with experienced drivers,
@@ -94,7 +109,7 @@ export default async function VehiclesPage() {
                         {vehicle.images?.[0] ? (
                           <img
                             src={getCardImage(vehicle.images[0])}
-                            alt={vehicle.name}
+                            alt={`${vehicle.name} - Vehicle Hire in Pokhara`}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             loading="lazy"
                             decoding="async"

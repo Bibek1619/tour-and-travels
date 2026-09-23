@@ -9,21 +9,29 @@ import { buildMetadata } from "@/lib/seo";
 import { getPageContent } from "@/lib/page-content";
 import { getHeroImage } from "@/lib/cloudinary";
 import { getIcon } from "@/lib/icon-map";
+import JsonLd from "@/components/json-ld";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Nepal Tour Packages - Cultural & Sightseeing Tours",
+  title: "Nepal Tour Packages 2026 – Kathmandu, Pokhara & Cultural Sightseeing Tours",
   description:
-    "Explore Nepal with curated tour packages: cultural heritage tours, city sightseeing, spiritual journeys, and scenic destination trips with Hamro Yatra Adventure's expert guides.",
+    "Explore Nepal with expert-guided tour packages: Kathmandu-Pokhara tours, cultural heritage trips, Chitwan safari, Lumbini pilgrimage & scenic destination tours. Book with 26+ years experience.",
   path: "/tours",
   keywords: [
     "Nepal tour packages",
+    "Nepal tour packages 2026",
+    "Kathmandu Pokhara tour package",
     "Kathmandu tours",
     "Pokhara tours",
-    "Lumbini tours",
+    "Lumbini pilgrimage tour",
+    "Chitwan safari tour",
     "cultural tours Nepal",
-    "sightseeing Nepal",
+    "Nepal sightseeing tour",
+    "Nepal tour cost",
+    "best time to visit Nepal",
+    "Visit Nepal 2026",
   ],
 });
 
@@ -46,6 +54,12 @@ export default async function TourPackagesPage() {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Tours", url: "/tours" },
+        ])}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50">
         <main>

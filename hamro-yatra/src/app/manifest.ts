@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Hamro Yatra Adventure - Nepal Trekking & Tours',
+    name: 'Hamro Yatra Adventure - Scorpio Jeep Hire, Nepal Tours & Trekking',
     short_name: 'Hamro Yatra',
-    description: '26+ years of experience in trekking, tours and transportation services across Nepal',
+    description: 'Scorpio jeep hire Pokhara, car rental, Nepal trekking packages, tour booking & adventure activities – 26+ years experience',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
