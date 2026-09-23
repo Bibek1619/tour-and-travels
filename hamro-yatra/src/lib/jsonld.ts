@@ -16,7 +16,7 @@ function abs(src?: string): string {
 
 const CONTACT = {
   "@type": "ContactPoint" as const,
-  telephone: "+977-61-452193",
+  telephone: "+977-9856006671",
   contactType: "customer service",
 };
 
@@ -29,7 +29,7 @@ export function travelAgencyJsonLd(): JsonLdObject {
     url: SITE_URL,
     logo: `${SITE_URL}/hamro yatra.jpeg`,
     image: `${SITE_URL}/images-5.jpg`,
-    telephone: "+977-61-452193",
+telephone: "+977-9856006671",
     email: "info@hamroyatraadventure.com",
     description: "Leading vehicle rental and tour operator in Pokhara, Nepal. Specializing in Mahindra Scorpio rentals, Nepal tour packages, trekking expeditions, and adventure activities like paragliding and bungee jumping.",
     address: {

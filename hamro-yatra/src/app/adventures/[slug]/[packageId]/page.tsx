@@ -321,7 +321,7 @@ export default async function AdventurePackageDetailPage({
                       </div>
                       <div>
                         <div className="text-xs text-gray-500">Call us</div>
-                        <div className="font-semibold">+977 984-1480794</div>
+                        <div className="font-semibold">+977 9856006671</div>
                       </div>
                     </a>
                     <a

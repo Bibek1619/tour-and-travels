@@ -585,7 +585,7 @@ export default function TrekDetailClient({
                     Or reach us directly
                   </div>
                   <a
-                    href="tel:+9779826689739"
+                    href="tel:+9779856006671"
                     className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                   >
                     <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -593,7 +593,7 @@ export default function TrekDetailClient({
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Call us</div>
-                      <div className="font-semibold">+977 984-1480794</div>
+                      <div className="font-semibold">+977 9856006671</div>
                     </div>
                   </a>
                   <a

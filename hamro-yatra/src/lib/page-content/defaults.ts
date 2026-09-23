@@ -307,7 +307,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       subtitle:
         "Drop by for a cup of tea and a chat about your next adventure. We are based in the heart of Pokhara, the gateway to the Annapurnas.",
       address: "Lakeside, Pokhara, Nepal",
-      phone: "+977 984-1480794",
+      phone: "+977 9856006671",
       phoneLink: "tel:+9779856006671",
       email: "info@hamroyatraadventure.com",
       mapEmbedUrl:
@@ -506,7 +506,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
     contact: {
       title: "Contact Us",
       address: "Lakeside, Pokhara 33700, Nepal",
-      phone: "+977 984-1480794",
+      phone: "+977 9856006671",
       email: "info@hamroyatraadventure.com",
     },
     associations: {

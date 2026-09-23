@@ -155,7 +155,7 @@ For each vehicle detail page, ensure:
 
 2. **Meta Description** (155 chars):
    ```
-   Rent Mahindra Scorpio in Pokhara. 7-seater SUV with driver. Best rates guaranteed. Book now: +977-984-1480794. Free quotes.
+   Rent Mahindra Scorpio in Pokhara. 7-seater SUV with driver. Best rates guaranteed. Book now: +977-9856006671. Free quotes.
    ```
 
 3. **H1 Tag**:
