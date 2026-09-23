@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/seo";
+import { Analytics } from '@vercel/analytics/next';
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -112,6 +114,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
+            <Analytics />
       </body>
     </html>
   );
