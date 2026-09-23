@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/db";
 import { Vehicle } from "@/models/vehicle";
 import type { Vehicle as VehicleType } from "@/lib/types";
 import Link from "next/link";
-import { Star, ArrowRight, Car, Fuel } from "lucide-react";
+import { Star, ArrowRight, Car } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
@@ -76,14 +76,7 @@ export default async function VehiclesPage() {
                     Select a vehicle to view full details or book it directly.
                   </p>
                 </div>
-                <a
-                  href="tel:+9779856006671"
-                  className="hidden md:inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-                >
-                  <Fuel className="w-5 h-5" />
-                  Call +977 984-1480794
-                </a>
-              </div>
+                </div>
 
               {vehicles.length === 0 ? (
                 <p className="text-center text-gray-500 py-20">

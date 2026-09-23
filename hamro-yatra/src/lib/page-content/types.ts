@@ -128,6 +128,16 @@ export interface AboutPageContent {
     subtitle: string;
     items: { text: string; author: string; rating: number }[];
   };
+  findUs: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    address: string;
+    phone: string;
+    phoneLink: string;
+    email: string;
+    mapEmbedUrl: string;
+  };
   cta: {
     title: string;
     subtitle: string;
@@ -264,6 +274,7 @@ export interface ContactPageContent {
     subtitle: string;
     items: { label: string; href: string }[];
   };
+  mapEmbedUrl: string;
 }
 
 export interface PageContentMap {

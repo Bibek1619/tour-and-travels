@@ -301,6 +301,18 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
         },
       ],
     },
+    findUs: {
+      eyebrow: "Find Us",
+      title: "Visit Our Office in Pokhara",
+      subtitle:
+        "Drop by for a cup of tea and a chat about your next adventure. We are based in the heart of Pokhara, the gateway to the Annapurnas.",
+      address: "Lakeside, Pokhara, Nepal",
+      phone: "+977 984-1480794",
+      phoneLink: "tel:+9779856006671",
+      email: "info@hamroyatraadventure.com",
+      mapEmbedUrl:
+        "https://www.google.com/maps?q=Pokhara%2C%20Nepal&z=13&output=embed",
+    },
     cta: {
       title: "Ready for Your Adventure?",
       subtitle:
@@ -449,6 +461,8 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
         { label: "TikTok", href: "https://www.tiktok.com/@hamroyatraadventucher" },
       ],
     },
+    mapEmbedUrl:
+      "https://www.google.com/maps?q=Pokhara%2C%20Nepal&z=13&output=embed",
   },
   footer: {
     company: {

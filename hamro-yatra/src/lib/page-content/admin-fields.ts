@@ -318,6 +318,19 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
       ],
     },
     {
+      title: "Find Us / Location",
+      fields: [
+        { name: "findUs.eyebrow", label: "Eyebrow", type: "text" },
+        { name: "findUs.title", label: "Title", type: "text" },
+        { name: "findUs.subtitle", label: "Subtitle", type: "textarea" },
+        { name: "findUs.address", label: "Address", type: "text" },
+        { name: "findUs.phone", label: "Phone (display)", type: "text" },
+        { name: "findUs.phoneLink", label: "Phone Link (e.g. tel:+9779856006671)", type: "text" },
+        { name: "findUs.email", label: "Email", type: "text" },
+        { name: "findUs.mapEmbedUrl", label: "Google Map Embed URL", type: "text" },
+      ],
+    },
+    {
       title: "CTA",
       fields: [
         { name: "cta.title", label: "Title", type: "text" },
@@ -518,6 +531,12 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
             { key: "href", label: "URL" },
           ],
         },
+      ],
+    },
+    {
+      title: "Map",
+      fields: [
+        { name: "mapEmbedUrl", label: "Google Map Embed URL", type: "text" },
       ],
     },
   ],

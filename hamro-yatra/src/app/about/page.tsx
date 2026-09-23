@@ -40,9 +40,6 @@ export const metadata = buildMetadata({
   geo: { region: "NP-24", placename: "Pokhara, Nepal", position: "28.2096;83.9856" },
 });
 
-const MAP_EMBED_URL =
-  "https://www.google.com/maps?q=Pokhara%2C%20Nepal&z=13&output=embed";
-
 export default async function About() {
   const content = await getPageContent("about");
   const hero = content.hero;
@@ -52,6 +49,7 @@ export default async function About() {
   const guides = content.guides;
   const team = content.team;
   const testimonialsData = content.testimonials;
+  const findUs = content.findUs;
   const cta = content.cta;
 
   return (
@@ -333,15 +331,13 @@ export default async function About() {
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div>
                 <span className="text-sm font-semibold uppercase tracking-widest text-orange-600">
-                  Find Us
+                  {findUs.eyebrow}
                 </span>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-                  Visit Our Office in Pokhara
+                  {findUs.title}
                 </h2>
                 <p className="mt-4 text-lg leading-relaxed text-gray-600">
-                  Drop by for a cup of tea and a chat about your next adventure.
-                  We are based in the heart of Pokhara, the gateway to the
-                  Annapurnas.
+                  {findUs.subtitle}
                 </p>
                 <ul className="mt-8 space-y-5">
                   <li className="flex items-start gap-4">
@@ -350,7 +346,7 @@ export default async function About() {
                     </span>
                     <div>
                       <p className="font-semibold text-gray-900">Address</p>
-                      <p className="text-gray-600">Lakeside, Pokhara, Nepal</p>
+                      <p className="text-gray-600">{findUs.address}</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-4">
@@ -360,10 +356,10 @@ export default async function About() {
                     <div>
                       <p className="font-semibold text-gray-900">Phone</p>
                       <a
-                        href="tel:+9779856006671"
+                        href={findUs.phoneLink}
                         className="text-gray-600 transition-colors hover:text-orange-600"
                       >
-                        +977 984-1480794
+                        {findUs.phone}
                       </a>
                     </div>
                   </li>
@@ -374,10 +370,10 @@ export default async function About() {
                     <div>
                       <p className="font-semibold text-gray-900">Email</p>
                       <a
-                        href="mailto:info@hamroyatraadventure.com"
+                        href={`mailto:${findUs.email}`}
                         className="text-gray-600 transition-colors hover:text-orange-600"
                       >
-                        info@hamroyatraadventure.com
+                        {findUs.email}
                       </a>
                     </div>
                   </li>
@@ -386,8 +382,8 @@ export default async function About() {
 
               <div className="overflow-hidden rounded-3xl border border-gray-200 shadow-sm">
                 <iframe
-                  src={MAP_EMBED_URL}
-                  title="Map of Pokhara, Nepal"
+                  src={findUs.mapEmbedUrl}
+                  title={`Map of ${findUs.address}`}
                   width="100%"
                   height="480"
                   style={{ border: 0 }}
