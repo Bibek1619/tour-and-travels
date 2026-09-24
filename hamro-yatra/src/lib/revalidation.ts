@@ -1,4 +1,5 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 
 const FOOTER_PATHS = [
   "/",
@@ -21,6 +22,7 @@ export function revalidateFooter() {
 }
 
 export function revalidateTourPackages() {
+  revalidateTag(CACHE_TAGS.tours, "max");
   revalidatePath("/");
   revalidatePath("/tours");
   revalidatePath("/tours/[slug]", "page");
@@ -31,12 +33,14 @@ export function revalidateTourPackages() {
 }
 
 export function revalidateVehicles() {
+  revalidateTag(CACHE_TAGS.reviews, "max");
   revalidatePath("/");
   revalidatePath("/vehicles/[id]", "page");
   revalidateFooter();
 }
 
 export function revalidateAdventures() {
+  revalidateTag(CACHE_TAGS.adventures, "max");
   revalidatePath("/");
   revalidatePath("/adventures");
   revalidatePath("/adventures/[slug]", "page");
@@ -45,18 +49,21 @@ export function revalidateAdventures() {
 }
 
 export function revalidateRegion(regionId?: string) {
+  revalidateTag(CACHE_TAGS.tours, "max");
   revalidatePath("/");
   revalidatePath("/trek-packages");
   if (regionId) revalidatePath(`/trek-packages/${regionId}`);
 }
 
 export function revalidatePageContent(slug: string) {
+  revalidateTag(CACHE_TAGS.pageContent, "max");
   revalidatePath("/");
   revalidatePath(slug === "home" ? "/" : `/${slug}`);
   if (slug === "footer") revalidateFooter();
 }
 
 export function revalidateReviews() {
+  revalidateTag(CACHE_TAGS.reviews, "max");
   revalidatePath("/");
 }
 

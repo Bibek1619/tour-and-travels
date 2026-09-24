@@ -1,4 +1,6 @@
+import { unstable_cache } from "next/cache";
 import { connectDB } from "@/lib/db";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import { PageContent } from "@/models/pageContent";
 import {
   DEFAULT_PAGE_CONTENT,
@@ -34,17 +36,28 @@ export function deepMerge<T extends Record<string, unknown>>(
   return result as T;
 }
 
+const getCachedPageContent = unstable_cache(
+  async (slug: string) => {
+    await connectDB();
+    const doc = await PageContent.findOne({ slug }).select("content").lean();
+    const defaults = DEFAULT_PAGE_CONTENT[slug as PageContentSlug];
+    const stored = (doc?.content ?? {}) as Record<string, unknown>;
+    const merged = deepMerge(
+      defaults as unknown as Record<string, unknown>,
+      stored
+    );
+    return JSON.parse(
+      JSON.stringify(merged)
+    ) as unknown as PageContentMap[PageContentSlug];
+  },
+  ["page-content"],
+  { revalidate: 3600, tags: [CACHE_TAGS.pageContent] }
+);
+
 export async function getPageContent<S extends PageContentSlug>(
   slug: S
 ): Promise<PageContentMap[S]> {
-  await connectDB();
-  const doc = await PageContent.findOne({ slug }).select("content").lean();
-  const defaults = DEFAULT_PAGE_CONTENT[slug];
-  const stored = (doc?.content ?? {}) as Partial<PageContentMap[S]>;
-  return deepMerge(
-    defaults as unknown as Record<string, unknown>,
-    stored as unknown as Record<string, unknown>
-  ) as unknown as PageContentMap[S];
+  return (await getCachedPageContent(slug)) as PageContentMap[S];
 }
 
 export { pageContentSlugs };

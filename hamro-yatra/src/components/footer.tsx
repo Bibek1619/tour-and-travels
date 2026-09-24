@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import { unstable_cache } from "next/cache";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { getPageContent } from "@/lib/page-content";
 import { connectDB } from "@/lib/db";
+import { CACHE_TAGS } from "@/lib/cache-tags";
 import { TourPackage } from "@/models/tourPackage";
 import { Adventure } from "@/models/adventure";
 import type { FooterLinkItem } from "@/lib/page-content/types";
@@ -79,62 +81,70 @@ function YoutubeIcon({ className }: { className?: string }) {
   );
 }
 
-async function getAutoPopularTours(limit: number): Promise<FooterLinkItem[]> {
-  await connectDB();
-  const [tours, treks] = await Promise.all([
-    TourPackage.find({
-      category: "tour",
-      status: "published",
-    } as unknown as Parameters<typeof TourPackage.find>[0])
-      .sort({ sortOrder: 1, createdAt: -1 })
-      .limit(limit)
-      .lean(),
-    TourPackage.find({
-      category: "trek",
-      status: "published",
-    } as unknown as Parameters<typeof TourPackage.find>[0])
-      .sort({ sortOrder: 1, createdAt: -1 })
-      .limit(limit)
-      .lean(),
-  ]);
-  const items = [
-    ...tours.map((t) => ({
-      label: t.title,
-      href: `/tours/${t.slug}`,
-    })),
-    ...treks.map((t) => ({
-      label: t.title,
-      href: `/treks/${t.slug}`,
-    })),
-  ];
-  return items.slice(0, limit);
-}
+const getCachedAutoPopularTours = unstable_cache(
+  async (limit: number): Promise<FooterLinkItem[]> => {
+    await connectDB();
+    const [tours, treks] = await Promise.all([
+      TourPackage.find({
+        category: "tour",
+        status: "published",
+      } as unknown as Parameters<typeof TourPackage.find>[0])
+        .sort({ sortOrder: 1, createdAt: -1 })
+        .limit(limit)
+        .lean(),
+      TourPackage.find({
+        category: "trek",
+        status: "published",
+      } as unknown as Parameters<typeof TourPackage.find>[0])
+        .sort({ sortOrder: 1, createdAt: -1 })
+        .limit(limit)
+        .lean(),
+    ]);
+    const items = [
+      ...tours.map((t) => ({
+        label: t.title,
+        href: `/tours/${t.slug}`,
+      })),
+      ...treks.map((t) => ({
+        label: t.title,
+        href: `/treks/${t.slug}`,
+      })),
+    ];
+    return items.slice(0, limit);
+  },
+  ["footer-popular-tours"],
+  { revalidate: 3600, tags: [CACHE_TAGS.tours] }
+);
 
-async function getAutoPopularAdventures(limit: number): Promise<FooterLinkItem[]> {
-  await connectDB();
-  const adventures = await Adventure.find({
-    status: "published",
-  } as unknown as Parameters<typeof Adventure.find>[0])
-    .sort({ featured: -1, createdAt: -1 })
-    .limit(limit)
-    .select("name slug")
-    .lean();
-  return adventures.map((a) => ({
-    label: a.name,
-    href: `/adventures/${a.slug}`,
-  }));
-}
+const getCachedAutoPopularAdventures = unstable_cache(
+  async (limit: number): Promise<FooterLinkItem[]> => {
+    await connectDB();
+    const adventures = await Adventure.find({
+      status: "published",
+    } as unknown as Parameters<typeof Adventure.find>[0])
+      .sort({ featured: -1, createdAt: -1 })
+      .limit(limit)
+      .select("name slug")
+      .lean();
+    return adventures.map((a) => ({
+      label: a.name,
+      href: `/adventures/${a.slug}`,
+    }));
+  },
+  ["footer-popular-adventures"],
+  { revalidate: 3600, tags: [CACHE_TAGS.adventures] }
+);
 
 export async function Footer() {
   const content = await getPageContent("footer");
 
   const popularTours =
     content.popularTours.auto && content.popularTours.limit > 0
-      ? await getAutoPopularTours(content.popularTours.limit)
+      ? await getCachedAutoPopularTours(content.popularTours.limit)
       : content.popularTours.items.filter((i) => i.label && i.href);
   const popularAdventures =
     content.popularAdventures.auto && content.popularAdventures.limit > 0
-      ? await getAutoPopularAdventures(content.popularAdventures.limit)
+      ? await getCachedAutoPopularAdventures(content.popularAdventures.limit)
       : content.popularAdventures.items.filter((i) => i.label && i.href);
 
   const socialLinks = [

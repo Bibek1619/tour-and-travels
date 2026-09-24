@@ -19,11 +19,13 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
 
     const update = () => {
       const maxScroll = el.scrollWidth - el.clientWidth;
-      setState({
-        left: maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0,
-        width: maxScroll > 0 ? (el.clientWidth / el.scrollWidth) * 100 : 100,
-        hasOverflow: maxScroll > 0,
-      });
+      if (maxScroll <= 0) {
+        setState({ left: 0, width: 100, hasOverflow: false });
+        return;
+      }
+      const width = (el.clientWidth / el.scrollWidth) * 100;
+      const left = (el.scrollLeft / maxScroll) * (100 - width);
+      setState({ left, width, hasOverflow: true });
     };
 
     update();

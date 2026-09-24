@@ -18,7 +18,11 @@ export function BestSellingPackages({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollByAmount = (dir: 1 | -1) => {
-    scrollRef.current?.scrollBy({ left: dir * 320, behavior: "smooth" });
+    const el = scrollRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const target = Math.max(0, Math.min(el.scrollLeft + dir * 320, max));
+    el.scrollTo({ left: target, behavior: "smooth" });
   };
 
   const section = {
@@ -74,7 +78,7 @@ export function BestSellingPackages({
           <div className="relative group">
             <div
               ref={scrollRef}
-              className="flex overflow-x-auto gap-6 pb-2 touch-pan-x"
+              className="flex overflow-x-auto gap-6 pb-2 touch-pan-x scrollbar-orange"
             >
             {packages.map((pkg) => {
               const rating = pkg.rating ?? 0;
