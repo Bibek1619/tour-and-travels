@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   MapPin,
   Clock,
@@ -172,12 +173,12 @@ export default function TrekDetailClient({
             {/* Image Gallery */}
             <div className="bg-white rounded-lg overflow-hidden shadow">
               <div className="relative h-56 sm:h-80 lg:h-[400px]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={images[selectedImage]}
                   alt={trek.title}
-                  className="w-full h-full object-cover"
-                  decoding="async"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 800px"
+                  className="object-cover"
                   fetchPriority="high"
                 />
               </div>
@@ -187,19 +188,18 @@ export default function TrekDetailClient({
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`flex-shrink-0 w-20 h-20 rounded overflow-hidden border-2 transition-all ${
+                      className={`flex-shrink-0 w-20 h-20 rounded overflow-hidden border-2 relative transition-all ${
                         selectedImage === idx
                           ? "border-orange-600"
                           : "border-gray-200"
                       }`}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={img}
                         alt={`View ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                        decoding="async"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                       />
                     </button>
                   ))}
@@ -355,14 +355,13 @@ export default function TrekDetailClient({
                       {/* Guide 1 */}
                       <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 border border-orange-100 shadow-sm">
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-orange-200 flex-shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                          <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-orange-200 flex-shrink-0">
+                            <Image
                               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"
                               alt="Guide"
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                              decoding="async"
+                              fill
+                              sizes="96px"
+                              className="object-cover"
                             />
                           </div>
                           <div className="flex-1">
@@ -444,14 +443,13 @@ export default function TrekDetailClient({
                       {/* Guide 2 */}
                       <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border border-blue-100 shadow-sm">
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-200 flex-shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                          <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-blue-200 flex-shrink-0">
+                            <Image
                               src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300"
                               alt="Guide"
-                              className="w-full h-full object-cover"
-                              loading="lazy"
-                              decoding="async"
+                              fill
+                              sizes="96px"
+                              className="object-cover"
                             />
                           </div>
                           <div className="flex-1">
@@ -653,14 +651,13 @@ export default function TrekDetailClient({
                         href={`/treks/${item.slug}`}
                         className="flex gap-3 group"
                       >
-                        <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                        <div className="relative w-20 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                          <Image
                             src={getCardImage(item.images?.[0])}
                             alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                            loading="lazy"
-                            decoding="async"
+                            fill
+                            sizes="80px"
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                         </div>
                         <div className="flex-1 min-w-0">

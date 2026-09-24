@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   ChevronLeft,
   FileText,
@@ -755,12 +756,14 @@ export default function AdventureForm({
                 .map((url, index) => ({ url, index }))
                 .filter(({ url }) => url.trim() !== "")
                 .map(({ url, index }) => (
-                  <div key={index} className="relative group rounded-xl overflow-hidden border-2 border-gray-200">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                  <div key={index} className="relative h-32 group rounded-xl overflow-hidden border-2 border-gray-200">
+                    <Image
                       src={url}
                       alt={`Adventure image ${index + 1}`}
-                      className="w-full h-32 object-cover"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                      unoptimized
+                      className="object-cover"
                     />
                     {index === 0 && (
                       <span className="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded">

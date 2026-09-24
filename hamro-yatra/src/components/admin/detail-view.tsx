@@ -4,6 +4,7 @@ import {
 } from "@/lib/admin-config";
 import { DeleteButton } from "@/components/admin/delete-button";
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 function formatValue(field: { type: string; columns?: { key: string; label: string }[] }, raw: unknown) {
@@ -42,13 +43,16 @@ function formatValue(field: { type: string; columns?: { key: string; label: stri
       return (
         <div className="flex flex-wrap gap-2">
           {raw.map((src, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={i}
-              src={src as string}
-              alt=""
-              className="h-16 w-24 rounded-lg object-cover border border-gray-200"
-            />
+            <div key={i} className="relative h-16 w-24 rounded-lg overflow-hidden border border-gray-200">
+              <Image
+                src={src as string}
+                alt=""
+                fill
+                sizes="96px"
+                unoptimized
+                className="object-cover"
+              />
+            </div>
           ))}
         </div>
       );

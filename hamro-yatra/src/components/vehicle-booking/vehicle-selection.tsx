@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Users, Luggage, Check } from "lucide-react";
 import type { Vehicle } from "@/lib/types";
 
@@ -61,10 +62,12 @@ export default function VehicleSelection({
               >
                 <div className="relative h-48 sm:h-56 overflow-hidden rounded-t-lg">
                   {vehicle.images?.[0] ? (
-                    <img
+                    <Image
                       src={vehicle.images[0]}
-                      alt={vehicle.name}
-                      className="w-full h-full object-cover"
+                      alt={vehicle.name ?? ""}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-400">

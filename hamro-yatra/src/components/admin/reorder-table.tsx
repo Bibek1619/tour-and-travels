@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { GripVertical, Loader2, Save } from "lucide-react";
 import RowActions from "./row-actions";
 import { formatDuration } from "@/lib/types";
@@ -170,12 +171,16 @@ export default function ReorderTable({
                 <td className="px-6 py-4 font-medium text-gray-900">
                   <div className="flex items-center gap-3">
                     {item.images?.[0] && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.images[0]}
-                        alt=""
-                        className="h-10 w-14 rounded object-cover flex-shrink-0"
-                      />
+                      <div className="relative h-10 w-14 rounded overflow-hidden flex-shrink-0">
+                        <Image
+                          src={item.images[0]}
+                          alt=""
+                          fill
+                          sizes="56px"
+                          unoptimized
+                          className="object-cover"
+                        />
+                      </div>
                     )}
                     <span className="line-clamp-1">{item.title}</span>
                   </div>

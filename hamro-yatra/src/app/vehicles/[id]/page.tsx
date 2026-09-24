@@ -4,6 +4,7 @@ import { Vehicle } from "@/models/vehicle";
 import type { Vehicle as VehicleType } from "@/lib/types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   ArrowLeft,
@@ -28,6 +29,7 @@ import JsonLd from "@/components/json-ld";
 import { vehicleJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
 import VehicleRoutes from "@/components/vehicle-routes";
+import ScorpioDetail from "@/components/vehicles/scorpio-detail";
 
 export const revalidate = 3600;
 
@@ -47,6 +49,28 @@ export async function generateMetadata({
   if (!vehicle) return { title: "Vehicle Not Found" };
   const name = vehicle.name ?? "Vehicle";
   const canonicalSlug = vehicle.slug ?? id;
+  const isScorpio =
+    canonicalSlug === "scorpio-rent-in-pokhara" ||
+    canonicalSlug === "mahindra-scorpio-7-seater";
+
+  if (isScorpio) {
+    return buildMetadata({
+      title: "Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Nepal",
+      description: `Rent ${name} in Pokhara & Nepal with experienced driver. ${name} jeep hire prices from Pokhara to Kathmandu, Chitwan, Lumbini & more. Book online for tours, trekking trips, airport transfers & long-distance travel.`,
+      path: `/vehicles/${canonicalSlug}`,
+      keywords: [
+        "scorpio rent in Pokhara",
+        "scorpio jeep rental hire prices in Pokhara",
+        "scorpio hire Pokhara",
+        "jeep rental Pokhara",
+        "scorpio with driver Pokhara",
+        "Mahindra Scorpio rental Nepal",
+        "car rental price in Nepal",
+        "private jeep hire Pokhara",
+        "tourist vehicle Pokhara",
+      ],
+    });
+  }
   return buildMetadata({
     title: `${name} Hire in Pokhara & Nepal – Rent with Driver | Hamro Yatra`,
     description: `Rent a ${name} in Pokhara & Nepal with experienced driver. NPR ${(vehicle.dailyRate ?? 0).toLocaleString()} per day, ${vehicle.capacity ?? ""} seats. Book online for tours, trekking trips, airport transfers & long-distance travel.`,
@@ -96,6 +120,9 @@ export default async function VehicleDetailPage({
   if (!vehicle) notFound();
 
   const canonicalSlug = vehicle.slug ?? id;
+  const isScorpio =
+    canonicalSlug === "scorpio-rent-in-pokhara" ||
+    canonicalSlug === "mahindra-scorpio-7-seater";
 
   const reviewData = await getEntityReviews("vehicle", vehicle._id);
 
@@ -177,7 +204,6 @@ export default async function VehicleDetailPage({
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: "/" },
-          { name: "Vehicles", url: "/vehicles" },
           { name: vehicle.name ?? "Vehicle", url: `/vehicles/${canonicalSlug}` },
         ])}
       />
@@ -185,11 +211,11 @@ export default async function VehicleDetailPage({
       <main className="min-h-screen bg-gray-50 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <Link
-            href="/vehicles"
+            href="/"
             className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Vehicles
+            Back to Home
           </Link>
 
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-6">
@@ -197,24 +223,29 @@ export default async function VehicleDetailPage({
               Home
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href="/vehicles" className="hover:text-orange-600">
-              Vehicles
-            </Link>
-            <ChevronRight className="w-4 h-4" />
             <span className="text-gray-800 font-medium">{vehicle.name}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Left column: details */}
-            <div className="lg:col-span-3 space-y-8">
+            <div
+              className={`space-y-8 ${
+                isScorpio ? "lg:col-span-4" : "lg:col-span-3"
+              }`}
+            >
+              {isScorpio ? (
+                <ScorpioDetail vehicle={vehicle} />
+              ) : (
+                <>
               {/* Hero image */}
               <div className="relative rounded-2xl overflow-hidden h-72 md:h-96 shadow-lg">
                 {vehicle.images?.[0] ? (
-                  <img
+                  <Image
                     src={getHeroImage(vehicle.images[0])}
                     alt={`${vehicle.name} for Hire in Pokhara Nepal - Car & Jeep Rental`}
-                    className="w-full h-full object-cover"
-                    decoding="async"
+                    fill
+                    sizes="(max-width: 900px) 100vw, 80vw"
+                    className="object-cover"
                     fetchPriority="high"
                   />
                 ) : (
@@ -419,15 +450,15 @@ export default async function VehicleDetailPage({
                   />
                 </div>
               )}
+                </>
+              )}
             </div>
 
             {/* Right column: fixed booking bar */}
-            <div className="lg:col-span-2">
-              <VehicleBookingSidebar
+            <div className={isScorpio ? "lg:col-span-1" : "lg:col-span-2"}>
+<VehicleBookingSidebar
                 vehicleName={vehicle.name ?? "Vehicle"}
-                vehicleId={vehicle._id}
-                rating={vehicle.rating}
-                totalReviews={vehicle.totalReviews}
+                vehicleId={vehicle._id.toString()}
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { X, Loader2, CheckCircle2, SendHorizontal } from "lucide-react";
 import type { HeroContent } from "@/lib/types";
 
@@ -156,7 +157,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
         rel="noopener noreferrer"
         className="fixed left-4 bottom-4 z-50 group"
       >
-        <img src="/whatapplogo.webp" alt="WhatsApp" className="w-12 h-12" />
+        <Image src="/whatapplogo.webp" alt="WhatsApp" width={48} height={48} className="w-12 h-12" />
         <span className="absolute left-full bottom-1/2 ml-3 -translate-y-1/2 px-3 py-1 rounded bg-green-600 text-white text-sm opacity-100 whitespace-nowrap">
           Message on WhatsApp!
         </span>

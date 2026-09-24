@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -75,9 +76,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
     <div className="flex h-full flex-col">
       {/* Logo */}
       <Link href="/" className="flex h-16 items-center gap-3 border-b px-6">
-        <img
+        <Image
           src="/hamro yatra.jpeg"
           alt="Hamro Yatra Adventure"
+          width={40}
+          height={40}
           className="h-10 w-10 rounded-full object-cover"
         />
         <div className="flex flex-col">
@@ -141,9 +144,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
         <div className="flex items-center gap-2">
-          <img
+          <Image
             src="/hamro yatra.jpeg"
             alt="Hamro Yatra Adventure"
+            width={28}
+            height={28}
             className="h-7 w-7 rounded-full object-cover"
           />
           <span className="text-lg font-bold">Admin Panel</span>

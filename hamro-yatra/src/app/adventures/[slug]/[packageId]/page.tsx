@@ -3,6 +3,7 @@ import { Adventure } from "@/models/adventure";
 import type { Adventure as AdventureType } from "@/lib/types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   Clock,
@@ -215,16 +216,16 @@ export default async function AdventurePackageDetailPage({
                   {images.map((img, idx) => (
                     <div
                       key={idx}
-                      className={`rounded-xl overflow-hidden h-[300px] ${
+                      className={`relative rounded-xl overflow-hidden h-[300px] ${
                         images.length === 1 ? "col-span-2" : ""
                       }`}
                     >
-                      <img
+                      <Image
                         src={img}
                         alt={`${pkg.name} ${idx + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        loading={idx === 0 ? "eager" : "lazy"}
-                        decoding="async"
+                        fill
+                        sizes="(max-width: 640px) 50vw, 33vw"
+                        className="object-cover hover:scale-105 transition-transform duration-300"
                         fetchPriority={idx === 0 ? "high" : "low"}
                       />
                     </div>

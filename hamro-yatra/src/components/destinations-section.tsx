@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, Star, Clock, ChevronRight, Compass } from "lucide-react";
 import { formatDuration, type Tour } from "@/lib/types";
 import { getCardImage } from "@/lib/cloudinary";
@@ -22,13 +23,12 @@ export const DestinationsSection = ({
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         {section.image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={section.image}
             alt={section.title}
+            width={1600}
+            height={400}
             className="w-full max-h-64 object-cover rounded-xl mb-10"
-            loading="lazy"
-            decoding="async"
           />
         )}
         {/* Heading */}
@@ -60,12 +60,12 @@ export const DestinationsSection = ({
               >
                 {/* Image */}
                 <div className="relative h-64 overflow-hidden">
-                  <img
+                  <Image
                     src={getCardImage(dest.images?.[0])}
                     alt={dest.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                    decoding="async"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 

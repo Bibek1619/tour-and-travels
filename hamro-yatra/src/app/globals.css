@@ -163,6 +163,38 @@
   scrollbar-width: none;
 }
 
+/* Always show horizontal scrollbar (tables, carousels) */
+.scrollbar-always {
+  scrollbar-width: thin;
+  scrollbar-color: #b0b7c3 #f1f3f6;
+}
+.scrollbar-always::-webkit-scrollbar {
+  height: 8px;
+}
+.scrollbar-always::-webkit-scrollbar-track {
+  background: #f1f3f6;
+}
+.scrollbar-always::-webkit-scrollbar-thumb {
+  background: #b0b7c3;
+  border-radius: 4px;
+}
+.scrollbar-always::-webkit-scrollbar-thumb:hover {
+  background: #8892a0;
+}
+
+/* ===============================
+   Reduce Motion – Destination Accordion
+   =============================== */
+@media (prefers-reduced-motion: reduce) {
+  .destination-accordion,
+  .destination-accordion * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ===============================
    Custom Animations for Manang Section
    =============================== */

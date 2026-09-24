@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { getPageContent } from "@/lib/page-content";
@@ -201,14 +202,18 @@ export async function Footer() {
                 {content.associations.items
                   .filter((i) => i.image)
                   .map((item, idx) => (
-                    <img
+                    <div
                       key={idx}
-                      src={item.image}
-                      alt={item.alt || "Association logo"}
-                      className="h-12 sm:h-16 object-contain hover:scale-110 transition-transform"
-                      loading="lazy"
-                      decoding="async"
-                    />
+                      className="relative h-12 sm:h-16 w-24 sm:w-28"
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.alt || "Association logo"}
+                        fill
+                        sizes="112px"
+                        className="object-contain hover:scale-110 transition-transform"
+                      />
+                    </div>
                   ))}
               </div>
             </div>
@@ -264,12 +269,12 @@ export async function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             {content.company.logo && (
               <Link href="/" className="inline-block">
-                <img
+                <Image
                   src={content.company.logo}
                   alt={content.company.title}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full object-cover mb-4"
-                  loading="lazy"
-                  decoding="async"
                 />
               </Link>
             )}

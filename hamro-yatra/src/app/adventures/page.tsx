@@ -3,6 +3,7 @@ import { Adventure } from "@/models/adventure";
 import type { AdventureCategory } from "@/lib/adventure-categories";
 import { getAdventureCategories } from "@/lib/adventure-categories";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -73,12 +74,12 @@ export default async function AdventuresPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="overflow-hidden rounded-2xl shadow-lg md:max-w-md lg:max-w-lg">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={hero.image}
                 alt={hero.title}
+                width={800}
+                height={600}
                 className="w-full h-auto block"
-                decoding="async"
                 fetchPriority="high"
               />
             </div>
@@ -111,12 +112,12 @@ export default async function AdventuresPage() {
                   href={`/adventures/${adventure.id}`}
                   className="group relative block h-96 rounded-3xl overflow-hidden"
                 >
-                  <img
+                  <Image
                     src={adventure.image}
                     alt={adventure.name}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                    loading="lazy"
-                    decoding="async"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
 

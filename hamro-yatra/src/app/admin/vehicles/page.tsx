@@ -3,6 +3,7 @@ import { Vehicle } from "@/models/vehicle";
 import AdminLayout from "@/components/admin/admin-layout";
 import RowActions from "@/components/admin/row-actions";
 import Link from "next/link";
+import Image from "next/image";
 import type { Vehicle as VehicleType } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -68,11 +69,16 @@ export default async function AdminVehiclesPage() {
                   <td className="px-6 py-4 font-medium text-gray-900">
                     <div className="flex items-center gap-3">
                       {vehicle.images?.[0] && (
-                        <img
-                          src={vehicle.images[0]}
-                          alt=""
-                          className="h-10 w-14 rounded object-cover flex-shrink-0"
-                        />
+                        <div className="relative h-10 w-14 rounded overflow-hidden flex-shrink-0">
+                          <Image
+                            src={vehicle.images[0]}
+                            alt=""
+                            fill
+                            sizes="56px"
+                            unoptimized
+                            className="object-cover"
+                          />
+                        </div>
                       )}
                       <div>
                         <span className="block leading-tight">{vehicle.name}</span>

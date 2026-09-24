@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import { formatDuration, type Tour } from "@/lib/types";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   Mountain,
@@ -149,15 +150,15 @@ export default async function TrekRegionPage({
                   >
                     <div className="bg-white rounded-lg shadow hover:shadow-xl transition-all duration-300">
                       <div className="relative h-56 overflow-hidden rounded-t-lg">
-                        <img
+                        <Image
                           src={
                             trek.images?.[0] ||
                             "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
                           }
                           alt={trek.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          loading="lazy"
-                          decoding="async"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute top-3 right-3">
                           <span

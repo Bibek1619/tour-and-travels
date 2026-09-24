@@ -1,72 +1,58 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Phone, Mail, CalendarDays, Send } from "lucide-react";
+import { Phone, Mail, CalendarDays, Send } from "lucide-react";
 import VehicleBookingModal from "@/components/vehicle-booking/vehicle-booking-modal";
 
 interface VehicleBookingSidebarProps {
   vehicleName: string;
   vehicleId: string;
-  rating?: number;
-  totalReviews?: number;
 }
 
 export default function VehicleBookingSidebar({
   vehicleName,
   vehicleId,
-  rating,
-  totalReviews,
 }: VehicleBookingSidebarProps) {
   const [modal, setModal] = useState<"booking" | "enquiry" | null>(null);
 
   return (
-    <aside className="lg:sticky lg:top-24 space-y-6">
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-orange-50 to-amber-100 px-6 py-5 border-b border-orange-100">
-          <h3 className="text-xl font-bold text-gray-900">{vehicleName}</h3>
-          <div className="mt-2 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              Available for Booking
-            </span>
-            {rating ? (
-              <span className="flex items-center gap-1 text-sm font-semibold bg-white text-amber-600 px-2.5 py-1 rounded-full border border-amber-200">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                {rating} ({totalReviews})
-              </span>
-            ) : null}
-          </div>
+    <aside className="lg:sticky lg:top-24">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <span className="text-xs font-semibold text-green-700 uppercase tracking-wide">
+            Available for Booking
+          </span>
         </div>
 
-        <div className="p-6 space-y-3">
+        <div className="p-5 space-y-2.5">
           <button
             onClick={() => setModal("booking")}
-            className="w-full inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3.5 rounded-lg transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
           >
-            <CalendarDays className="w-5 h-5" />
+            <CalendarDays className="w-4 h-4" />
             Book Vehicle
           </button>
           <button
             onClick={() => setModal("enquiry")}
-            className="w-full inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-800 font-semibold py-3.5 rounded-lg border-2 border-gray-300 transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 text-orange-700 text-sm font-medium py-2.5 rounded-lg border border-orange-200 transition-colors"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
             Make Enquiry
           </button>
 
-          <div className="pt-4 border-t space-y-3 text-sm">
+          <div className="space-y-2.5 text-sm pt-3 border-t border-gray-100">
             <a
               href="tel:+9779856006671"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
             >
-              <Phone className="w-4 h-4 text-orange-600" />
+              <Phone className="w-4 h-4 text-orange-500 shrink-0" />
               +977 9856006671
             </a>
             <a
               href="mailto:info@hamroyatraadventure.com"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
             >
-              <Mail className="w-4 h-4 text-orange-600" />
+              <Mail className="w-4 h-4 text-orange-500 shrink-0" />
               info@hamroyatraadventure.com
             </a>
           </div>

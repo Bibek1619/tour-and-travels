@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Clock, MapPin, ChevronRight } from "lucide-react";
 import { formatDuration, type Tour } from "@/lib/types";
 
@@ -29,15 +30,15 @@ export default function TourCard({ tours }: TourCardListProps) {
             <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full">
               {/* Image Section */}
               <div className="relative h-64 overflow-hidden group">
-                <img
+                <Image
                   src={
                     tour.images?.[0] ||
                     "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
                   }
                   alt={tour.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                  decoding="async"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4 bg-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
                   Popular

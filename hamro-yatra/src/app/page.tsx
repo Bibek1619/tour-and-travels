@@ -19,7 +19,7 @@ import { Navbar } from "@/components/navbar";
 import HeroSection from "@/components/hero-section";
 import IntroSection from "@/components/intro-section";
 import BestSellingPackages from "@/components/best-selling-packages";
-import BestTrip from "@/components/best-trip";
+import DestinationAccordion from "@/components/destination-accordion";
 import DestinationsSection from "@/components/destinations-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import Whyus from "@/components/whyus";
@@ -127,9 +127,7 @@ export default async function Home() {
   const bestSellingTours = JSON.parse(
     JSON.stringify(allPublished)
   ) as Tour[];
-  const popularTourPackages = JSON.parse(
-    JSON.stringify(popularTours)
-  ) as Tour[];
+  const popularTourPackages = JSON.parse(JSON.stringify(popularTours)) as Tour[];
   const featuredReviews = JSON.parse(JSON.stringify(reviews)) as ReviewType[];
   const homeSections = homePageContent.sections;
 
@@ -153,8 +151,9 @@ export default async function Home() {
       </Section>
 
       <Section>
-        <BestTrip content={homeSections.bestTrip} />
+        <DestinationAccordion />
       </Section>
+
       <Section>
         <BestSellingPackages
           tours={bestSellingTours}

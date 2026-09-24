@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Play, Quote, Star } from "lucide-react";
 import type { Review } from "@/lib/types";
@@ -202,12 +203,12 @@ export function TestimonialsSection({
                 />
               ) : (
                 <>
-                  <img
+                  <Image
                     src={videoThumb}
                     alt="Video testimonial"
+                    width={800}
+                    height={480}
                     className="w-full h-[200px] md:h-[240px] object-cover"
-                    loading="lazy"
-                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
                   <button

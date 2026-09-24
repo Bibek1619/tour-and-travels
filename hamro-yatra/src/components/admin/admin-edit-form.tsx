@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Loader2, Upload } from "lucide-react";
 import {
   type FieldDef,
@@ -344,10 +345,12 @@ function MediaFieldInput({
           />
         )}
         {value && !isVideo && isUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={value}
             alt={field.label}
+            width={800}
+            height={450}
+            unoptimized
             className="w-full max-h-48 object-cover rounded-lg border border-gray-200"
           />
         )}
@@ -498,12 +501,16 @@ function RowsFieldInput({
                           />
                         )}
                         {isUrl && !isVideo && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={cell}
-                            alt={col.label}
-                            className="w-24 h-16 object-cover rounded border border-gray-200"
-                          />
+                          <div className="relative h-16 w-24 rounded overflow-hidden flex-shrink-0 border border-gray-200">
+                            <Image
+                              src={cell}
+                              alt={col.label}
+                              fill
+                              sizes="96px"
+                              unoptimized
+                              className="object-cover"
+                            />
+                          </div>
                         )}
                         <UploadButton
                           accept={accept}

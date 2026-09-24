@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import type { TrekRegion } from "@/lib/regions";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -114,12 +115,12 @@ export default async function TrekPackagesPage() {
                   >
                     <div className="bg-white rounded-lg shadow hover:shadow-xl transition-all duration-300 overflow-hidden">
                       <div className="relative h-48 overflow-hidden">
-                        <img
+                        <Image
                           src={region.image}
                           alt={region.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          loading="lazy"
-                          decoding="async"
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         {trekCount > 0 && (

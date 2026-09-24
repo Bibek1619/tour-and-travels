@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   MapPin,
   FileText,
@@ -830,17 +831,19 @@ export default function CreateTourWizard({
                       .map((url, index) => ({ url, index }))
                       .filter(({ url }) => url.trim() !== "")
                       .map(({ url, index }) => (
-                        <div key={index} className="relative group">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                        <div key={index} className="relative h-32 group rounded-lg border-2 border-gray-200 overflow-hidden">
+                          <Image
                             src={url}
                             alt={`Image ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                            fill
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                            unoptimized
+                            className="object-cover"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).style.borderColor = "red";
+                              (e.currentTarget as HTMLImageElement).style.borderColor = "red";
                             }}
                             onLoad={(e) => {
-                              (e.target as HTMLImageElement).style.borderColor = "";
+                              (e.currentTarget as HTMLImageElement).style.borderColor = "";
                             }}
                           />
                           {index === 0 && (

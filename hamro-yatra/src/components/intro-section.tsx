@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { ComponentType } from "react";
 import {
@@ -109,8 +110,26 @@ const statIconMap: Record<string, ComponentType<{ className?: string }>> = {
   Award,
 };
 
+const KeywordHighlight = ({ text }: { text: string }) => {
+  const parts = text.split("Hamro Yatra Adventure");
+  if (parts.length === 1) return <>{text}</>;
+  return (
+    <>
+      {parts[0]}
+      <strong className="font-bold text-gray-900">Hamro Yatra Adventure</strong>
+      {parts.slice(1).join("Hamro Yatra Adventure")}
+    </>
+  );
+};
+
 export function IntroSection({ content }: { content: IntroContent }) {
   const intro = content;
+
+  const textsArr = [
+    "Your Gateway to the Majestic Himalayas",
+    "Explore Nepal Like Never Before",
+    "Adventure Starts With Us",
+  ];
 
   const renderWelcomeTitle = () => {
     const parts = intro.welcomeTitle.split(intro.welcomeHighlight);
@@ -141,15 +160,17 @@ export function IntroSection({ content }: { content: IntroContent }) {
             {renderWelcomeTitle()}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-orange-600 mx-auto mb-6"></div>
-          <p className="text-xl font-semibold max-w-3xl mx-auto">
-            <TypingText
-              texts={[
-                "Your Gateway to the Majestic Himalayas",
-                "Explore Nepal Like Never Before",
-                "Adventure Starts With Us",
-              ]}
-              speed={50}
-            />
+          <p className="relative text-xl font-semibold max-w-3xl mx-auto">
+            {/* Invisible placeholder reserves height for the longest text */}
+            <span aria-hidden className="invisible select-none">
+              {textsArr[0]}
+            </span>
+            <span className="absolute inset-0">
+              <TypingText
+                texts={textsArr}
+                speed={50}
+              />
+            </span>
           </p>
         </motion.div>
 
@@ -164,7 +185,9 @@ export function IntroSection({ content }: { content: IntroContent }) {
             className="space-y-6"
           >
             <div className="space-y-5 text-lg leading-relaxed">
-              <p className="text-gray-700">{intro.description1}</p>
+              <p className="text-gray-700">
+                <KeywordHighlight text={intro.description1} />
+              </p>
               <p className="text-gray-700">{intro.description2}</p>
               <p className="text-gray-700">{intro.description3}</p>
             </div>
@@ -188,11 +211,12 @@ export function IntroSection({ content }: { content: IntroContent }) {
           >
             {/* Image Card */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img
+              <Image
                 src={intro.image}
                 alt="Nepal Mountains - Trekking and Tours"
+                width={1600}
+                height={900}
                 className="w-full h-auto rounded-2xl object-cover"
-                decoding="async"
                 fetchPriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -255,36 +279,42 @@ export function IntroSection({ content }: { content: IntroContent }) {
               Certified &amp; Affiliated
             </p>
             <div className="flex items-center gap-4 flex-wrap">
-              <img
-                src="/nepal-tourism-board.png"
-                alt="Nepal Tourism Board Certified"
-                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-              <img
-                src="/taan.png"
-                alt="TAAN Member"
-                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-              <img
-                src="/nma.png"
-                alt="Nepal Mountaineering Association"
-                className="h-14 object-contain opacity-75 hover:opacity-100 transition-opacity"
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
+              <div className="relative h-14 w-20">
+                <Image
+                  src="/nepal-tourism-board.png"
+                  alt="Nepal Tourism Board Certified"
+                  fill
+                  sizes="80px"
+                  className="object-contain opacity-75 hover:opacity-100 transition-opacity"
+                  onError={(e) => {
+                    e.currentTarget.closest("div")?.classList.add("hidden");
+                  }}
+                />
+              </div>
+              <div className="relative h-14 w-20">
+                <Image
+                  src="/taan.png"
+                  alt="TAAN Member"
+                  fill
+                  sizes="80px"
+                  className="object-contain opacity-75 hover:opacity-100 transition-opacity"
+                  onError={(e) => {
+                    e.currentTarget.closest("div")?.classList.add("hidden");
+                  }}
+                />
+              </div>
+              <div className="relative h-14 w-20">
+                <Image
+                  src="/nma.png"
+                  alt="Nepal Mountaineering Association"
+                  fill
+                  sizes="80px"
+                  className="object-contain opacity-75 hover:opacity-100 transition-opacity"
+                  onError={(e) => {
+                    e.currentTarget.closest("div")?.classList.add("hidden");
+                  }}
+                />
+              </div>
             </div>
           </div>
         </motion.div>

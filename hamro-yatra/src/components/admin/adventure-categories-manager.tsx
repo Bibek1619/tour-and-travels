@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -49,12 +50,14 @@ function CategoryImagePicker({
     <div>
       {hasImage ? (
         <div>
-          <div className="relative">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="relative h-48 rounded-lg border-2 border-gray-200 overflow-hidden">
+            <Image
               src={imagePreview || image}
               alt="Category"
-              className="w-full h-48 object-cover rounded-lg border-2 border-gray-200"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+              className="object-cover"
             />
             <button
               type="button"
@@ -425,11 +428,12 @@ export default function AdventureCategoryManager({
                   href={`/admin/adventures/category/${category.id}`}
                   className="block h-52 overflow-hidden relative bg-gradient-to-br from-orange-100 to-orange-50"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={category.image || DEFAULT_IMAGE}
                     alt={category.name || "Category"}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                     <div className="opacity-0 hover:opacity-100 transition-opacity duration-300 bg-white rounded-full p-3">

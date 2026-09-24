@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import DeleteButton from "@/components/admin/delete-button";
 import {
   ChevronLeft,
@@ -84,11 +85,12 @@ export function AdventureDetailView({
 
       {/* Hero */}
       <div className="relative h-80 rounded-2xl overflow-hidden mb-8">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={getHeroImage(cover) || "/placeholder-hero.jpg"}
           alt={data.name || "Adventure"}
-          className="w-full h-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, 80vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
@@ -280,13 +282,15 @@ export function AdventureDetailView({
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {data.images.map((src, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={i}
-                src={getCardImage(src) || src}
-                alt={`Adventure image ${i + 1}`}
-                className="w-full h-40 object-cover rounded-lg border border-gray-200"
-              />
+              <div key={i} className="relative h-40 rounded-lg border border-gray-200 overflow-hidden">
+                <Image
+                  src={getCardImage(src) || src}
+                  alt={`Adventure image ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
             ))}
           </div>
         </div>

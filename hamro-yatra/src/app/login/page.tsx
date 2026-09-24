@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import LoginForm from "./login-form";
 
@@ -21,9 +22,11 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
         <div className="flex flex-col items-center mb-8">
-          <img
+          <Image
             src="/hamro yatra.jpeg"
             alt="Hamro Yatra Adventure"
+            width={64}
+            height={64}
             className="h-16 w-16 rounded-full object-cover mb-4"
           />
           <h1 className="text-2xl font-bold text-gray-900">

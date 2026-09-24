@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
@@ -304,12 +305,12 @@ export function Whyus({ content }: { content: WhyUsContent }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <img
+                    <Image
                       src={slide?.src}
                       alt={slide?.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
                     />
                   )}
 
@@ -454,13 +455,12 @@ export function Whyus({ content }: { content: WhyUsContent }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={s.src}
                       alt={s.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
+                      fill
+                      sizes="96px"
+                      className="object-cover"
                     />
                   )}
                   {s.type === "video" && (

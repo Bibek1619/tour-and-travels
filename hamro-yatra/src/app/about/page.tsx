@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Mail,
   MapPin,
@@ -149,19 +150,19 @@ export default async function About() {
             <Section>
               <div className="rounded-3xl bg-emerald-700 p-8 md:p-12">
                 <div className="grid grid-cols-2 gap-6">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80"
                     alt="Trekking in the Annapurna region near Pokhara, Nepal"
+                    width={400}
+                    height={256}
                     className="h-64 w-full rounded-2xl object-cover ring-4 ring-white/10"
-                    loading="lazy"
-                    decoding="async"
                   />
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"
                     alt="The snowy Himalayas of Nepal"
+                    width={400}
+                    height={256}
                     className="h-64 w-full rounded-2xl object-cover ring-4 ring-white/10"
-                    loading="lazy"
-                    decoding="async"
                   />
                 </div>
               </div>
@@ -294,14 +295,14 @@ export default async function About() {
                     key={index}
                     className="overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md"
                   >
-                    <div className="h-72">
+                    <div className="relative h-72">
                       {member.image ? (
-                        <img
+                        <Image
                           src={member.image}
                           alt={member.name}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                          decoding="async"
+                          fill
+                          sizes="(max-width: 640px) 100vw, 50vw"
+                          className="object-cover"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gray-100">

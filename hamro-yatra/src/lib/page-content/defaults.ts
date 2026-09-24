@@ -33,11 +33,11 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       welcomeHighlight: "Namaste",
       subtitle: "Your Gateway to the Majestic Himalayas",
       description1:
-        "Hamro Yatra Adventure is your trusted vehicle rental and tour operator in Pokhara with over 26 years of experience. Rent our Mahindra Scorpio SUV for comfortable travel across Nepal. We also specialize in Nepal tour packages, trekking expeditions, and adventure activities from the Himalayas to ancient temples.",
+        "Hamro Yatra Adventure is a trusted travel agency with over 26 years of experience in crafting unforgettable journeys across Nepal. From the snow-capped Himalayas and the sacred temples of Kathmandu Valley to the tranquil lakesides of Pokhara and the jungle safaris of Chitwan, we bring you the very best of this incredible land with licensed guides, comfortable Scorpio jeep rentals and fully customizable itineraries.",
       description2:
-        "Looking for vehicle rental in Pokhara? Our Scorpio hire service offers reliable SUV rentals for city tours, mountain trips, and long-distance travel. Explore diverse landscapes, vibrant cultures, and warm hospitality with our expertly designed tours covering trekking, wildlife safaris, cultural tours, and adventure sports.",
+        "Explore Nepal's diverse landscapes, vibrant cultures and warm hospitality through our expertly designed services. We offer mountain trekking, wildlife safaris, cultural heritage tours and adventure sports like paragliding and river rafting - plus easy Scorpio car or jeep rental in Pokhara for comfortable travel across Nepal - all tailored to your preferences.",
       description3:
-        "Whether you seek thrilling mountain treks, peaceful spiritual retreats, or cultural immersion, Nepal has something extraordinary waiting for you. Let us be your guide to this magical destination.",
+        "Whether you seek thrilling high-altitude treks, peaceful spiritual retreats or deep cultural immersion, Nepal has something extraordinary waiting for you. Let Hamro Yatra Adventure be your trusted guide to this magical destination - book your tours, treks and jeep rentals today and experience Nepal your way.",
       ctaText: "Discover Our Story",
       ctaLink: "/about",
       whyChooseTitle: "Why Choose Us?",
@@ -454,7 +454,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       items: [
         { label: "About Us", href: "/about" },
         { label: "Tour Packages", href: "/tours" },
-        { label: "Vehicle Rental", href: "/vehicles" },
+        { label: "Scorpio Rent in Pokhara", href: "/vehicles/scorpio-rent-in-pokhara" },
         { label: "Hotels", href: "/hotels" },
         { label: "Trekking packages", href: "/trek-packages" },
         { label: "Blogs", href: "/blogs" },
