@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface PriceRow {
   route: string;
@@ -17,6 +17,7 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
     hasOverflow: false,
     canScrollLeft: false,
     canScrollRight: false,
+    canScrollDown: false,
   });
 
   useEffect(() => {
@@ -24,20 +25,14 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
     if (!el) return;
 
     const update = () => {
-      const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
-      if (maxScroll === 0) {
-        setState({
-          hasOverflow: false,
-          canScrollLeft: false,
-          canScrollRight: false,
-        });
-        return;
-      }
-      const scrollLeft = Math.min(maxScroll, Math.max(0, el.scrollLeft));
+      const maxScrollX = Math.max(0, el.scrollWidth - el.clientWidth);
+      const maxScrollY = Math.max(0, el.scrollHeight - el.clientHeight);
       setState({
-        hasOverflow: true,
-        canScrollLeft: scrollLeft > 1,
-        canScrollRight: scrollLeft < maxScroll - 1,
+        hasOverflow: maxScrollX > 1,
+        canScrollLeft: maxScrollX > 1 && el.scrollLeft > 1,
+        canScrollRight: maxScrollX > 1 && el.scrollLeft < maxScrollX - 1,
+        canScrollDown:
+          maxScrollY > 1 && el.scrollTop < maxScrollY - 1,
       });
     };
 
@@ -57,6 +52,15 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
     const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
     const target = Math.min(maxScroll, Math.max(0, el.scrollLeft + amount * 320));
     el.scrollTo({ left: target, behavior: "smooth" });
+  };
+
+  const scrollDown = () => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+    const target = Math.min(maxScroll, el.scrollTop + 320);
+    el.scrollTo({ top: target, behavior: "smooth" });
   };
 
   return (
@@ -148,6 +152,19 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
           </button>
         )}
       </div>
+      {state.canScrollDown && (
+        <div className="mt-3 flex justify-center">
+          <button
+            type="button"
+            aria-label="Scroll price table down"
+            onClick={scrollDown}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-sm font-medium text-orange-600 shadow-lg ring-1 ring-gray-200 transition hover:bg-orange-600 hover:text-white"
+          >
+            <ChevronDown className="w-4 h-4" />
+            More Routes
+          </button>
+        </div>
+      )}
     </div>
   );
 }
