@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import {
-  ArrowLeft,
   Users,
   Luggage,
   Star,
@@ -30,13 +29,23 @@ import { vehicleJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
 import VehicleRoutes from "@/components/vehicle-routes";
 import ScorpioDetail from "@/components/vehicles/scorpio-detail";
+import ScorpioSimilarRoutes from "@/components/vehicles/scorpio-similar-routes";
+import ScorpioRouteHero from "@/components/vehicles/scorpio-route-hero";
+import {
+  scorpioRoutes,
+  scorpioBaseSlug,
+  findScorpioRoute,
+} from "@/lib/scorpio-routes";
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
   await connectDB();
   const vehicles = await Vehicle.find({}).select("_id slug").lean();
-  return vehicles.map((v) => ({ id: String(v.slug || v._id) }));
+  return [
+    ...vehicles.map((v) => ({ id: String(v.slug || v._id) })),
+    ...scorpioRoutes.map((route) => ({ id: route.slug })),
+  ];
 }
 
 export async function generateMetadata({
@@ -45,10 +54,29 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const vehicle = await getVehicle(id);
+  const scorpioRoute = findScorpioRoute(id);
+  const vehicle = await getVehicle(scorpioRoute ? scorpioBaseSlug : id);
   if (!vehicle) return { title: "Vehicle Not Found" };
   const name = vehicle.name ?? "Vehicle";
-  const canonicalSlug = vehicle.slug ?? id;
+  const canonicalSlug = scorpioRoute ? id : vehicle.slug ?? id;
+
+  if (scorpioRoute) {
+    return buildMetadata({
+      title: `${scorpioRoute.route} Scorpio Hire | Prices & Booking | Hamro Yatra`,
+      description: `Scorpio jeep hire in Pokhara for ${scorpioRoute.route}. Rates from NPR ${scorpioRoute.price.toLocaleString(
+        "en-US"
+      )} (USD ${scorpioRoute.usd}), professional driver included. Book your ${scorpioRoute.route} Scorpio rental with Hamro Yatra Adventure.`,
+      path: `/vehicles/${id}`,
+      keywords: [
+        "scorpio hire Pokhara",
+        `${scorpioRoute.route.toLowerCase()} scorpio hire`,
+        `${scorpioRoute.route.toLowerCase()} scorpio price`,
+        "scorpio with driver Pokhara",
+        "jeep rental Pokhara",
+      ],
+    });
+  }
+
   const isScorpio =
     canonicalSlug === "scorpio-rent-in-pokhara" ||
     canonicalSlug === "mahindra-scorpio-7-seater";
@@ -115,14 +143,32 @@ export default async function VehicleDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const vehicle = await getVehicle(id);
+  const scorpioRoute = findScorpioRoute(id);
+  const vehicle = await getVehicle(scorpioRoute ? scorpioBaseSlug : id);
 
   if (!vehicle) notFound();
 
-  const canonicalSlug = vehicle.slug ?? id;
+  const canonicalSlug = scorpioRoute ? id : vehicle.slug ?? id;
   const isScorpio =
+    !!scorpioRoute ||
     canonicalSlug === "scorpio-rent-in-pokhara" ||
     canonicalSlug === "mahindra-scorpio-7-seater";
+
+  const scorpioPriceRow = scorpioRoute
+    ? [
+        {
+          route: scorpioRoute.route,
+          price: scorpioRoute.price,
+          usd: scorpioRoute.usd,
+          distance: scorpioRoute.distance,
+          time: scorpioRoute.time,
+        },
+      ]
+    : undefined;
+
+  const heroImage = vehicle.images?.[0]
+    ? getHeroImage(vehicle.images[0])
+    : "/mahendra-scarpio.png";
 
   const reviewData = await getEntityReviews("vehicle", vehicle._id);
 
@@ -204,37 +250,71 @@ export default async function VehicleDetailPage({
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: "/" },
-          { name: vehicle.name ?? "Vehicle", url: `/vehicles/${canonicalSlug}` },
+          {
+            name: scorpioRoute?.route ?? vehicle.name ?? "Vehicle",
+            url: `/vehicles/${canonicalSlug}`,
+          },
         ])}
       />
       <Navbar />
-      <main className="min-h-screen bg-gray-50 py-8 px-4">
-        <div className="max-w-7xl mx-auto">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
-
+      <main className="min-h-screen bg-gray-50 pt-4 pb-8 px-4">
+          <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-6">
             <Link href="/" className="hover:text-orange-600">
               Home
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-gray-800 font-medium">{vehicle.name}</span>
+            {scorpioRoute ? (
+              <>
+                <Link
+                  href="/vehicles/scorpio-rent-in-pokhara"
+                  className="hover:text-orange-600"
+                >
+                  Scorpio Rent in Pokhara
+                </Link>
+                <ChevronRight className="w-4 h-4" />
+              </>
+            ) : null}
+            <span className="text-gray-800 font-medium">
+              {scorpioRoute?.route ?? vehicle.name}
+            </span>
           </div>
+
+          {scorpioRoute ? (
+            <ScorpioRouteHero
+              route={scorpioRoute}
+              rating={vehicle.rating}
+              totalReviews={vehicle.totalReviews}
+              vehicleName={vehicle.name ?? "Vehicle"}
+              vehicleId={vehicle._id.toString()}
+            />
+          ) : null}
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Left column: details */}
             <div
-              className={`space-y-8 ${
-                isScorpio ? "lg:col-span-4" : "lg:col-span-3"
+              className={`min-w-0 space-y-8 ${
+                scorpioRoute
+                  ? "lg:col-span-5"
+                  : isScorpio
+                    ? "lg:col-span-4"
+                    : "lg:col-span-3"
               }`}
             >
               {isScorpio ? (
-                <ScorpioDetail vehicle={vehicle} />
+                <ScorpioDetail
+                  vehicle={vehicle}
+                  destinationTitle={
+                    scorpioRoute
+                      ? `${scorpioRoute.route} Scorpio Hire | Best Scorpio Jeep Rental Service in Nepal`
+                      : undefined
+                  }
+                  priceRows={scorpioPriceRow}
+                  hideExtras={!!scorpioRoute}
+                  hideDestinations={!!scorpioRoute}
+                  hideHero={!!scorpioRoute}
+                  hideIntro={!!scorpioRoute}
+                />
               ) : (
                 <>
               {/* Hero image */}
@@ -455,15 +535,23 @@ export default async function VehicleDetailPage({
             </div>
 
             {/* Right column: fixed booking bar */}
-            <div className={isScorpio ? "lg:col-span-1" : "lg:col-span-2"}>
-<VehicleBookingSidebar
-                vehicleName={vehicle.name ?? "Vehicle"}
-                vehicleId={vehicle._id.toString()}
-              />
-            </div>
+            {!scorpioRoute ? (
+              <div className={isScorpio ? "lg:col-span-1" : "lg:col-span-2"}>
+                <VehicleBookingSidebar
+                  vehicleName={vehicle.name ?? "Vehicle"}
+                  vehicleId={vehicle._id.toString()}
+                />
+              </div>
+            ) : null}
           </div>
 
-          <div className="mt-10">
+          <div className="mt-10 space-y-10">
+            {scorpioRoute ? (
+              <ScorpioSimilarRoutes
+                currentSlug={scorpioRoute.slug}
+                heroImage={heroImage}
+              />
+            ) : null}
             <ReviewSection
               key={`vehicle-${vehicle._id}`}
               entityType="vehicle"

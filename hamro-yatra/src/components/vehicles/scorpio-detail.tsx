@@ -8,33 +8,137 @@ import type { Vehicle as VehicleType } from "@/lib/types";
 import Image from "next/image";
 import { getHeroImage } from "@/lib/cloudinary";
 import FaqSection from "@/components/faq-section";
-import ScorpioPriceTable from "@/components/vehicles/scorpio-price-table";
+import ScorpioPriceTable, {
+  type PriceRow,
+} from "@/components/vehicles/scorpio-price-table";
+import { ScorpioDestinationCards } from "@/components/vehicles/scorpio-destination-cards";
 
 const rentalPrices = [
   {
+    route: "Cost per day (Max 10 Hour drive)",
+    price: 7000,
+    usd: 55,
+    distance: "",
+    time: "",
+  },
+  {
     route: "Pokhara to Kathmandu",
-    type: "Drop Only",
-    price: 12000,
+    price: 19000,
+    usd: 145,
+    distance: "200",
+    time: "6",
   },
   {
-    route: "Pokhara to Chitwan",
-    type: "Drop Only",
-    price: 9000,
-  },
-  {
-    route: "Pokhara to Birgunj",
-    type: "Drop Only",
-    price: 18000,
-  },
-  {
-    route: "Pokhara to Nepalgunj",
-    type: "Drop Only",
-    price: 28000,
+    route: "Pokhara to Besisahar",
+    price: 17000,
+    usd: 130,
+    distance: "80",
+    time: "3.5",
   },
   {
     route: "Pokhara to Muktinath",
-    type: "Sameday Return",
-    price: 15000,
+    price: 28000,
+    usd: 215,
+    distance: "174",
+    time: "7",
+  },
+  {
+    route: "Pokhara to Gorkha",
+    price: 17000,
+    usd: 130,
+    distance: "106",
+    time: "3.5",
+  },
+  {
+    route: "Pokhara to Manang (two nights, three days)",
+    price: 65000,
+    usd: 495,
+    distance: "175",
+    time: "8.5",
+  },
+  {
+    route: "Pokhara to Chitwan",
+    price: 16000,
+    usd: 125,
+    distance: "170",
+    time: "5",
+  },
+  {
+    route: "Pokhara to Dhampus",
+    price: 7000,
+    usd: 55,
+    distance: "26",
+    time: "1",
+  },
+  {
+    route: "Pokhara to Ghandruk",
+    price: 11000,
+    usd: 85,
+    distance: "32",
+    time: "",
+  },
+  {
+    route: "Pokhara to Upper Mustang (3N/4D)",
+    price: 70000,
+    usd: 535,
+    distance: "",
+    time: "",
+  },
+  {
+    route: "Pokhara to Lumbini",
+    price: 18000,
+    usd: 140,
+    distance: "127",
+    time: "",
+  },
+  {
+    route: "Pokhara to Barpak",
+    price: 18000,
+    usd: 140,
+    distance: "140",
+    time: "5",
+  },
+  {
+    route: "Pokhara to Nayapool",
+    price: 5000,
+    usd: 40,
+    distance: "40",
+    time: "",
+  },
+  {
+    route: "Pokhara to Kande",
+    price: 4500,
+    usd: 35,
+    distance: "27",
+    time: "",
+  },
+  {
+    route: "Pokhara to Kushma",
+    price: 9000,
+    usd: 70,
+    distance: "64",
+    time: "2",
+  },
+  {
+    route: "Pokhara to Baglung",
+    price: 9000,
+    usd: 70,
+    distance: "79",
+    time: "",
+  },
+  {
+    route: "Pokhara to Manakamana",
+    price: 12000,
+    usd: 95,
+    distance: "95",
+    time: "3.5",
+  },
+  {
+    route: "Airport Pickup/drop",
+    price: 2000,
+    usd: 20,
+    distance: "",
+    time: "",
   },
 ];
 
@@ -116,16 +220,33 @@ const goodToKnow = [
 
 interface ScorpioDetailProps {
   vehicle: VehicleType;
+  destinationTitle?: string;
+  priceRows?: PriceRow[];
+  hideExtras?: boolean;
+  hideDestinations?: boolean;
+  hideHero?: boolean;
+  hideIntro?: boolean;
 }
 
-export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
+export default function ScorpioDetail({
+  vehicle,
+  destinationTitle,
+  priceRows,
+  hideExtras,
+  hideDestinations,
+  hideHero,
+  hideIntro,
+}: ScorpioDetailProps) {
   return (
     <>
       <div className="space-y-8">
+      {hideHero ? null : (
+      <>
       {/* Title + rating */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold text-[#E67E23] leading-snug">
-          Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Pokhara
+          {destinationTitle ??
+            "Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Pokhara"}
         </h1>
         {vehicle.rating ? (
           <p className="flex items-center gap-1 text-sm text-gray-600 mt-3">
@@ -140,7 +261,7 @@ export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
         {vehicle.images?.[0] ? (
           <Image
             src={getHeroImage(vehicle.images[0])}
-            alt="Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Pokhara"
+            alt={destinationTitle ?? "Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Pokhara"}
             fill
             sizes="(max-width: 768px) 100vw, 768px"
             className="object-cover"
@@ -152,7 +273,11 @@ export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
           </div>
         )}
       </div>
+      </>
+      )}
 
+      {hideIntro ? null : (
+      <>
       {/* Section 1 — Service intro */}
       <section>
         <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
@@ -174,94 +299,106 @@ export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
             as per your requirements and travel needs.
           </p>
           <p>
-            <strong className="font-semibold text-gray-900">
-              Hiring a driver
+            <strong className="  font-semibold text-gray-900 ">
+              Self-drive is available
             </strong>{" "}
-            eliminates the stress of navigating unfamiliar roads, allowing you
-            to relax and enjoy the scenery. Experienced drivers are
-            knowledgeable about the local routes and can provide valuable
-            insights into the region&apos;s history and culture. By choosing to
-            rent a Scorpio with a driver in Pokhara, you can enjoy a{" "}
+            for travellers who are comfortable driving on Nepal&apos;s roads.
+            However, we recommend hiring our professional driver because it
+            eliminates the stress of navigating unfamiliar roads and lets you
+            relax and enjoy the scenery. Experienced drivers know the local
+            routes and can share valuable insights into the region&apos;s history
+            and culture. With a driver, you can enjoy a{" "}
             <strong className="font-semibold text-gray-900">
               safe and comfortable journey
             </strong>{" "}
-            while discovering the beauty of this stunning region, with a group
-            of up to 7 people travelling together in comfort.
+            while exploring the region with a group of up to 7 people.
           </p>
         </div>
       </section>
+      </>
+      )}
 
-      {/* Fleet */}
-      <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Types of Scorpio or Jeep For Rent in Pokhara
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-          {fleet.map((item) => (
-            <div
-              key={item.name}
-              className="group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-orange-300 hover:shadow-md transition-all"
-            >
-              <div className="relative h-44 bg-gray-50 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={`${item.name} for Rent in Pokhara Nepal`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="font-bold text-gray-900 mb-1">{item.name}</h3>
-                <p className="text-sm font-semibold text-gray-700">
-                  {item.specs}
-                </p>
-              </div>
+      {hideDestinations ? null : (
+        <ScorpioDestinationCards
+          heroImage={
+            vehicle.images?.[0]
+              ? getHeroImage(vehicle.images[0])
+              : "/mahendra-scarpio.png"
+          }
+        />
+      )}
+
+      {hideExtras ? null : (
+        <>
+          {/* Fleet */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Types of Scorpio or Jeep For Rent in Pokhara
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+              {fleet.map((item) => (
+                <div
+                  key={item.name}
+                  className="group flex flex-col rounded-xl border border-gray-200 overflow-hidden hover:border-orange-300 hover:shadow-md transition-all"
+                >
+                  <div className="relative h-44 bg-gray-50 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={`${item.name} for Rent in Pokhara Nepal`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-5 flex flex-col flex-1">
+                    <h3 className="font-bold text-gray-900 mb-1">
+                      {item.name}
+                    </h3>
+                    <p className="text-sm font-semibold text-gray-700">
+                      {item.specs}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
-          {fleetIntro.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-          {fleetDescriptions.map((item) => (
-            <p key={item.name}>
-              <strong className="font-semibold text-gray-900">
-                {item.name}:
-              </strong>{" "}
-              {item.desc}
-            </p>
-          ))}
-          {fleetClosing.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-        </div>
-      </section>
+            <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+              {fleetIntro.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+              {fleetDescriptions.map((item) => (
+                <p key={item.name}>
+                  <strong className="font-semibold text-gray-900">
+                    {item.name}:
+                  </strong>{" "}
+                  {item.desc}
+                </p>
+              ))}
+              {fleetClosing.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
 
       {/* Section 2 — Pricing */}
       <section>
         <h2 className="text-2xl font-bold text-gray-900 mb-3">
-          Scorpio Jeep Rental Price in Nepal
+          Cost of Scorpio Rental in Pokhara
         </h2>
         <p className="text-lg text-gray-600 leading-relaxed mb-6">
-          Scorpio jeep rental prices in Nepal vary depending on your route,
-          distance, and duration of travel. From Pokhara, we offer flexible
-          rates whether you need a drop-only service to Kathmandu, Chitwan, or
-          Birgunj, or a same-day return to Muktinath. Every price includes a
-          professional driver, and we keep our rates clear and transparent with
-          no hidden fees so you can plan your journey with confidence.
+          Scorpio rental costs in Pokhara vary depending on the route, distance,
+          and duration of travel. We offer flexible per-day and destination-based
+          options with clear rates, so you can choose the service that best fits
+          your journey.
         </p>
 
-        <ScorpioPriceTable rows={rentalPrices} />
-
-        <p className="mt-6 flex items-center gap-2 text-lg text-gray-600">
-          <CurrencyIcon />
-          Transparent pricing with no hidden fees. Final cost depends on your
-          route, duration, and number of days. Contact us for an exact quote.
-        </p>
+        <ScorpioPriceTable rows={priceRows ?? rentalPrices} />
       </section>
 
+      {hideExtras ? null : (
+        <>
       {/* Section 3 — Why us + Good to know + FAQ */}
       <section>
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -303,6 +440,8 @@ export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
           </div>
         )}
       </section>
+        </>
+      )}
     </div>
 
       {/* WhatsApp Button */}
@@ -318,22 +457,5 @@ export default function ScorpioDetail({ vehicle }: ScorpioDetailProps) {
         </span>
       </a>
     </>
-  );
-}
-
-function CurrencyIcon() {
-  return (
-    <svg
-      className="w-5 h-5 text-orange-600 shrink-0 mt-0.5"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="12" y1="1" x2="12" y2="23" />
-      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-    </svg>
   );
 }

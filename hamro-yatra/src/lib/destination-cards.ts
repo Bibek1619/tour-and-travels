@@ -18,7 +18,7 @@ export const DEFAULT_CARDS: DestinationCardData[] = [
     badge: "2N/3D",
     image: "/manang.jpg",
     hoverImage: "/manang.jpg",
-    href: "/tours",
+    href: "/tours/manang-trip",
   },
   {
     id: "mustang",
@@ -28,7 +28,7 @@ export const DEFAULT_CARDS: DestinationCardData[] = [
     badge: "1N/2D",
     image: "/mustang.jpg",
     hoverImage: "/mustang.jpg",
-    href: "/tours",
+    href: "/tours/1-night-2-days-mustang-tour",
   },
   {
     id: "scorpio",
@@ -48,7 +48,7 @@ export const DEFAULT_CARDS: DestinationCardData[] = [
     badge: "Multi-Day Trek",
     image: "/annapurna.jpg",
     hoverImage: "/annapurna.jpg",
-    href: "/treks",
+    href: "/treks/annapurna-base-camp-trek",
   },
   {
     id: "paragliding",
