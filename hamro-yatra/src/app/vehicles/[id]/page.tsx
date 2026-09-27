@@ -25,7 +25,13 @@ import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
 import { slugify } from "@/lib/slugify";
 import JsonLd from "@/components/json-ld";
-import { vehicleJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
+import {
+  vehicleJsonLd,
+  scorpioRouteJsonLd,
+  faqPageJsonLd,
+  reviewJsonLd,
+  breadcrumbJsonLd,
+} from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
 import VehicleRoutes from "@/components/vehicle-routes";
 import ScorpioDetail from "@/components/vehicles/scorpio-detail";
@@ -61,18 +67,47 @@ export async function generateMetadata({
   const canonicalSlug = scorpioRoute ? id : vehicle.slug ?? id;
 
   if (scorpioRoute) {
+    const routeImage = scorpioRoute.heroImage ?? scorpioRoute.image;
+    const dest = scorpioRoute.destination.toLowerCase();
+    const orig = scorpioRoute.origin.toLowerCase();
+    
     return buildMetadata({
-      title: `${scorpioRoute.route} Scorpio Hire | Prices & Booking | Hamro Yatra`,
-      description: `Scorpio jeep hire in Pokhara for ${scorpioRoute.route}. Rates from NPR ${scorpioRoute.price.toLocaleString(
-        "en-US"
-      )} (USD ${scorpioRoute.usd}), professional driver included. Book your ${scorpioRoute.route} Scorpio rental with Hamro Yatra Adventure.`,
+      title:
+        scorpioRoute.seoTitle ??
+        `${scorpioRoute.route} Scorpio Rental NPR ${scorpioRoute.price.toLocaleString()} | Jeep Hire`,
+      description:
+        scorpioRoute.seoDescription ??
+        `Rent Scorpio ${orig} to ${dest} NPR ${scorpioRoute.price.toLocaleString()} (USD ${scorpioRoute.usd}). ${scorpioRoute.distance} km, ${scorpioRoute.time} hrs, experienced driver included. Book 24/7!`,
       path: `/vehicles/${id}`,
+      images: routeImage ? [routeImage] : undefined,
+      geo: {
+        region: "NP-GA",
+        placename: `${scorpioRoute.origin} to ${scorpioRoute.destination}`,
+        position: "28.2096;83.9856",
+      },
       keywords: [
-        "scorpio hire Pokhara",
-        `${scorpioRoute.route.toLowerCase()} scorpio hire`,
-        `${scorpioRoute.route.toLowerCase()} scorpio price`,
-        "scorpio with driver Pokhara",
-        "jeep rental Pokhara",
+        // Main target keywords
+        `scorpio rental ${orig} to ${dest}`,
+        `${orig} to ${dest} scorpio`,
+        `rent scorpio ${orig} ${dest}`,
+        `scorpio hire ${orig} to ${dest}`,
+        `scorpio price ${orig} to ${dest}`,
+        `scorpio booking ${orig} to ${dest}`,
+        `jeep rental ${orig} to ${dest}`,
+        `car rental ${orig} to ${dest}`,
+        `${orig} ${dest} scorpio`,
+        // With driver variations
+        `scorpio with driver ${orig}`,
+        `jeep hire with driver ${orig}`,
+        `private car ${orig} to ${dest}`,
+        // Cost/price related
+        `scorpio rental price ${orig}`,
+        `${orig} to ${dest} car price`,
+        `jeep hire cost ${orig} to ${dest}`,
+        // Location specific
+        `${dest} scorpio rental`,
+        `${orig} car rental`,
+        `vehicle rental ${orig}`,
       ],
     });
   }
@@ -232,24 +267,72 @@ export default async function VehicleDetailPage({
 
   return (
     <div>
-      <JsonLd
-        data={vehicleJsonLd({
-          name: vehicle.name,
-          description: `Rent a ${vehicle.name ?? "vehicle"} in Nepal with Hamro Yatra Adventure.`,
-          image: getHeroImage(vehicle.images?.[0]),
-          url: `/vehicles/${canonicalSlug}`,
-          brand: vehicle.brand,
-          model: vehicle.model,
-          category: vehicle.category,
-          fuelType: vehicle.fuelType,
-          capacity: vehicle.capacity,
-          price: vehicle.dailyRate,
-          rating: vehicle.rating,
-        })}
-      />
+      {scorpioRoute ? (
+        <JsonLd
+          data={scorpioRouteJsonLd({
+            route: scorpioRoute.route,
+            origin: scorpioRoute.origin,
+            destination: scorpioRoute.destination,
+            image: scorpioRoute.heroImage ?? scorpioRoute.image,
+            url: `/vehicles/${canonicalSlug}`,
+            vehicleName: vehicle.name,
+            price: scorpioRoute.price,
+            capacity: vehicle.capacity,
+            distance: scorpioRoute.distance,
+            time: scorpioRoute.time,
+            rating: vehicle.rating,
+            totalReviews: vehicle.totalReviews,
+          })}
+        />
+      ) : (        <JsonLd
+          data={vehicleJsonLd({
+            name: vehicle.name,
+            description: `Rent a ${vehicle.name ?? "vehicle"} in Nepal with Hamro Yatra Adventure.`,
+            image: getHeroImage(vehicle.images?.[0]),
+            url: `/vehicles/${canonicalSlug}`,
+            brand: vehicle.brand,
+            model: vehicle.model,
+            category: vehicle.category,
+            fuelType: vehicle.fuelType,
+            capacity: vehicle.capacity,
+            price: vehicle.dailyRate,
+            rating: vehicle.rating,
+            ratingCount: vehicle.totalReviews,
+          })}
+        />
+      )}
+      {scorpioRoute && scorpioRoute.faqs.length > 0 ? (
+        <JsonLd data={faqPageJsonLd(scorpioRoute.faqs)} />
+      ) : null}
+      {reviewData.data.slice(0, 3).map((review) => (
+        <JsonLd
+          key={review._id}
+          data={reviewJsonLd({
+            itemName: scorpioRoute
+              ? `${scorpioRoute.route} Scorpio Hire`
+              : (vehicle.name ?? "Vehicle"),
+            itemType: scorpioRoute ? "Service" : "Vehicle",
+            rating: review.rating ?? 0,
+            reviewBody: review.review ?? "",
+            author: review.name ?? "Verified customer",
+            datePublished: review.createdAt ?? new Date().toISOString(),
+            itemUrl: `/vehicles/${canonicalSlug}`,
+            avgRating: reviewData.avgRating || review.rating,
+            reviewCount: reviewData.total,
+          })}
+        />
+      ))}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: "/" },
+          ...(scorpioRoute
+            ? [
+                {
+                  name: "Scorpio Rent in Pokhara",
+                  url: `/vehicles/${scorpioBaseSlug}`,
+                },
+              ]
+            : []),
           {
             name: scorpioRoute?.route ?? vehicle.name ?? "Vehicle",
             url: `/vehicles/${canonicalSlug}`,
@@ -263,7 +346,6 @@ export default async function VehicleDetailPage({
             <Link href="/" className="hover:text-orange-600">
               Home
             </Link>
-            <ChevronRight className="w-4 h-4" />
             {scorpioRoute ? (
               <>
                 <Link
@@ -546,6 +628,15 @@ export default async function VehicleDetailPage({
           </div>
 
           <div className="mt-10 space-y-10">
+            {scorpioRoute && scorpioRoute.faqs.length > 0 ? (
+              <div className="rounded-2xl border border-gray-200 bg-white p-6 md:p-8">
+                <FaqSection
+                  title={`${scorpioRoute.route} Scorpio Hire — FAQs`}
+                  subtitle={`Cost, timing and booking questions for a Scorpio jeep with driver from Pokhara to ${scorpioRoute.destination}.`}
+                  items={scorpioRoute.faqs}
+                />
+              </div>
+            ) : null}
             {scorpioRoute ? (
               <ScorpioSimilarRoutes
                 currentSlug={scorpioRoute.slug}

@@ -97,7 +97,7 @@ export function buildMetadata({
   const url = `${SITE_URL}${path}`;
   const absoluteImages = images.map(toAbsoluteUrl);
   const ogImages = absoluteImages.length
-    ? absoluteImages.map((src) => ({ url: src, alt: title }))
+    ? absoluteImages.map((src) => ({ url: src, width: 1920, height: 1080, alt: title }))
     : [
         {
           url: toAbsoluteUrl("/images-5.jpg"),
@@ -106,25 +106,31 @@ export function buildMetadata({
           alt: title,
         },
       ];
+  // The root layout appends this to <title>. Applying it to the social tags too
+  // keeps every share preview consistent with the SERP listing.
+  const socialTitle = `${title} | ${SITE_NAME}`;
   return {
     title,
     description,
-    keywords: [...BASE_KEYWORDS, ...keywords],
+    // Google has ignored the keywords meta tag since 2009. Only page-specific
+    // terms are emitted; BASE_KEYWORDS stays on the root layout.
+    ...(keywords.length ? { keywords } : {}),
     authors: [{ name: SITE_NAME }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
     applicationName: SITE_NAME,
     category,
-    alternates: { 
+    alternates: {
       canonical: path,
+      // Single-language site: x-default only. Pointing a second hreflang at the
+      // same URL is a self-referential no-op that Google flags as noise.
       languages: {
-        'x-default': path,
-        'en': path,
+        "x-default": path,
       },
     },
     metadataBase: new URL(SITE_URL),
     openGraph: {
-      title,
+      title: socialTitle,
       description,
       url,
       siteName: SITE_NAME,
@@ -136,9 +142,9 @@ export function buildMetadata({
       card: "summary_large_image",
       site: "@HamroYatra",
       creator: "@HamroYatra",
-      title,
+      title: socialTitle,
       description,
-      images: ogImages,
+      images: ogImages.map((i) => i.url),
     },
     robots: {
       index: true,
@@ -154,8 +160,10 @@ export function buildMetadata({
       },
     },
     verification: {
-      google: undefined, // Add your Google Search Console verification code here
-      yandex: undefined,
+      // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION to the code from
+      // Search Console > Settings > Ownership verification to enable it.
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+      yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || undefined,
     },
     ...(geo
       ? {

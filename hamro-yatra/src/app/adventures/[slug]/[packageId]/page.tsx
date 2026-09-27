@@ -25,7 +25,7 @@ import FaqSection from "@/components/faq-section";
 import { buildMetadata } from "@/lib/seo";
 import { getHeroImage } from "@/lib/cloudinary";
 import JsonLd from "@/components/json-ld";
-import { adventureJsonLd } from "@/lib/jsonld";
+import { adventureJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
@@ -140,8 +140,17 @@ export default async function AdventurePackageDetailPage({
           duration: pkg.duration,
           price,
           rating: pkg.rating,
+          ratingCount: reviewData.total,
           faqs: pkg.faqs,
         })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Adventures", url: "/adventures" },
+          { name: category.name, url: `/adventures/${slug}` },
+          { name: pkg.name, url: `/adventures/${slug}/${packageId}` },
+        ])}
       />
       <Navbar />
       <div className="min-h-screen bg-gray-50">

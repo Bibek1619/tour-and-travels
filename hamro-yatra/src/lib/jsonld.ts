@@ -120,11 +120,13 @@ telephone: "+977-9856006671",
         },
       ],
     },
+    // Must be public profile URLs, matching the social links in page content.
+    // The Facebook entry in page-content defaults is a /share/ link, which is
+    // not a valid sameAs target, so it is intentionally omitted here.
     sameAs: [
-      // Add your social media URLs here
-      "https://www.facebook.com/hamroyatraadventure",
-      "https://www.instagram.com/hamroyatraadventure",
-      "https://twitter.com/HamroYatra",
+      "https://www.instagram.com/hamro_yatra_adventure",
+      "https://youtube.com/@hamroyatradventure333",
+      "https://www.tiktok.com/@hamroyatraadventucher",
     ],
   };
 }
@@ -173,20 +175,7 @@ export function tripJsonLd({
         }))
       : undefined;
 
-  const faq =
-    faqs && faqs.length > 0
-      ? {
-          "@type": "FAQPage",
-          mainEntity: faqs.map((f) => ({
-            "@type": "Question",
-            name: f.q,
-            acceptedAnswer: { "@type": "Answer", text: f.a },
-          })),
-        }
-      : undefined;
-
-  return {
-    "@context": "https://schema.org",
+  const trip: JsonLdObject = {
     "@type": "TouristTrip",
     name: title,
     description: description || title,
@@ -206,7 +195,24 @@ export function tripJsonLd({
               : undefined,
         }
       : {}),
-    ...(faq ? { mainEntityOfPage: faq } : {}),
+  };
+
+  const faq =
+    faqs && faqs.length > 0
+      ? {
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }
+      : undefined;
+
+  // FAQPage must be its own top-level entity, not nested under the trip.
+  return {
+    "@context": "https://schema.org",
+    "@graph": [trip, ...(faq ? [faq] : [])],
   };
 }
 
@@ -222,6 +228,7 @@ export function vehicleJsonLd({
   capacity,
   price,
   rating,
+  ratingCount,
 }: {
   name?: string;
   description?: string;
@@ -234,6 +241,7 @@ export function vehicleJsonLd({
   capacity?: number;
   price?: number;
   rating?: number;
+  ratingCount?: number;
 }): JsonLdObject {
   return {
     "@context": "https://schema.org",
@@ -253,6 +261,7 @@ export function vehicleJsonLd({
             "@type": "Offer",
             price,
             priceCurrency: "NPR",
+            availability: "https://schema.org/InStock",
             url: `${SITE_URL}${url}`,
           },
         }
@@ -262,6 +271,9 @@ export function vehicleJsonLd({
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: Math.min(rating, 5).toString(),
+            bestRating: "5",
+            // Required by Google, otherwise the rich result is dropped.
+            reviewCount: ratingCount || 1,
           },
         }
       : {}),
@@ -278,6 +290,7 @@ export function adventureJsonLd({
   duration,
   price,
   rating,
+  ratingCount,
   faqs,
 }: {
   name: string;
@@ -289,6 +302,7 @@ export function adventureJsonLd({
   duration?: string;
   price?: number;
   rating?: number;
+  ratingCount?: number;
   faqs?: { q: string; a: string }[];
 }): JsonLdObject {
   const faq =
@@ -303,15 +317,17 @@ export function adventureJsonLd({
         }
       : undefined;
 
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
+  const service: JsonLdObject = {
+    // Service, not Product: these are bookable activities, so Google must not
+    // expect shippingDetails or a merchant return policy.
+    "@type": "Service",
     name,
     description: description || name,
     image: image ? [abs(image)] : undefined,
     url: `${SITE_URL}${url}`,
+    serviceType: category || "Adventure activity",
     category: category || undefined,
-    brand: { "@type": "Organization", name: SITE_NAME },
+    provider: { "@type": "TravelAgency", name: SITE_NAME, url: SITE_URL },
     ...(price
       ? {
           offers: {
@@ -320,20 +336,147 @@ export function adventureJsonLd({
             priceCurrency: "NPR",
             availability: "https://schema.org/InStock",
             url: `${SITE_URL}${url}`,
+            eligibleRegion: { "@type": "Country", name: "Nepal" },
           },
         }
       : {}),
-    ...(location ? { locationCreated: location } : {}),
+    ...(location ? { areaServed: location } : {}),
     ...(duration ? { additionalProperty: { "@type": "PropertyValue", name: "Duration", value: duration } } : {}),
     ...(rating
       ? {
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: Math.min(rating, 5).toString(),
+            bestRating: "5",
+            // Required by Google, otherwise the rich result is dropped.
+            reviewCount: ratingCount || 1,
           },
         }
       : {}),
-    ...(faq ? { mainEntityOfPage: faq } : {}),
+  };
+
+  // FAQPage must be its own top-level entity, not nested under the service.
+  return {
+    "@context": "https://schema.org",
+    "@graph": [service, ...(faq ? [faq] : [])],
+  };
+}
+
+export function scorpioRouteJsonLd({
+  route,
+  origin,
+  destination,
+  image,
+  url,
+  vehicleName,
+  price,
+  capacity,
+  distance,
+  time,
+  rating,
+  totalReviews,
+}: {
+  route: string;
+  origin: string;
+  destination: string;
+  image?: string | null;
+  url: string;
+  vehicleName?: string;
+  price: number;
+  capacity?: number;
+  distance?: string;
+  time?: string;
+  rating?: number;
+  totalReviews?: number;
+}): JsonLdObject {
+  const canonical = `${SITE_URL}${url}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${route} Scorpio Hire`,
+    serviceType: "Scorpio jeep rental with driver",
+    description: `Hire a Scorpio jeep with an experienced driver from ${origin} to ${destination}, Nepal. One-way and round-trip rates with a professional local driver included.`,
+    url: canonical,
+    image: image ? [abs(image)] : undefined,
+    provider: {
+      "@type": "TravelAgency",
+      name: SITE_NAME,
+      url: SITE_URL,
+      telephone: CONTACT.telephone,
+    },
+    areaServed: [
+      { "@type": "City", name: origin },
+      { "@type": "City", name: destination },
+    ],
+    ...(vehicleName
+      ? {
+          vehicleSpecification: {
+            "@type": "Vehicle",
+            name: vehicleName,
+            brand: { "@type": "Brand", name: "Mahindra" },
+            ...(capacity ? { vehicleSeatingCapacity: capacity } : {}),
+          },
+        }
+      : {}),
+    ...(distance || time
+      ? {
+          additionalProperty: [
+            ...(distance
+              ? [
+                  {
+                    "@type": "PropertyValue",
+                    name: "Distance",
+                    value: `${distance} km`,
+                  },
+                ]
+              : []),
+            ...(time
+              ? [
+                  {
+                    "@type": "PropertyValue",
+                    name: "Travel time",
+                    value: `${time} hrs`,
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {}),
+    offers: {
+      "@type": "Offer",
+      price,
+      priceCurrency: "NPR",
+      availability: "https://schema.org/InStock",
+      url: canonical,
+    },
+    ...(rating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: Math.min(rating, 5).toString(),
+            ...(totalReviews ? { reviewCount: totalReviews } : {}),
+          },
+        }
+      : {}),
+  };
+}
+
+/**
+ * Standalone FAQPage. Must be emitted as its own top-level entity, otherwise
+ * Google ignores it. Pair with the visible FaqSection so the answers are also
+ * present in the rendered HTML.
+ */
+export function faqPageJsonLd(faqs: { q: string; a: string }[]): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs
+      .filter((f) => f.q?.trim() && f.a?.trim())
+      .map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
   };
 }
 
@@ -357,6 +500,9 @@ export function reviewJsonLd({
   reviewBody,
   author,
   datePublished,
+  itemUrl,
+  avgRating,
+  reviewCount,
 }: {
   itemName: string;
   itemType?: string;
@@ -364,6 +510,9 @@ export function reviewJsonLd({
   reviewBody: string;
   author: string;
   datePublished: string;
+  itemUrl?: string;
+  avgRating?: number;
+  reviewCount?: number;
 }): JsonLdObject {
   return {
     "@context": "https://schema.org",
@@ -371,6 +520,19 @@ export function reviewJsonLd({
     itemReviewed: {
       "@type": itemType,
       name: itemName,
+      ...(itemUrl ? { url: `${SITE_URL}${itemUrl}` } : {}),
+      // Google requires an aggregateRating carrying a count on the reviewed
+      // item, otherwise the Review snippet is dropped as a critical error.
+      ...(avgRating
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: Math.min(avgRating, 5).toString(),
+              bestRating: "5",
+              reviewCount: reviewCount || 1,
+            },
+          }
+        : {}),
     },
     reviewRating: {
       "@type": "Rating",

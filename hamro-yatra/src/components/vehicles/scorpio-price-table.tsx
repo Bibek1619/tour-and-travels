@@ -11,6 +11,8 @@ export interface PriceRow {
   time: string;
 }
 
+const EM_DASH = "\u2014";
+
 export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState({
@@ -117,10 +119,10 @@ export function ScorpioPriceTable({ rows }: { rows: PriceRow[] }) {
                     {row.usd}$
                   </td>
                   <td className="border border-gray-300 px-3 py-3 text-sm text-gray-700">
-                    {row.distance}
+                    {row.distance || EM_DASH}
                   </td>
                   <td className="border border-gray-300 px-3 py-3 text-sm text-gray-700">
-                    {row.time}
+                    {row.time || EM_DASH}
                   </td>
                 </tr>
               ))}

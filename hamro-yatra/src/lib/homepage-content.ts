@@ -2,9 +2,9 @@ import type { HomepageContent } from "./types";
 
 export const defaultContent: HomepageContent = {
   hero: {
-    title: "Vehicle Rental Pokhara | Nepal Tours & Treks",
+    title: "Scorpio Jeep Rental Pokhara | Nepal Tours & Treks",
     subtitle:
-      "Rent Mahindra Scorpio SUV for your journey. Your trusted travel partner in Pokhara – book with confidence, travel with ease.",
+      "Rent Scorpio 4WD jeep with experienced driver. Pokhara's trusted vehicle rental for tours, treks & mountain trips across Nepal.",
     mediaType: "video",
     videoSrc: "/hero%20video.mp4",
     imageSrc: "/images-5.jpg",
@@ -19,11 +19,11 @@ export const defaultContent: HomepageContent = {
     welcomeHighlight: "Namaste",
     subtitle: "Your Gateway to the Majestic Himalayas",
     description1:
-      "Hamro Yatra Adventure is a trusted travel agency with over 26 years of experience in crafting unforgettable journeys across Nepal. From the snow-capped Himalayas and the sacred temples of Kathmandu Valley to the tranquil lakesides of Pokhara and the jungle safaris of Chitwan, we bring you the very best of this incredible land with licensed guides, comfortable Scorpio jeep rentals and fully customizable itineraries.",
+      "Hamro Yatra Adventure is Pokhara's leading Scorpio jeep rental and Nepal tour operator with 26+ years of experience. From the snow-capped Himalayas and the sacred temples of Kathmandu Valley to the tranquil lakesides of Pokhara and the jungle safaris of Chitwan, we provide comfortable Scorpio 4WD rentals with professional drivers for travel from Pokhara to Kathmandu and across Nepal, plus fully customizable tour packages and guided trekking expeditions.",
     description2:
-      "Explore Nepal's diverse landscapes, vibrant cultures and warm hospitality through our expertly designed services. We offer mountain trekking, wildlife safaris, cultural heritage tours and adventure sports like paragliding and river rafting - plus easy Scorpio car or jeep rental in Pokhara for comfortable travel across Nepal - all tailored to your preferences.",
+      "Looking for vehicle rental in Pokhara? Our Scorpio jeep hire service is perfect for families, groups, and solo travelers. Explore Nepal's diverse landscapes through our expert services: Scorpio rental for Pokhara to Kathmandu trips, off-road adventures to Mustang and Manang, mountain trekking, wildlife safaris, cultural heritage tours, paragliding in Pokhara, bungee jumping, and white water rafting - all tailored to your preferences.",
     description3:
-      "Whether you seek thrilling high-altitude treks, peaceful spiritual retreats or deep cultural immersion, Nepal has something extraordinary waiting for you. Let Hamro Yatra Adventure be your trusted guide to this magical destination - book your tours, treks and jeep rentals today and experience Nepal your way.",
+      "Whether you seek thrilling high-altitude treks, peaceful spiritual retreats, or Scorpio jeep rental for comfortable road travel, Nepal has something extraordinary waiting for you. Let Hamro Yatra Adventure be your trusted guide — book your tours, treks, and jeep rentals today. Trusted by 10,000+ travelers since 1998.",
     ctaText: "Discover Our Story",
     ctaLink: "/about",
     whyChooseTitle: "Why Choose Us?",

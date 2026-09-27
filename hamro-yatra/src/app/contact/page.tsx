@@ -18,7 +18,7 @@ import { getPageContent } from "@/lib/page-content";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Contact Us – Car Rental & Tour Booking Pokhara | Hamro Yatra Adventure",
+  title: "Contact Us – Car Rental & Tour Booking Pokhara",
   description:
     "Contact Hamro Yatra Adventure for Scorpio jeep hire, car rental, trekking & tour bookings in Pokhara and Nepal. WhatsApp, call or email for instant free quote.",
   path: "/contact",

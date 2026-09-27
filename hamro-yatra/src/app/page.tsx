@@ -26,36 +26,62 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Scorpio Jeep Hire Pokhara | Car Rental, Nepal Tours & Trekking – Hamro Yatra",
+  title: "Scorpio Jeep Rental Pokhara | Nepal Tours & Trekking 2026",
   description:
-    "#1 Scorpio jeep hire in Pokhara with driver. 26+ years Nepal tour operator — car rental, trekking packages, paragliding & adventure activities. Book online today!",
+    "Rent Scorpio jeep in Pokhara with driver. 26+ years Nepal tour operator — vehicle rental Pokhara to Kathmandu, trekking packages, paragliding & bungee. Book now!",
   path: "/",
   keywords: [
-    "Scorpio jeep hire in Pokhara",
+    // PRIMARY: Scorpio & Vehicle Rental (Main Business)
     "Scorpio rental Pokhara",
-    "Scorpio jeep with driver Pokhara",
-    "car rental in Pokhara",
-    "jeep rental Pokhara",
-    "4WD jeep hire Pokhara",
-    "private jeep hire Pokhara",
-    "Mahindra Scorpio rental Pokhara",
-    "tourist vehicle rental Pokhara",
-    "Pokhara to Kathmandu private car",
-    "off-road vehicle rental Nepal",
-    "Pokhara airport car rental",
-    "Nepal tour packages 2026",
-    "Kathmandu Pokhara tour package",
+    "Scorpio jeep hire Pokhara",
+    "Scorpio rental Nepal",
+    "4WD Scorpio rental Pokhara",
+    "jeep rental Pokhara with driver",
+    "car rental Pokhara",
+    "vehicle rental Pokhara",
+    "SUV rental Nepal",
+    "private car hire Pokhara",
+    "Pokhara to Kathmandu car",
+    "Kathmandu to Pokhara private vehicle",
+    "tourist vehicle rental Nepal",
+    "off-road jeep rental Nepal",
+    "Pokhara airport pickup",
+    
+    // SECONDARY: Nepal Tours & Packages
+    "Nepal tour packages",
+    "Nepal tour operator",
+    "Pokhara tour packages",
+    "Kathmandu Pokhara tour",
+    "Nepal holiday packages 2026",
+    "cultural tours Nepal",
+    "Nepal sightseeing tour",
+    "best tour company Nepal",
+    
+    // TERTIARY: Trekking
     "trekking in Nepal",
+    "Nepal trekking packages",
     "Everest Base Camp trek",
-    "best trekking company in Nepal",
-    "paragliding Pokhara price",
+    "Annapurna Circuit trek",
+    "best trekking company Nepal",
+    "guided treks Nepal",
+    
+    // QUATERNARY: Adventure Activities
+    "paragliding Pokhara",
     "bungee jumping Nepal",
     "white water rafting Nepal",
-    "adventure sports Nepal",
+    "adventure activities Nepal",
+    "Nepal adventure tourism",
+    
+    // Brand & Location
+    "Hamro Yatra Adventure Pokhara",
     "Visit Nepal 2026",
-    "Hamro Yatra Adventure",
   ],
   images: ["/images-5.jpg"],
+  geo: {
+    region: "NP-GA",
+    placename: "Pokhara",
+    position: "28.2096;83.9856",
+  },
 });
 
 export default async function Home() {

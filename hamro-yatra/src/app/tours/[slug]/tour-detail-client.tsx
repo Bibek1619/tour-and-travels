@@ -20,7 +20,7 @@ import { getCardImage, getHeroImage } from "@/lib/cloudinary";
 import ReviewSection from "@/components/reviews/review-section";
 import FaqSection from "@/components/faq-section";
 import JsonLd from "@/components/json-ld";
-import { tripJsonLd } from "@/lib/jsonld";
+import { tripJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import type { ReviewView } from "@/lib/review-helpers";
 
 export default function TourDetailClient({
@@ -69,6 +69,13 @@ export default function TourDetailClient({
           itineraryCount: tour.itinerary?.length,
           faqs: tour.faqs,
         })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: "/" },
+          { name: "Tour Packages", url: "/tours" },
+          { name: tour.title, url: `/tours/${tour.slug}` },
+        ])}
       />
       {/* Breadcrumb */}
       <div className="bg-white border-b">

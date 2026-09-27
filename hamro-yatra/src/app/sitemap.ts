@@ -5,6 +5,7 @@ import { Adventure } from "@/models/adventure";
 import { Vehicle } from "@/models/vehicle";
 import { getTrekRegions } from "@/lib/regions";
 import { SITE_URL } from "@/lib/seo";
+import { scorpioRoutes, scorpioRouteSlugSet } from "@/lib/scorpio-routes";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +21,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.7 }, // Higher - leads to bookings
   ];
 
+  // Static route landing pages. Kept outside the DB branch so they survive a
+  // Mongo outage and are never dropped from the sitemap.
+  const scorpioRouteUrls: MetadataRoute.Sitemap = scorpioRoutes.map((route) => ({
+    url: `${base}/vehicles/${route.slug}`,
+    changeFrequency: "weekly",
+    priority: 0.9, // HIGHEST - main business
+  }));
+
   try {
     await connectDB();
   } catch {
-    return staticRoutes;
+    return [...staticRoutes, ...scorpioRouteUrls];
   }
 
   const [tours, treks, regions, adventures, vehicles] = await Promise.all([
@@ -82,15 +91,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.65, // Fourth priority
   }));
 
-  const vehicleRoutes = vehicles.map((v) => ({
-    url: `${base}/vehicles/${String(v.slug || v._id)}`,
-    lastModified: lastmodFor(v),
-    changeFrequency: "weekly" as const,
-    priority: 0.9, // HIGHEST - Main business
-  }));
+  // Route slugs are owned by scorpioRouteUrls; skip any vehicle record that
+  // would emit the same canonical URL twice.
+  const routeSlugs = scorpioRouteSlugSet();
+  const vehicleRoutes = vehicles
+    .filter((v) => !routeSlugs.has(String(v.slug || v._id)))
+    .map((v) => ({
+      url: `${base}/vehicles/${String(v.slug || v._id)}`,
+      lastModified: lastmodFor(v),
+      changeFrequency: "weekly" as const,
+      priority: 0.9, // HIGHEST - Main business
+    }));
 
   return [
     ...staticRoutes,
+    ...scorpioRouteUrls,
     ...tourRoutes,
     ...trekRoutes,
     ...regionRoutes,
