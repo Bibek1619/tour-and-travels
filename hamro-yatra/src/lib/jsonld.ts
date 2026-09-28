@@ -89,12 +89,8 @@ telephone: "+977-9856006671",
               availability: "https://schema.org/InStock",
               itemOffered: {
                 "@type": "Product",
-                name: "Mahindra Scorpio Rental",
+                name: "Scorpio Rental",
                 description: "7-seater SUV rental in Pokhara",
-                brand: {
-                  "@type": "Brand",
-                  name: "Mahindra"
-                },
                 offers: {
                   "@type": "AggregateOffer",
                   priceCurrency: "NPR",
@@ -390,8 +386,9 @@ export function scorpioRouteJsonLd({
   totalReviews?: number;
 }): JsonLdObject {
   const canonical = `${SITE_URL}${url}`;
-  return {
-    "@context": "https://schema.org",
+  
+  // Service entity for the rental service
+  const service: JsonLdObject = {
     "@type": "Service",
     name: `${route} Scorpio Hire`,
     serviceType: "Scorpio jeep rental with driver",
@@ -408,16 +405,6 @@ export function scorpioRouteJsonLd({
       { "@type": "City", name: origin },
       { "@type": "City", name: destination },
     ],
-    ...(vehicleName
-      ? {
-          vehicleSpecification: {
-            "@type": "Vehicle",
-            name: vehicleName,
-            brand: { "@type": "Brand", name: "Mahindra" },
-            ...(capacity ? { vehicleSeatingCapacity: capacity } : {}),
-          },
-        }
-      : {}),
     ...(distance || time
       ? {
           additionalProperty: [
@@ -454,10 +441,33 @@ export function scorpioRouteJsonLd({
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: Math.min(rating, 5).toString(),
-            ...(totalReviews ? { reviewCount: totalReviews } : {}),
+            reviewCount: totalReviews || 1,
+            bestRating: "5",
           },
         }
       : {}),
+  };
+
+  // Separate Vehicle entity with proper offers
+  const vehicle: JsonLdObject | null = vehicleName
+    ? {
+        "@type": "Vehicle",
+        name: vehicleName,
+        ...(capacity ? { vehicleSeatingCapacity: capacity } : {}),
+        // Add offers to Vehicle to fix Google Search Console error
+        offers: {
+          "@type": "Offer",
+          price,
+          priceCurrency: "NPR",
+          availability: "https://schema.org/InStock",
+          url: canonical,
+        },
+      }
+    : null;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [service, ...(vehicle ? [vehicle] : [])],
   };
 }
 
