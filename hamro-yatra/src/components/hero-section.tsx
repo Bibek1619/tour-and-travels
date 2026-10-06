@@ -152,7 +152,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
 
       {/* WhatsApp Button */}
       <a
-        href="https://wa.me/9779826689739"
+        href="https://wa.me/9779856006671"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed left-4 bottom-4 z-50 group"

@@ -311,7 +311,7 @@ export default async function AdventurePackageDetailPage({
                     </Link>
 
                     <a
-                      href={`https://wa.me/9779826689739?text=${whatsappMessage}`}
+                      href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"

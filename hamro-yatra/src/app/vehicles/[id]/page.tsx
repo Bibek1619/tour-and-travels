@@ -189,16 +189,37 @@ export default async function VehicleDetailPage({
     canonicalSlug === "scorpio-rent-in-pokhara" ||
     canonicalSlug === "mahindra-scorpio-7-seater";
 
+  const kathmanduPackageSlugs = [
+    "pokhara-to-kathmandu-scorpio-hire",
+    "pokhara-to-ghandruk-scorpio-hire",
+    "pokhara-to-dhampus-scorpio-hire",
+    "pokhara-to-landruk-scorpio-hire",
+    "pokhara-to-jhinu-danda-scorpio-hire",
+  ];
+
   const scorpioPriceRow = scorpioRoute
-    ? [
-        {
-          route: scorpioRoute.route,
-          price: scorpioRoute.price,
-          usd: scorpioRoute.usd,
-          distance: scorpioRoute.distance,
-          time: scorpioRoute.time,
-        },
-      ]
+    ? scorpioRoute.slug === "pokhara-to-kathmandu-scorpio-hire"
+      ? kathmanduPackageSlugs
+          .map((slug) => findScorpioRoute(slug))
+          .filter(
+            (route): route is NonNullable<typeof route> => route !== undefined
+          )
+          .map((route) => ({
+            route: route.route,
+            price: route.price,
+            usd: route.usd,
+            distance: route.distance,
+            time: route.time,
+          }))
+      : [
+          {
+            route: scorpioRoute.route,
+            price: scorpioRoute.price,
+            usd: scorpioRoute.usd,
+            distance: scorpioRoute.distance,
+            time: scorpioRoute.time,
+          },
+        ]
     : undefined;
 
   const heroImage = vehicle.images?.[0]

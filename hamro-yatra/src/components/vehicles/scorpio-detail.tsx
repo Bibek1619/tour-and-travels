@@ -23,8 +23,8 @@ const rentalPrices = [
   },
   {
     route: "Pokhara to Kathmandu",
-    price: 19000,
-    usd: 145,
+    price: 17000,
+    usd: 130,
     distance: "200",
     time: "6",
   },
@@ -65,17 +65,31 @@ const rentalPrices = [
   },
   {
     route: "Pokhara to Dhampus",
-    price: 7000,
-    usd: 55,
+    price: 6000,
+    usd: 46,
     distance: "26",
-    time: "1",
+    time: "1.5",
+  },
+  {
+    route: "Pokhara to Landruk",
+    price: 13000,
+    usd: 100,
+    distance: "50",
+    time: "3-4",
   },
   {
     route: "Pokhara to Ghandruk",
-    price: 11000,
-    usd: 85,
+    price: 10000,
+    usd: 77,
     distance: "32",
     time: "",
+  },
+  {
+    route: "Pokhara to Jhinu Danda",
+    price: 13000,
+    usd: 100,
+    distance: "58",
+    time: "3-4",
   },
   {
     route: "Pokhara to Upper Mustang (3N/4D)",
@@ -446,7 +460,7 @@ export default function ScorpioDetail({
 
       {/* WhatsApp Button */}
       <a
-        href="https://wa.me/9779826689739"
+        href="https://wa.me/9779856006671"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed left-4 bottom-4 z-50 group"

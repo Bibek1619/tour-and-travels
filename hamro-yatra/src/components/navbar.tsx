@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Phone, Mail, Search, Loader2, Car, Mountain, Compass, Zap } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 
 import { Button } from "./ui/button";
@@ -21,10 +21,80 @@ const vehicleItems = [
   { href: "/vehicles/scorpio-rent-in-pokhara", label: "Scorpio | Jeep Rent in Pokhara" },
 ];
 
+interface SearchResult {
+  id: string;
+  title: string;
+  description?: string;
+  category: "vehicle" | "tour" | "trek" | "adventure";
+  url: string;
+  image?: string;
+}
+
+const categoryIcons = {
+  vehicle: Car,
+  tour: Compass,
+  trek: Mountain,
+  adventure: Zap,
+};
+
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [vehicleOpen, setVehicleOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Close search on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+
+    if (searchOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchOpen]);
+
+  // Search with debounce
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+        const data = await res.json();
+        setSearchResults(data.results || []);
+      } catch (error) {
+        console.error("Search error:", error);
+        setSearchResults([]);
+      } finally {
+        setSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -128,10 +198,126 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          {/* Search Dropdown */}
+          <div className="relative ml-2" ref={searchRef}>
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 hover:border-orange-500 transition-colors"
+            >
+              <Search className="h-4 w-4 text-gray-600" />
+            </button>
+
+            {/* Search Dropdown Panel */}
+            {searchOpen && (
+              <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
+                {/* Search Input */}
+                <form onSubmit={handleSearchSubmit} className="p-3 border-b">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none"
+                        autoFocus
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </form>
+
+                {/* Results */}
+                <div className="max-h-96 overflow-y-auto">
+                  {searching ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="w-5 h-5 animate-spin text-orange-600" />
+                    </div>
+                  ) : !searchQuery.trim() ? (
+                    <div className="px-4 py-8 text-center text-sm text-gray-500">
+                      <Search className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                      <p>Type to search tours, treks, vehicles...</p>
+                    </div>
+                  ) : searchResults.length === 0 ? (
+                    <div className="px-4 py-8 text-center text-sm text-gray-500">
+                      <p>No results for "{searchQuery}"</p>
+                    </div>
+                  ) : (
+                    <>
+                      {searchResults.slice(0, 5).map((result) => {
+                        const Icon = categoryIcons[result.category];
+                        return (
+                          <Link
+                            key={result.id}
+                            href={result.url}
+                            onClick={() => {
+                              setSearchOpen(false);
+                              setSearchQuery("");
+                            }}
+                            className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 border-b last:border-b-0"
+                          >
+                            {result.image && (
+                              <img
+                                src={result.image}
+                                alt={result.title}
+                                className="w-12 h-12 rounded object-cover flex-shrink-0"
+                              />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <Icon className="w-3 h-3 text-gray-400" />
+                                <h4 className="text-sm font-medium text-gray-900 truncate">
+                                  {result.title}
+                                </h4>
+                              </div>
+                              {result.description && (
+                                <p className="text-xs text-gray-600 line-clamp-1">
+                                  {result.description}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        );
+                      })}
+                      {searchResults.length > 5 && (
+                        <Link
+                          href={`/search?q=${encodeURIComponent(searchQuery)}`}
+                          onClick={() => {
+                            setSearchOpen(false);
+                            setSearchQuery("");
+                          }}
+                          className="block px-4 py-3 text-center text-sm text-orange-600 hover:bg-orange-50 font-medium"
+                        >
+                          View all {searchResults.length} results →
+                        </Link>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-2 relative">
+          {/* Mobile Search Icon */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => router.push("/search")}
+          >
+            <Search className="h-5 w-5" />
+          </Button>
+          
           {/* Mobile menu toggle */}
           <Button
             variant="ghost"

@@ -55,8 +55,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     image: "/pkr-ktm.jpg",
     heroImage: "/carhero1 (1).jpg",
     meta: "200 km • 6 hrs",
-    price: 19000,
-    usd: 145,
+    price: 17000,
+    usd: 130,
     distance: "200",
     time: "6",
     highlights: [
@@ -83,7 +83,7 @@ export const scorpioRoutes: ScorpioRoute[] = [
       },
       {
         q: "How much does a Scorpio hire from Pokhara to Kathmandu cost?",
-        a: "A one-way Scorpio jeep hire from Pokhara to Kathmandu starts from NPR 19,000 (about USD 145) with an experienced driver included. The price covers the vehicle, fuel, driver allowance and the one-way drop. Contact us for return-trip and multi-day rates.",
+        a: "A one-way Scorpio jeep hire from Pokhara to Kathmandu starts from NPR 17,000 (about USD 130) with an experienced driver included. The price covers the vehicle, fuel, driver allowance and the one-way drop. Contact us for return-trip and multi-day rates.",
       },
       {
         q: "Is the driver included in the rental price?",
@@ -118,8 +118,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     destination: "Ghandruk",
     image: "/ghandruk.jpg",
     meta: "32 km from Pokhara",
-    price: 11000,
-    usd: 85,
+    price: 10000,
+    usd: 77,
     distance: "32",
     time: "2",
     highlights: [
@@ -143,7 +143,7 @@ export const scorpioRoutes: ScorpioRoute[] = [
       },
       {
         q: "How much does a Scorpio jeep hire from Pokhara to Ghandruk cost?",
-        a: "A one-way Scorpio hire from Pokhara to Ghandruk is NPR 11,000 (about USD 85) including the driver, fuel and the uphill drop. Round trips and waiting-jeep arrangements are quoted separately depending on how many days you need the vehicle.",
+        a: "A one-way Scorpio hire from Pokhara to Ghandruk is NPR 10,000 (about USD 77) including the driver, fuel and the uphill drop. Round trips and waiting-jeep arrangements are quoted separately depending on how many days you need the vehicle.",
       },
       {
         q: "Do I need a 4WD vehicle to reach Ghandruk?",
@@ -232,8 +232,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     destination: "Jhinu Danda",
     image: "/jhinu.jpg",
     meta: "Pokhara to Annapurna",
-    price: 11000,
-    usd: 85,
+    price: 13000,
+    usd: 100,
     distance: "58",
     time: "3-4",
     highlights: [
@@ -257,7 +257,7 @@ export const scorpioRoutes: ScorpioRoute[] = [
       },
       {
         q: "How much does a Scorpio hire from Pokhara to Jhinu Danda cost?",
-        a: "A one-way Scorpio jeep hire from Pokhara to Jhinu Danda is NPR 11,000 (about USD 85), including the driver, fuel and the drop. If the vehicle needs to wait while you trek, we quote the waiting days separately and pick you up from Jhinu, Nayapool or Siwai as convenient.",
+        a: "A one-way Scorpio jeep hire from Pokhara to Jhinu Danda is NPR 13,000 (about USD 100), including the driver, fuel and the drop. If the vehicle needs to wait while you trek, we quote the waiting days separately and pick you up from Jhinu, Nayapool or Siwai as convenient.",
       },
       {
         q: "Can I collect a jeep from Jhinu Danda after the Annapurna Base Camp trek?",
@@ -280,6 +280,120 @@ export const scorpioRoutes: ScorpioRoute[] = [
       { href: "/treks/annapurna-base-camp-trek", label: "Annapurna Base Camp trek" },
       { href: "/trek-packages/annapurna", label: "Annapurna trekking packages" },
       { href: "/treks/ghorepani-poon-hill-trek", label: "Ghorepani and Poon Hill trek" },
+    ],
+  },
+  {
+    slug: "pokhara-to-dhampus-scorpio-hire",
+    route: "Pokhara to Dhampus",
+    origin: "Pokhara",
+    destination: "Dhampus",
+    image: "/dhampus.jpg",
+    meta: "26 km • 1.5 hrs",
+    price: 6000,
+    usd: 46,
+    distance: "26",
+    time: "1.5",
+    highlights: [
+      { label: "Distance", value: "26 km" },
+      { label: "Drive time", value: "Approx. 1.5 hours" },
+      { label: "Altitude", value: "1,650 m at the village" },
+      { label: "Road", value: "Steep hill track, 4WD recommended" },
+      { label: "Vehicle", value: "Mahindra Scorpio, 7 seater" },
+      { label: "Views", value: "Annapurna, Machhapuchhre & Dhaulagiri" },
+    ],
+    overview: [
+      "Dhampus is a traditional Gurung village perched on a ridge at 1,650 m in the Annapurna foothills, only about 26 km from Pokhara — one of the shortest mountain drives we offer and the easiest way to get a real Himalayan view without a long transfer. From the terraced fields and slate-roofed houses of the village you look across the Pokhara valley to Annapurna, Machhapuchhre (Fishtail) and Hiunchuli, and on a clear morning the Dhaulagiri range and Phewa Lake are visible below.",
+      "The jeep leaves Pokhara on the Baglung highway, passes Hemja and Dhikur Pokhari, and then climbs the hill road up to the village. Most of the route is motorable but the final section is steep, narrow and rough — and it turns slippery in the monsoon — so a high-clearance four-wheel-drive Scorpio with a driver who knows the road is the sensible choice. The drive takes roughly an hour to an hour and a half each way.",
+      "Dhampus sits on the classic Mardi Himal trekking route and is a short walk from Australian Camp, which makes our Scorpio hire useful as a simple drop-off: drive up, enjoy sunset and sunrise from the ridge, then either walk on or be collected again. The village lies inside the Annapurna Conservation Area, so trekkers continuing beyond Dhampus need an ACAP permit, which is easy to arrange in Pokhara before you leave.",
+      "Book the Pokhara to Dhampus jeep hire for an overnight village stay, a short family day trip or as the starting point of the Mardi Himal or Australian Camp walk. Waiting time and the return drive to Pokhara can be added to the same booking whenever you are ready to come back down.",
+    ],
+    faqs: [
+      {
+        q: "How long does the drive from Pokhara to Dhampus take?",
+        a: "The 26 km run from Pokhara via the Baglung highway and Hemja takes about 1 to 1.5 hours. The last climb into the village is steep and slow, and monsoon rain can add extra time, so allow a little buffer if you are arriving for sunset or breakfast.",
+      },
+      {
+        q: "How much does a Scorpio hire from Pokhara to Dhampus cost?",
+        a: "A one-way Scorpio jeep hire from Pokhara to Dhampus is NPR 6,000 (about USD 46), including the driver, fuel and the drop at the village. Waiting time and the return trip to Pokhara are quoted separately depending on how long you need the vehicle.",
+      },
+      {
+        q: "Is the road to Dhampus suitable for a normal car?",
+        a: "Only partly. The highway section to Hemja is paved and fine for any vehicle, but the final climb to Dhampus is a steep, narrow and unpaved hill track. We recommend a 4WD Scorpio, especially in the monsoon when the surface becomes muddy and loose.",
+      },
+      {
+        q: "What can I see in Dhampus?",
+        a: "Dhampus is known for its terraced farmland, Gurung stone houses and wide mountain views. On a clear day you can see Annapurna, Machhapuchhre, Hiunchuli, Dhaulagiri and the Pokhara valley with Phewa Lake. Sunrise and sunset over the Himalaya from the village ridge are the main draw, and Australian Camp is about an hour's walk away.",
+      },
+      {
+        q: "Do I need an ACAP permit for Dhampus?",
+        a: "Dhampus lies inside the Annapurna Conservation Area, so an ACAP permit is required for trekking in the area. It is issued in Pokhara with your passport and a photo, and our team can help you arrange it before departure if you plan to walk beyond the village.",
+      },
+      {
+        q: "Can I combine the Dhampus drive with the Mardi Himal trek?",
+        a: "Yes. Dhampus is on the Mardi Himal route and close to Australian Camp, so a common plan is to be dropped in Dhampus, walk to Low Camp or Australian Camp, and be picked up again at the road-head. Tell us your itinerary and we will position the jeep and time the pick-up with you.",
+      },
+    ],
+    relatedLinks: [
+      { href: "/trek-packages/annapurna", label: "Annapurna trekking packages" },
+      { href: "/tours/pokhara-valley-scenic-tour", label: "Pokhara valley scenic tour" },
+      { href: "/tours/pokhara-to-ghandruk-tour", label: "Ghandruk village tour package" },
+    ],
+  },
+  {
+    slug: "pokhara-to-landruk-scorpio-hire",
+    route: "Pokhara to Landruk",
+    origin: "Pokhara",
+    destination: "Landruk",
+    image: "/landruk.png",
+    meta: "50 km • 3-4 hrs",
+    price: 13000,
+    usd: 100,
+    distance: "50",
+    time: "3-4",
+    highlights: [
+      { label: "Distance", value: "Approx. 50 km" },
+      { label: "Drive time", value: "Approx. 3 to 4 hours" },
+      { label: "Altitude", value: "1,565 m at the village" },
+      { label: "Road", value: "Off-road uphill, 4WD recommended" },
+      { label: "Vehicle", value: "Mahindra Scorpio, 7 seater" },
+      { label: "Best for", value: "ABC & Mardi Himal treks, honey-hunter village" },
+    ],
+    overview: [
+      "Landruk is a large Gurung village at 1,565 m standing on the south side of the Modi Khola valley, directly opposite the better-known village of Ghandruk. Because it sits slightly off the main trail it sees fewer visitors, and it rewards them with one of the best balcony views in the region: Annapurna South (7,219 m), Hiunchuli (6,441 m), Machhapuchhre and, on a clear day, Dhaulagiri across the valley.",
+      "The road journey from Pokhara runs along the Baglung highway through Nayapul and Birethanti before climbing into the Modi Khola valley — roughly 50 km in 3 to 4 hours. The track is narrow, steep and unpaved for long stretches, with sharp drops above the river, so a four-wheel-drive Scorpio and an experienced mountain driver are essential rather than optional. In the monsoon expect mud, loose surfaces and the occasional delay.",
+      "Landruk is famous for its honey hunters, who climb bamboo and rope ladders up the cliffs above the Modi Khola to harvest wild honeycomb — a practice you can hear about from our drivers and, in spring and autumn, sometimes watch from the valley rim. The village itself has stone houses, terraced fields, prayer flags and a small monastery, plus a handful of lodges including the well-regarded lodge on the ridge above the river.",
+      "For trekkers, Landruk is a useful hub: Ghandruk is a 2 to 3 hour walk across the valley, and the village links onward to Majgaon, Dhampus, Poon Hill and the Annapurna Base Camp circuit. Many guests book the jeep as a drop-off at the start of the walk and arrange a pick-up in Landruk or further down the valley at the end — tell us your itinerary and we will plan both legs with you.",
+    ],
+    faqs: [
+      {
+        q: "How long does the drive from Pokhara to Landruk take?",
+        a: "Allow about 3 to 4 hours for the roughly 50 km journey. The jeep follows the Baglung highway toward Nayapul and then climbs the hill track along the Modi Khola valley to the village. The road is slow and rough in places, so it takes longer than the distance suggests.",
+      },
+      {
+        q: "How much does a Scorpio hire from Pokhara to Landruk cost?",
+        a: "A one-way Scorpio jeep hire from Pokhara to Landruk is NPR 13,000 (about USD 100), including the experienced driver, fuel and the drop. Return trips, waiting days and pick-ups from further along the trekking trail are quoted separately.",
+      },
+      {
+        q: "What is the road condition from Pokhara to Landruk?",
+        a: "The highway section is paved, but the climb into the village is narrow, steep and partly unpaved with sharp drops above the Modi Khola. A high-clearance 4WD vehicle is required, and during the monsoon the track can be muddy and slow — our drivers carry out this route regularly and know every turn.",
+      },
+      {
+        q: "What is Landruk famous for?",
+        a: "Landruk is best known for its honey hunters, who scale the cliffs above the Modi Khola on rope and bamboo ladders to collect wild honey, and for being a quiet Gurung village with wide open views of Annapurna South, Hiunchuli and Machhapuchhre from directly across the valley from Ghandruk.",
+      },
+      {
+        q: "Can I get a ride back to Pokhara after trekking?",
+        a: "Yes. Landruk sits between Ghandruk and Dhampus on the popular Ghandruk–Majgaon–Dhampus circuit and is a common pick-up point after the Annapurna Base Camp, Mardi Himal or Poon Hill treks. Send us your trek itinerary and we will arrange the pick-up village, day and time with you.",
+      },
+      {
+        q: "Where can I stay in Landruk and when is the best time to go?",
+        a: "There are several family lodges and teahouses in the village, including a well-known ridge lodge with ensuite rooms and mountain views. October to November and March to April give the clearest skies for the Annapurna panorama, and spring and autumn are also when the honey-hunting season is most active.",
+      },
+    ],
+    relatedLinks: [
+      { href: "/treks/annapurna-base-camp-trek", label: "Annapurna Base Camp trek" },
+      { href: "/trek-packages/annapurna", label: "Annapurna trekking packages" },
+      { href: "/tours/pokhara-to-ghandruk-tour", label: "Ghandruk village tour package" },
     ],
   },
 ];

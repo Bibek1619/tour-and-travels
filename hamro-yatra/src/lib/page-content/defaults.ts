@@ -112,7 +112,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
           "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1600&q=80",
         ctaText: "View Details",
         ctaHref: "/tours",
-        whatsappNumber: "9779826689739",
+        whatsappNumber: "9779856006671",
         whatsappMessage: "Hi, I am interested in the Manang Trip",
         stats: [
           { icon: "Mountain", label: "Altitude", value: "3,519 m" },
