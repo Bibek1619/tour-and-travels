@@ -345,7 +345,7 @@ export const scorpioRoutes: ScorpioRoute[] = [
     origin: "Pokhara",
     destination: "Landruk",
     image: "/landruk.png",
-    meta: "50 km • 3-4 hrs",
+    meta: "Annapurna & Mardi Himal trek base",
     price: 13000,
     usd: 100,
     distance: "50",
@@ -356,15 +356,19 @@ export const scorpioRoutes: ScorpioRoute[] = [
       { label: "Altitude", value: "1,565 m at the village" },
       { label: "Road", value: "Off-road uphill, 4WD recommended" },
       { label: "Vehicle", value: "Mahindra Scorpio, 7 seater" },
-      { label: "Best for", value: "ABC & Mardi Himal treks, honey-hunter village" },
+      { label: "Best for", value: "Annapurna Base Camp & Mardi Himal treks" },
     ],
     overview: [
-      "Landruk is a large Gurung village at 1,565 m standing on the south side of the Modi Khola valley, directly opposite the better-known village of Ghandruk. Because it sits slightly off the main trail it sees fewer visitors, and it rewards them with one of the best balcony views in the region: Annapurna South (7,219 m), Hiunchuli (6,441 m), Machhapuchhre and, on a clear day, Dhaulagiri across the valley.",
+      "Landruk is the Gurung village at 1,565 m on the south bank of the Modi Khola valley, directly opposite Ghandruk, and it is best known as a trekking base: most people who book a Scorpio to Landruk are starting or finishing the Annapurna Base Camp trek or the Mardi Himal trek. From the village the trail drops to the Modi Khola and climbs toward Jhinu Danda and Chhomrong for ABC, or continues up through Forest Camp and Low Camp on the Mardi Himal route.",
+      "Because it sits slightly off the main trail, Landruk is quieter than Ghandruk and rewards walkers with one of the best balcony views in the region — Annapurna South (7,219 m), Hiunchuli (6,441 m), Machhapuchhre and, on a clear day, Dhaulagiri across the valley. It also makes a peaceful first or last night on the Ghandruk–Majgaon–Dhampus circuit, with stone houses, terraced fields, prayer flags and a handful of lodges above the river.",
       "The road journey from Pokhara runs along the Baglung highway through Nayapul and Birethanti before climbing into the Modi Khola valley — roughly 50 km in 3 to 4 hours. The track is narrow, steep and unpaved for long stretches, with sharp drops above the river, so a four-wheel-drive Scorpio and an experienced mountain driver are essential rather than optional. In the monsoon expect mud, loose surfaces and the occasional delay.",
-      "Landruk is famous for its honey hunters, who climb bamboo and rope ladders up the cliffs above the Modi Khola to harvest wild honeycomb — a practice you can hear about from our drivers and, in spring and autumn, sometimes watch from the valley rim. The village itself has stone houses, terraced fields, prayer flags and a small monastery, plus a handful of lodges including the well-regarded lodge on the ridge above the river.",
-      "For trekkers, Landruk is a useful hub: Ghandruk is a 2 to 3 hour walk across the valley, and the village links onward to Majgaon, Dhampus, Poon Hill and the Annapurna Base Camp circuit. Many guests book the jeep as a drop-off at the start of the walk and arrange a pick-up in Landruk or further down the valley at the end — tell us your itinerary and we will plan both legs with you.",
+      "Landruk is also famous for its honey hunters, who climb bamboo and rope ladders up the cliffs above the Modi Khola to harvest wild honeycomb — something our drivers are happy to explain on the way up. The standard way to use this hire is as a drop-off at the start of your trek, with a pick-up arranged in Landruk or at whichever road-head you finish: Jhinu Danda, Nayapool, Siding or Dhampus. Send us your itinerary and we will plan both legs with you.",
     ],
     faqs: [
+      {
+        q: "Is Landruk a starting point for the Annapurna Base Camp and Mardi Himal treks?",
+        a: "Yes — this is the main reason people drive to Landruk. For Annapurna Base Camp you descend from the village to the Modi Khola, cross at New Bridge and climb to Jhinu Danda and Chhomrong. For the Mardi Himal trek you continue upward through Forest Camp to Low Camp. The village also connects to Ghandruk, Majgaon and Dhampus on the classic Poon Hill circuit, so it works as a start or a finish.",
+      },
       {
         q: "How long does the drive from Pokhara to Landruk take?",
         a: "Allow about 3 to 4 hours for the roughly 50 km journey. The jeep follows the Baglung highway toward Nayapul and then climbs the hill track along the Modi Khola valley to the village. The road is slow and rough in places, so it takes longer than the distance suggests.",
@@ -378,12 +382,12 @@ export const scorpioRoutes: ScorpioRoute[] = [
         a: "The highway section is paved, but the climb into the village is narrow, steep and partly unpaved with sharp drops above the Modi Khola. A high-clearance 4WD vehicle is required, and during the monsoon the track can be muddy and slow — our drivers carry out this route regularly and know every turn.",
       },
       {
-        q: "What is Landruk famous for?",
-        a: "Landruk is best known for its honey hunters, who scale the cliffs above the Modi Khola on rope and bamboo ladders to collect wild honey, and for being a quiet Gurung village with wide open views of Annapurna South, Hiunchuli and Machhapuchhre from directly across the valley from Ghandruk.",
+        q: "Can I get a ride back to Pokhara after trekking?",
+        a: "Yes. Arrange a waiting jeep or a return pick-up when you book — most guests finish at Jhinu Danda, Nayapool, Siding or Dhampus rather than walking back into Landruk. Send us your trek itinerary and we will arrange the pick-up village, day and time with you.",
       },
       {
-        q: "Can I get a ride back to Pokhara after trekking?",
-        a: "Yes. Landruk sits between Ghandruk and Dhampus on the popular Ghandruk–Majgaon–Dhampus circuit and is a common pick-up point after the Annapurna Base Camp, Mardi Himal or Poon Hill treks. Send us your trek itinerary and we will arrange the pick-up village, day and time with you.",
+        q: "What else is Landruk famous for?",
+        a: "Landruk is well known for its honey hunters, who scale the cliffs above the Modi Khola on rope and bamboo ladders to collect wild honey, and for the wide open views of Annapurna South, Hiunchuli and Machhapuchhre from directly across the valley from Ghandruk.",
       },
       {
         q: "Where can I stay in Landruk and when is the best time to go?",
@@ -393,7 +397,7 @@ export const scorpioRoutes: ScorpioRoute[] = [
     relatedLinks: [
       { href: "/treks/annapurna-base-camp-trek", label: "Annapurna Base Camp trek" },
       { href: "/trek-packages/annapurna", label: "Annapurna trekking packages" },
-      { href: "/tours/pokhara-to-ghandruk-tour", label: "Ghandruk village tour package" },
+      { href: "/treks/ghorepani-poon-hill-trek", label: "Ghorepani and Poon Hill trek" },
     ],
   },
 ];

@@ -29,11 +29,11 @@ export async function GET(request: NextRequest) {
         status: "published",
         $or: [
           { title: searchRegex },
-          { description: searchRegex },
-          { destination: searchRegex },
+          { shortOverview: searchRegex },
+          { location: searchRegex },
         ],
       })
-        .select("_id title slug description images")
+        .select("_id title slug shortOverview images")
         .limit(5)
         .lean(),
 
@@ -43,11 +43,11 @@ export async function GET(request: NextRequest) {
         status: "published",
         $or: [
           { title: searchRegex },
-          { description: searchRegex },
-          { destination: searchRegex },
+          { shortOverview: searchRegex },
+          { location: searchRegex },
         ],
       })
-        .select("_id title slug description images")
+        .select("_id title slug shortOverview images")
         .limit(5)
         .lean(),
 
@@ -62,9 +62,14 @@ export async function GET(request: NextRequest) {
 
       // Vehicles
       Vehicle.find({
-        $or: [{ name: searchRegex }, { description: searchRegex }],
+        $or: [
+          { name: searchRegex },
+          { bestFor: searchRegex },
+          { brand: searchRegex },
+          { model: searchRegex },
+        ],
       })
-        .select("_id name slug description images")
+        .select("_id name slug bestFor images brand model dailyRate")
         .limit(3)
         .lean(),
     ]);
@@ -92,7 +97,9 @@ export async function GET(request: NextRequest) {
       ...vehicles.map((v) => ({
         id: `vehicle-${v._id}`,
         title: v.name || "Vehicle",
-        description: v.description,
+        description: `NPR ${v.dailyRate.toLocaleString("en-US")}/day${
+          v.bestFor ? ` • ${v.bestFor}` : ""
+        }`,
         category: "vehicle" as const,
         url: `/vehicles/${v.slug || v._id}`,
         image: v.images?.[0],
@@ -102,7 +109,7 @@ export async function GET(request: NextRequest) {
       ...tours.map((t) => ({
         id: `tour-${t._id}`,
         title: t.title || "Tour",
-        description: t.description,
+        description: t.shortOverview ?? "",
         category: "tour" as const,
         url: `/tours/${t.slug}`,
         image: t.images?.[0],
@@ -112,7 +119,7 @@ export async function GET(request: NextRequest) {
       ...treks.map((t) => ({
         id: `trek-${t._id}`,
         title: t.title || "Trek",
-        description: t.description,
+        description: t.shortOverview ?? "",
         category: "trek" as const,
         url: `/treks/${t.slug}`,
         image: t.images?.[0],
