@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import type { Tour } from "@/lib/types";
+import Image from "next/image";
 import { MessageSquare, Phone, Mail } from "lucide-react";
 import TourCard from "@/components/tours/tour-card";
 import Navbar from "@/components/navbar";
@@ -63,13 +64,17 @@ export default async function TourPackagesPage() {
       <div className="min-h-screen bg-gray-50">
         <main>
           {/* Hero Section */}
-          <section
-            className="relative h-[400px] bg-cover bg-center"
-            style={{
-              backgroundImage: `url('${getHeroImage(hero.image)}')`,
-            }}
-          >
-            <div className="absolute inset-0 bg-black/50" />
+          <section className="relative h-[400px] overflow-hidden bg-gray-900">
+            <Image
+              src={getHeroImage(hero.image)}
+              alt={hero.title}
+              fill
+              priority
+              sizes="100vw"
+              quality={85}
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50 z-[1]" />
             <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
               <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
                 {hero.title}
