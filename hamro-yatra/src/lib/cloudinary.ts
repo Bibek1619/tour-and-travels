@@ -81,12 +81,12 @@ export const ImagePresets = {
     format: "auto",
   },
   hero: {
-    width: "1920",
-    height: "1080",
+    width: "1600",
+    height: "900",
     crop: "fill",
     gravity: "auto",
-    quality: "auto",
-    format: "auto",
+    quality: "85",
+    format: "webp",
   },
 };
 

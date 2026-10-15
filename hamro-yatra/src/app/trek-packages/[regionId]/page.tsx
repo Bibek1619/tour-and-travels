@@ -99,11 +99,17 @@ export default async function TrekRegionPage({
       <Navbar />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section
-          className="relative h-[400px] bg-cover bg-center"
-          style={{ backgroundImage: `url('${getHeroImage(region.image)}')` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
+        <section className="relative h-[400px] overflow-hidden bg-gray-900">
+          <Image
+            src={getHeroImage(region.image)}
+            alt={region.name}
+            fill
+            priority
+            sizes="100vw"
+            quality={85}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50 z-[1]" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {region.name}
