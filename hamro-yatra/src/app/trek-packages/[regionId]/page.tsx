@@ -15,7 +15,7 @@ import {
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
-import { getHeroImage } from "@/lib/cloudinary";
+import { getCardImage } from "@/lib/cloudinary";
 import { getTrekRegion, getTrekRegions, type TrekRegion } from "@/lib/regions";
 
 export const revalidate = 3600;
@@ -142,7 +142,7 @@ export default async function TrekRegionPage({
 
             {treks.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {treks.map((trek) => (
+                {treks.map((trek, index) => (
                   <Link
                     key={trek._id}
                     href={`/treks/${trek.slug}`}
@@ -151,14 +151,16 @@ export default async function TrekRegionPage({
                     <div className="bg-white rounded-lg shadow hover:shadow-xl transition-all duration-300">
                       <div className="relative h-56 overflow-hidden rounded-t-lg">
                         <Image
-                          src={
+                          src={getCardImage(
                             trek.images?.[0] ||
-                            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
-                          }
+                            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4"
+                          )}
                           alt={trek.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          priority={index < 3}
+                          loading={index < 3 ? undefined : "lazy"}
                         />
                         <div className="absolute top-3 right-3">
                           <span

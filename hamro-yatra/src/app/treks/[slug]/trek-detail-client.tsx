@@ -44,9 +44,9 @@ export default function TrekDetailClient({
 
   const images =
     trek.images && trek.images.length > 0
-      ? trek.images
+      ? trek.images.map(img => getHeroImage(img))
       : [
-          "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200",
+          getHeroImage("https://images.unsplash.com/photo-1506905925346-21bda4d32df4"),
         ];
 
   const whatsappMessage = encodeURIComponent(
@@ -179,7 +179,8 @@ export default function TrekDetailClient({
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 800px"
                   className="object-cover"
-                  fetchPriority="high"
+                  priority={selectedImage === 0}
+                  quality={85}
                 />
               </div>
               {images.length > 1 && (
@@ -200,6 +201,8 @@ export default function TrekDetailClient({
                         fill
                         sizes="80px"
                         className="object-cover"
+                        loading="lazy"
+                        quality={75}
                       />
                     </button>
                   ))}
