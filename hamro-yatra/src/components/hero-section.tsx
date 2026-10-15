@@ -13,7 +13,7 @@ const labelBase = "block text-sm font-semibold text-gray-700 mb-2";
 
 export function HeroSection({ content }: { content: HeroContent }) {
   const hero = content;
-  const heroBg = "/images-5.jpg";
+  const heroBg = hero.imageSrc || "/images-5.jpg";
 
   const [open, setOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -115,10 +115,17 @@ export function HeroSection({ content }: { content: HeroContent }) {
     <section className="relative h-[400px] lg:h-[600px] overflow-hidden">
       {/* Background Media */}
       {heroBg ? (
-        <div
-          className="absolute inset-0 bg-no-repeat bg-center bg-cover"
-          style={{ backgroundImage: `url(${heroBg})` }}
-        />
+        <>
+          <Image
+            src={heroBg}
+            alt={hero.title}
+            fill
+            priority
+            sizes="100vw"
+            quality={85}
+            className="object-cover"
+          />
+        </>
       ) : (
         <div className="absolute inset-0">
           <video
@@ -131,7 +138,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
           />
         </div>
       )}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/50 z-[1]" />
 
       {/* Hero Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 h-full flex flex-col justify-center items-center text-center">
