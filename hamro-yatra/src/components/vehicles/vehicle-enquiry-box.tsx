@@ -39,11 +39,11 @@ export default function VehicleEnquiryBox({
         +977 9856006671
       </a>
       <a
-        href="mailto:info@hamroyatraadventure.com"
+        href="mailto:hamroyatraadventure@gmail.com"
         className="inline-flex h-10 items-center gap-2 rounded-lg bg-orange-50 px-4 text-sm text-gray-700 transition-colors hover:bg-orange-100"
       >
         <Mail className="h-4 w-4 text-[#E67E23]" />
-        info@hamroyatraadventure.com
+        hamroyatraadventure@gmail.com
       </a>
 
       {modal === "booking" ? (

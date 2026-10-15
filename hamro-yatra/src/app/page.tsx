@@ -26,9 +26,9 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Scorpio Jeep Rental Pokhara | Nepal Tours & Trekking 2026",
+  title: "Scorpio Jeep Rental Pokhara | Nepal Tours",
   description:
-    "Rent Scorpio jeep in Pokhara with driver. 26+ years Nepal tour operator — vehicle rental Pokhara to Kathmandu, trekking packages, paragliding & bungee. Book now!",
+    "Rent a 4WD Scorpio jeep in Pokhara with an experienced driver. 26+ years Nepal tour operator offering Scorpio jeep hire from Pokhara to Kathmandu, Chitwan, Lumbini & across Nepal. Tours, treks & adventure. Book online 24/7.",
   path: "/",
   keywords: [
     // PRIMARY: Scorpio & Vehicle Rental (Main Business)
@@ -91,6 +91,7 @@ export default async function Home() {
     allPublished,
     popularTours,
     reviews,
+    reviewStats,
     homePageContent,
     homePageContentRaw,
   } = homeData;
@@ -119,7 +120,12 @@ export default async function Home() {
 
   return (
     <div>
-      <JsonLd data={travelAgencyJsonLd()} />
+      <JsonLd
+        data={travelAgencyJsonLd({
+          rating: reviewStats.avgRating,
+          reviewCount: reviewStats.total,
+        })}
+      />
       <Navbar />
 
       <Section>

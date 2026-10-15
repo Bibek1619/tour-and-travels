@@ -74,10 +74,10 @@ export async function generateMetadata({
     return buildMetadata({
       title:
         scorpioRoute.seoTitle ??
-        `${scorpioRoute.route} Scorpio Rental NPR ${scorpioRoute.price.toLocaleString()} | Jeep Hire`,
+        `Pokhara to ${scorpioRoute.destination} Scorpio Hire | Jeep Rental`,
       description:
         scorpioRoute.seoDescription ??
-        `Rent Scorpio ${orig} to ${dest} NPR ${scorpioRoute.price.toLocaleString()} (USD ${scorpioRoute.usd}). ${scorpioRoute.distance} km, ${scorpioRoute.time} hrs, experienced driver included. Book 24/7!`,
+        `Rent a 4WD Scorpio jeep from ${scorpioRoute.origin} to ${scorpioRoute.destination} with an experienced driver. NPR ${scorpioRoute.price.toLocaleString()} (USD ${scorpioRoute.usd}). ${scorpioRoute.distance} km, ~${scorpioRoute.time} hrs. One-way or return. Book online 24/7.`,
       path: `/vehicles/${id}`,
       images: routeImage ? [routeImage] : undefined,
       geo: {
@@ -118,8 +118,8 @@ export async function generateMetadata({
 
   if (isScorpio) {
     return buildMetadata({
-      title: "Scorpio Rent in Pokhara | Scorpio Jeep Rental Hire Prices in Nepal",
-      description: `Rent ${name} in Pokhara & Nepal with experienced driver. ${name} jeep hire prices from Pokhara to Kathmandu, Chitwan, Lumbini & more. Book online for tours, trekking trips, airport transfers & long-distance travel.`,
+      title: "Scorpio Rent in Pokhara | 4WD Scorpio Jeep Hire Nepal",
+      description: "Rent a 4WD Scorpio jeep in Pokhara with an experienced driver. Scorpio jeep hire prices for Pokhara to Kathmandu, Chitwan, Lumbini & across Nepal. Tours, treks & adventure. Book online 24/7.",
       path: `/vehicles/${canonicalSlug}`,
       keywords: [
         "scorpio rent in Pokhara",
@@ -135,7 +135,7 @@ export async function generateMetadata({
     });
   }
   return buildMetadata({
-    title: `${name} Hire in Pokhara & Nepal – Rent with Driver | Hamro Yatra`,
+    title: `${name} Hire in Pokhara & Nepal – Rent with Driver`,
     description: `Rent a ${name} in Pokhara & Nepal with experienced driver. NPR ${(vehicle.dailyRate ?? 0).toLocaleString()} per day, ${vehicle.capacity ?? ""} seats. Book online for tours, trekking trips, airport transfers & long-distance travel.`,
     path: `/vehicles/${canonicalSlug}`,
     keywords: [

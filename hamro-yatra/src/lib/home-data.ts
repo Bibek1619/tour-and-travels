@@ -14,6 +14,7 @@ export type HomePageData = {
   allPublished: Record<string, unknown>[];
   popularTours: Record<string, unknown>[];
   reviews: Record<string, unknown>[];
+  reviewStats: { avgRating: number; total: number };
   homePageContent: HomePageContent;
   homePageContentRaw: { content?: Record<string, unknown> } | null;
 };
@@ -30,6 +31,7 @@ async function fetchHomePageData(): Promise<HomePageData> {
     allPublished,
     popularTours,
     reviews,
+    reviewStatsAgg,
     homePageContent,
     homePageContentRaw,
   ] = await Promise.all([
@@ -55,15 +57,30 @@ async function fetchHomePageData(): Promise<HomePageData> {
       .sort({ createdAt: -1 })
       .limit(6)
       .lean(),
+    Review.aggregate([
+      { $match: { status: "approved" } },
+      {
+        $group: {
+          _id: null,
+          avg: { $avg: "$rating" },
+          total: { $sum: 1 },
+        },
+      },
+    ]),
     getPageContent("home"),
     PageContentModel.findOne({ slug: "home" }).select("content").lean(),
   ]);
 
+  const statsRow = reviewStatsAgg[0] || { avg: 0, total: 0 };
   const data: HomePageData = {
     storedContent: storedContent as Record<string, unknown> | null,
     allPublished: allPublished as Record<string, unknown>[],
     popularTours: popularTours as Record<string, unknown>[],
     reviews: reviews as Record<string, unknown>[],
+    reviewStats: {
+      avgRating: Math.round((statsRow.avg || 0) * 10) / 10,
+      total: statsRow.total || 0,
+    },
     homePageContent: homePageContent as HomePageContent,
     homePageContentRaw:
       homePageContentRaw as { content?: Record<string, unknown> } | null,

@@ -15,23 +15,22 @@ import { breadcrumbJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Nepal Tour Packages 2026 – Kathmandu, Pokhara & Cultural Sightseeing Tours",
+  title: "Nepal Tour Packages 2026 | Pokhara",
   description:
-    "Explore Nepal with expert-guided tour packages: Kathmandu-Pokhara tours, cultural heritage trips, Chitwan safari, Lumbini pilgrimage & scenic destination tours. Book with 26+ years experience.",
+    "Best Nepal tour packages from Pokhara: Kathmandu, Chitwan safari & Lumbini. Expert-guided sightseeing tours, 26+ years experience. Book online today.",
   path: "/tours",
   keywords: [
     "Nepal tour packages",
-    "Nepal tour packages 2026",
     "Kathmandu Pokhara tour package",
-    "Kathmandu tours",
-    "Pokhara tours",
-    "Lumbini pilgrimage tour",
-    "Chitwan safari tour",
-    "cultural tours Nepal",
+    "Pokhara to Chitwan tour",
+    "Chitwan jungle safari",
+    "Lumbini tour package",
+    "Kathmandu tour package",
+    "Pokhara tour packages",
     "Nepal sightseeing tour",
+    "Nepal cultural tour",
     "Nepal tour cost",
-    "best time to visit Nepal",
-    "Visit Nepal 2026",
+    "best Nepal tour company",
   ],
 });
 

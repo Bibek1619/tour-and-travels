@@ -59,6 +59,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 130,
     distance: "200",
     time: "6",
+    seoTitle: "Pokhara to Kathmandu Scorpio Hire | Jeep Rental Price",
+    seoDescription: "Rent a Scorpio jeep from Pokhara to Kathmandu with an experienced driver. One-way NPR 17,000 (USD 130), fuel & driver included. 200 km, ~6 hrs. Book online 24/7.",
     highlights: [
       { label: "Distance", value: "200 km" },
       { label: "Drive time", value: "Approx. 6 hours" },
@@ -68,18 +70,18 @@ export const scorpioRoutes: ScorpioRoute[] = [
       { label: "Trip type", value: "One-way or return" },
     ],
     overview: [
-      "Travel from Pokhara to Kathmandu in the most comfort and convenience on the road through our high-class Jeep Scorpio rental package by Hamro Yatra Adventure. Enjoy the amazing scenery of Nepal with your own eyes as you start a 210km journey from the very heart of Pokhara to the quiet city of Kathmandu.",
+      "Travel from Pokhara to Kathmandu in the most comfort and convenience on the road through our high-class Jeep Scorpio rental package by Hamro Yatra Adventure. Enjoy the amazing scenery of Nepal with your own eyes as you start a 200 km journey from the very heart of Pokhara to the quiet city of Kathmandu.",
       "Our Jeep rental service guarantees no hassle journey so that you can enjoy the beauty of your journey rather than worrying about the small things. Having a fleet of regularly serviced Scorpios and Jeeps and competent drivers, we provide you with a safe and exciting ride alongside Prithivi Highway.",
       "The Prithivi Highway is the main overland artery connecting the two biggest cities in Nepal, and the drive passes through the Terai lowlands before climbing into the hills past Mugling and Kurintar. Most travellers use this route to reach Kathmandu after a Pokhara stay, a Chitwan or Lumbini trip, or the start of a mountain flight. Because the road is busier than the mountain routes, an early start gets you the best light and the smoothest traffic.",
       "Please do not hesitate to contact us to book your Pokhara to Kathmandu Jeep rental package. Now comes the time to start your unforgettable overland journey through Nepal.",
     ],
     detailTitle: "Pokhara to Kathmandu Scorpio Jeep Trip",
     detailBody:
-      "Rent a Scorpio jeep with comfortable and stylish facilities from Pokhara to Kathmandu for a very memorable trip. The journey is 210km away, but it will be as pleasant as it can be, as you enjoy seeing the lovely landscapes of Nepal. The experienced drivers of our company and well-maintained jeeps ensure your safety and comfort during the trip, so you can unwind and take in the scenery of the Bhairahawa-Bardia route. The Pokhara to Kathmandu Jeep trip is not only designed to bring you home or let you continue your adventure but also to provide you with great convenience and flexibility, which will make your travel pleasant and memorable.",
+      "Rent a Scorpio jeep with comfortable and stylish facilities from Pokhara to Kathmandu for a very memorable trip. The journey is about 200 km, but it will be as pleasant as it can be, as you enjoy seeing the lovely landscapes of Nepal. The experienced drivers of our company and well-maintained jeeps ensure your safety and comfort during the trip, so you can unwind and take in the scenery of the Prithivi Highway route. The Pokhara to Kathmandu Jeep trip is not only designed to bring you home or let you continue your adventure but also to provide you with great convenience and flexibility, which will make your travel pleasant and memorable.",
     faqs: [
       {
         q: "How long does it take to drive from Pokhara to Kathmandu?",
-        a: "The drive takes roughly 6 hours over about 200 km via the Prithivi Highway. Allow extra time for the flight from Pokhara to Lukla, as the road is busier during the day. Departing early in the morning usually gives you the smoothest journey.",
+        a: "The drive takes roughly 6 hours over about 200 km via the Prithivi Highway. The road is busier during the day, so departing early in the morning usually gives you the smoothest journey.",
       },
       {
         q: "How much does a Scorpio hire from Pokhara to Kathmandu cost?",
@@ -122,6 +124,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 77,
     distance: "32",
     time: "2",
+    seoTitle: "Pokhara to Ghandruk Scorpio Hire | Jeep Rental",
+    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Ghandruk with driver. One-way NPR 10,000 (USD 77). 32 km, ~2 hrs. Ideal for Poon Hill & Annapurna treks. Book online 24/7.",
     highlights: [
       { label: "Distance", value: "32 km" },
       { label: "Drive time", value: "Approx. 2 hours" },
@@ -179,6 +183,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 85,
     distance: "55",
     time: "3-4",
+    seoTitle: "Pokhara to Ghorepani Scorpio Hire | Jeep Rental",
+    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Ghorepani with driver. One-way NPR 11,000 (USD 85). 55 km, ~3–4 hrs. Best for Poon Hill trek. Book online 24/7.",
     highlights: [
       { label: "Distance", value: "55 km" },
       { label: "Drive time", value: "Approx. 3 to 4 hours" },
@@ -236,6 +242,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 100,
     distance: "58",
     time: "3-4",
+    seoTitle: "Pokhara to Jhinu Danda Scorpio Hire | Jeep Rental",
+    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Jhinu Danda with driver. One-way NPR 13,000 (USD 100). 58 km, ~3–4 hrs. Perfect for Annapurna Base Camp trek. Book online 24/7.",
     highlights: [
       { label: "Distance", value: "58 km" },
       { label: "Drive time", value: "Approx. 3 to 4 hours" },
@@ -292,6 +300,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     price: 6000,
     usd: 46,
     distance: "26",
+    seoTitle: "Pokhara to Dhampus Scorpio Hire | Jeep Rental",
+    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Dhampus with driver. One-way NPR 6,000 (USD 46). 26 km, ~1.5 hrs. Great for short hikes & mountain views. Book online 24/7.",
     time: "1.5",
     highlights: [
       { label: "Distance", value: "26 km" },
@@ -350,6 +360,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 100,
     distance: "50",
     time: "3-4",
+    seoTitle: "Pokhara to Landruk Scorpio Hire | Jeep Rental",
+    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Landruk with driver. One-way NPR 13,000 (USD 100). ~50 km, ~3–4 hrs. Ideal for Annapurna Base Camp & Mardi Himal treks. Book online 24/7.",
     highlights: [
       { label: "Distance", value: "Approx. 50 km" },
       { label: "Drive time", value: "Approx. 3 to 4 hours" },

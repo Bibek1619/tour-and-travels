@@ -89,8 +89,8 @@ const defaultInfoItems = [
   {
     icon: MapPin,
     label: "Address",
-    value: "Lakeside, Pokhara 33700, Nepal",
-    link: "https://maps.google.com/?q=Lakeside,Pokhara,Nepal",
+    value: "14 Ram Bazar Rd, Pokhara, Gandaki Province 33700",
+    link: "https://maps.google.com/?q=14+Ram+Bazar+Rd,Pokhara,Nepal",
   },
   {
     icon: Phone,
@@ -101,8 +101,8 @@ const defaultInfoItems = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@hamroyatraadventure.com",
-    link: "mailto:info@hamroyatraadventure.com",
+    value: "hamroyatraadventure@gmail.com",
+    link: "mailto:hamroyatraadventure@gmail.com",
   },
   {
     icon: Clock,
@@ -166,12 +166,13 @@ dangerouslySetInnerHTML={{
               "@type": "Organization",
               name: SITE_NAME,
               url: SITE_URL,
-              email: "info@hamroyatraadventure.com",
+              email: "hamroyatraadventure@gmail.com",
               telephone: "+977-9856006671",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Lakeside",
+                streetAddress: "14 Ram Bazar Rd",
                 addressLocality: "Pokhara",
+                addressRegion: "Gandaki Province",
                 postalCode: "33700",
                 addressCountry: "NP",
               },

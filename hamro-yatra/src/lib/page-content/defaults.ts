@@ -304,7 +304,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       address: "Lakeside, Pokhara, Nepal",
       phone: "+977 9856006671",
       phoneLink: "tel:+9779856006671",
-      email: "info@hamroyatraadventure.com",
+      email: "hamroyatraadventure@gmail.com",
       mapEmbedUrl:
         "https://www.google.com/maps?q=Pokhara%2C%20Nepal&z=13&output=embed",
     },
@@ -362,7 +362,7 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       secondaryLink: "tel:+9779856006671",
       videoSrc: "/hero video.mp4",
       helpText: "Need help?",
-      email: "info@hamroyatraadventure.com",
+      email: "hamroyatraadventure@gmail.com",
       phone: "+977 9856006671",
     },
   },
@@ -399,11 +399,11 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
       items: [
         {
           label: "Address",
-          value: "Lakeside, Pokhara 33700, Nepal",
-          link: "https://maps.google.com/?q=Lakeside,Pokhara,Nepal",
+          value: "14 Ram Bazar Rd, Pokhara, Gandaki Province 33700",
+          link: "https://maps.google.com/?q=14+Ram+Bazar+Rd,Pokhara,Nepal",
         },
         { label: "Phone", value: "+977 9856006671", link: "tel:+9779856006671" },
-        { label: "Email", value: "info@hamroyatraadventure.com", link: "mailto:info@hamroyatraadventure.com" },
+        { label: "Email", value: "hamroyatraadventure@gmail.com", link: "mailto:hamroyatraadventure@gmail.com" },
         { label: "Hours", value: "Mon–Fri 9AM–7PM · Sat 10AM–5PM · Sun Closed", link: "" },
       ],
     },
@@ -482,9 +482,9 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
     },
     contact: {
       title: "Contact Us",
-      address: "Lakeside, Pokhara 33700, Nepal",
+      address: "14 Ram Bazar Rd, Pokhara, Gandaki Province 33700",
       phone: "+977 9856006671",
-      email: "info@hamroyatraadventure.com",
+      email: "hamroyatraadventure@gmail.com",
     },
     associations: {
       title: "We Are Associated With",

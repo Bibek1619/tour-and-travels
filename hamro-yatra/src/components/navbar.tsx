@@ -110,11 +110,11 @@ export function Navbar() {
               <span className="hidden sm:inline">+977 9856006671</span>
             </a>
             <a
-              href="mailto:info@hamroyatraadventure.com"
+              href="mailto:hamroyatraadventure@gmail.com"
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Mail className="h-4 w-4" />
-              <span className="hidden sm:inline">info@hamroyatraadventure.com</span>
+              <span className="hidden sm:inline">hamroyatraadventure@gmail.com</span>
             </a>
           </div>
           <div className="text-muted-foreground hidden sm:block">

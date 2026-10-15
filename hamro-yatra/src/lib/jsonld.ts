@@ -20,7 +20,9 @@ const CONTACT = {
   contactType: "customer service",
 };
 
-export function travelAgencyJsonLd(): JsonLdObject {
+export function travelAgencyJsonLd(
+  stats?: { rating?: number; reviewCount?: number }
+): JsonLdObject {
   return {
     "@context": "https://schema.org",
     "@type": ["TravelAgency", "RentalCarAgency"],
@@ -29,23 +31,27 @@ export function travelAgencyJsonLd(): JsonLdObject {
     url: SITE_URL,
     logo: `${SITE_URL}/hamro yatra.jpeg`,
     image: `${SITE_URL}/images-5.jpg`,
-telephone: "+977-9856006671",
-    email: "info@hamroyatraadventure.com",
+    telephone: "+977-9856006671",
+    email: "hamroyatraadventure@gmail.com",
     description: "Leading vehicle rental and tour operator in Pokhara, Nepal. Specializing in Mahindra Scorpio rentals, Nepal tour packages, trekking expeditions, and adventure activities like paragliding and bungee jumping.",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Lakeside Road, Baidam",
+      streetAddress: "14 Ram Bazar Rd",
       addressLocality: "Pokhara",
-      addressRegion: "Gandaki",
+      addressRegion: "Gandaki Province",
       postalCode: "33700",
       addressCountry: "NP",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "120",
-      bestRating: "5",
-    },
+    ...(stats?.rating && stats?.reviewCount
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: Math.min(stats.rating, 5).toString(),
+            reviewCount: stats.reviewCount,
+            bestRating: "5",
+          },
+        }
+      : {}),
     contactPoint: CONTACT,
     areaServed: {
       "@type": "Country",

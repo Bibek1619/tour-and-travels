@@ -32,25 +32,26 @@ export async function generateMetadata({
   const { slug } = await params;
   const tour = await getTour(slug);
   if (!tour) return { title: "Tour Not Found" };
-  const description =
-    tour.shortOverview ||
-    `${tour.title} - ${tour.durationDays || ""} days in ${
-      tour.location || "Nepal"
-    }. Price from Rs ${tour.price?.toLocaleString(
-      "en-IN"
-    )} per person. Book with Hamro Yatra Adventure.`;
+  const loc = tour.location || "Nepal";
+  const descBase = `${tour.title} - ${tour.durationDays || ""} days Nepal tour package covering ${loc}. Price from Rs ${tour.price?.toLocaleString("en-IN")} per person. Expert-guided, book online.`;
+  const description = tour.shortOverview && tour.shortOverview.length > 20 ? tour.shortOverview : descBase;
   return buildMetadata({
-    title: `${tour.title} - Nepal Tour Package`,
+    // Root template appends " | Hamro Yatra Adventure" (24 chars). Keep the
+    // rendered title <= 60 so Google doesn't truncate the brand off the end.
+    title: [`${tour.title} | Nepal Tour Package`, `${tour.title} | Nepal Tour`, tour.title].find(
+      (t) => t.length <= 36
+    ) ?? tour.title,
     description,
     path: `/tours/${slug}`,
     keywords: [
       tour.title,
-      `${tour.title.toLowerCase()} price`,
-      `${tour.location || "Nepal"} tour`,
-      `${tour.location || "Nepal"} tour package`,
-      "sightseeing tour Nepal",
-      "book tour Nepal",
-      "Nepal tour cost",
+      `${tour.title.toLowerCase()} tour price`,
+      `${tour.title.toLowerCase()} tour package`,
+      `${loc.toLowerCase()} tour package`,
+      `${loc.toLowerCase()} sightseeing tour`,
+      "Nepal tour package",
+      "Kathmandu Pokhara tour",
+      "Nepal sightseeing tour",
     ],
     images: tour.images || [],
   });

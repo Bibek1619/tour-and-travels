@@ -49,11 +49,11 @@ export default function VehicleBookingSidebar({
               +977 9856006671
             </a>
             <a
-              href="mailto:info@hamroyatraadventure.com"
+              href="mailto:hamroyatraadventure@gmail.com"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
             >
               <Mail className="w-4 h-4 text-orange-500 shrink-0" />
-              info@hamroyatraadventure.com
+              hamroyatraadventure@gmail.com
             </a>
           </div>
         </div>
