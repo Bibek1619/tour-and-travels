@@ -15,7 +15,7 @@ import {
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { buildMetadata } from "@/lib/seo";
-import { getCardImage } from "@/lib/cloudinary";
+import { getCardImage, getHeroImage } from "@/lib/cloudinary";
 import { getTrekRegion, getTrekRegions, type TrekRegion } from "@/lib/regions";
 
 export const revalidate = 3600;
