@@ -81,8 +81,8 @@ export const ImagePresets = {
     format: "auto",
   },
   hero: {
-    width: "1600",
-    height: "900",
+    width: "1200",
+    height: "675",
     crop: "fill",
     gravity: "auto",
     quality: "85",

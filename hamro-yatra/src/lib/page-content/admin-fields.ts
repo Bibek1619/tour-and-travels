@@ -21,6 +21,7 @@ export const PAGE_CONTENT_GROUPS: Record<PageContentSlug, FieldGroup[]> = {
       fields: [
         { name: "hero.title", label: "Title", type: "text" },
         { name: "hero.subtitle", label: "Subtitle", type: "textarea" },
+        { name: "hero.imageSrc", label: "Background Image", type: "image" },
         { name: "hero.ctaText", label: "Button Text", type: "text" },
         { name: "hero.tourLinkText", label: "Tour Link Text", type: "text" },
         { name: "hero.tourLink", label: "Tour Link", type: "text" },
