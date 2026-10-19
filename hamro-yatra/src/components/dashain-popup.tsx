@@ -5,26 +5,10 @@ import Image from "next/image";
 import { X } from "lucide-react";
 
 export default function DashainPopup() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    // Check if user has already seen the popup in this session
-    const hasSeenPopup = sessionStorage.getItem("dashain-popup-seen");
-    
-    if (!hasSeenPopup) {
-      // Show popup after a short delay
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleClose = () => {
     setIsOpen(false);
-    // Mark as seen for this session
-    sessionStorage.setItem("dashain-popup-seen", "true");
   };
 
   if (!isOpen) return null;
