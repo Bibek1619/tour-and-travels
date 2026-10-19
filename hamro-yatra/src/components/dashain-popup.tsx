@@ -32,12 +32,12 @@ export default function DashainPopup() {
         </button>
 
         {/* Dashain Image */}
-        <div className="relative w-full aspect-[3/4] md:aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl">
+        <div className="relative w-full aspect-[3/4] md:aspect-[9/16] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
           <Image
             src="/dashain.jpg"
             alt="Happy Dashain"
             fill
-            className="object-contain md:object-cover"
+            className="object-contain"
             priority
             quality={90}
           />
