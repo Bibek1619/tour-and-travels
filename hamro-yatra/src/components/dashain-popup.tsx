@@ -19,7 +19,7 @@ export default function DashainPopup() {
       onClick={handleClose}
     >
       <div 
-        className="relative bg-transparent rounded-2xl max-w-4xl w-full animate-in zoom-in-95 duration-300"
+        className="relative bg-transparent rounded-2xl max-w-5xl w-full animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -32,14 +32,14 @@ export default function DashainPopup() {
         </button>
 
         {/* Dashain Image */}
-        <div className="relative w-full aspect-[3/4] md:aspect-[9/16] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
+        <div className="relative w-full aspect-[3/4] md:aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl bg-white">
           <Image
             src="/dashain.jpg"
             alt="Happy Dashain"
             fill
             className="object-contain"
             priority
-            quality={90}
+            quality={95}
           />
         </div>
       </div>
