@@ -44,7 +44,7 @@ export default function DashainPopup() {
           />
           {/* Desktop Image (Landscape) */}
           <Image
-            src="/dashain-desktop.jpg"
+            src="/dashain-destop.png"
             alt="Happy Dashain"
             fill
             className="hidden md:block object-contain"
