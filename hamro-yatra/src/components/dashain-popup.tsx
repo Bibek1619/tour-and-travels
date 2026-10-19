@@ -33,11 +33,21 @@ export default function DashainPopup() {
 
         {/* Dashain Image */}
         <div className="relative w-full aspect-[3/4] md:aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl bg-white">
+          {/* Mobile Image (Portrait) */}
           <Image
             src="/dashain.jpg"
             alt="Happy Dashain"
             fill
-            className="object-contain"
+            className="object-contain md:hidden"
+            priority
+            quality={95}
+          />
+          {/* Desktop Image (Landscape) */}
+          <Image
+            src="/dashain-desktop.jpg"
+            alt="Happy Dashain"
+            fill
+            className="hidden md:block object-contain"
             priority
             quality={95}
           />
