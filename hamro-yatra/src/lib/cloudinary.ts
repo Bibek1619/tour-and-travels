@@ -84,8 +84,8 @@ export const ImagePresets = {
     width: "1200",
     height: "675",
     crop: "fill",
-    gravity: "auto",
-    quality: "85",
+    gravity: "center",
+    quality: "75",
     format: "webp",
   },
 };
