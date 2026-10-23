@@ -79,6 +79,13 @@ interface SeoOptions {
   images?: string[];
   category?: string;
   geo?: { region: string; placename: string; position: string };
+  article?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    authors?: string[];
+    tags?: string[];
+  };
+  authors?: Array<string | { name: string; url?: string }>;
 }
 
 function toAbsoluteUrl(src: string): string {
@@ -93,6 +100,8 @@ export function buildMetadata({
   images = [],
   category,
   geo,
+  article,
+  authors,
 }: SeoOptions): Metadata {
   const url = `${SITE_URL}${path}`;
   const absoluteImages = images.map(toAbsoluteUrl);
@@ -115,7 +124,9 @@ export function buildMetadata({
     // Google has ignored the keywords meta tag since 2009. Only page-specific
     // terms are emitted; BASE_KEYWORDS stays on the root layout.
     ...(keywords.length ? { keywords } : {}),
-    authors: [{ name: SITE_NAME }],
+    authors: authors
+      ? authors.map((a) => (typeof a === "string" ? { name: a } : a))
+      : [{ name: SITE_NAME }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
     applicationName: SITE_NAME,
@@ -134,9 +145,15 @@ export function buildMetadata({
       description,
       url,
       siteName: SITE_NAME,
-      type: "website",
+      type: article ? "article" : "website",
       locale: "en_US",
       images: ogImages,
+      ...(article && {
+        publishedTime: article.publishedTime,
+        modifiedTime: article.modifiedTime,
+        authors: article.authors,
+        tags: article.tags,
+      }),
     },
     twitter: {
       card: "summary_large_image",

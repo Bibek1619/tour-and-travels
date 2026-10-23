@@ -14,6 +14,10 @@ const navLinks = [
   { href: "/trek-packages", label: "Trek Packages" },
   { href: "/adventures", label: "Adventures" },
   { href: "/about", label: "About Us" },
+];
+
+const moreItems = [
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -199,6 +203,34 @@ export function Navbar() {
             </Link>
           ))}
 
+          {/* More dropdown */}
+          <div className="relative group">
+            <button
+              type="button"
+              className={`flex items-center gap-1 text-base font-medium px-3.5 py-1.5 cursor-pointer border-b-2 transition-colors ${
+                pathname.startsWith("/blog") || pathname === "/contact"
+                  ? "border-[#1A2B48] text-[#1A2B48] font-semibold"
+                  : "border-transparent hover:border-[#1A2B48] hover:text-[#1A2B48]"
+              }`}
+            >
+              More
+              <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
+            </button>
+            <div className="absolute left-0 top-full pt-3 invisible opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
+              <div className="w-48 rounded-xl border bg-background shadow-xl overflow-hidden">
+                {moreItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-center justify-between gap-2 px-4 py-3 text-sm font-medium border-b-2 border-transparent hover:border-[#1A2B48] hover:text-[#1A2B48] transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Search Dropdown */}
           <div className="relative ml-2" ref={searchRef}>
             <button
@@ -380,6 +412,21 @@ export function Navbar() {
           ))}
 
           {navLinks.map((link, idx) => (
+            <Link
+              key={idx}
+              href={link.href}
+              className={`text-base font-medium px-4 py-2 border-b-2 transition-colors ${
+                pathname === link.href
+                  ? "border-[#1A2B48] text-[#1A2B48] font-semibold"
+                  : "border-transparent hover:border-[#1A2B48] hover:text-[#1A2B48]"
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {moreItems.map((link, idx) => (
             <Link
               key={idx}
               href={link.href}

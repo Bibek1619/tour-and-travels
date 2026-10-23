@@ -22,7 +22,6 @@ import Footer from "@/components/footer";
 import Section from "@/components/section";
 import JsonLd from "@/components/json-ld";
 import { travelAgencyJsonLd } from "@/lib/jsonld";
-import DashainPopup from "@/components/dashain-popup";
 
 export const revalidate = 3600;
 
@@ -127,7 +126,6 @@ export default async function Home() {
           reviewCount: reviewStats.total,
         })}
       />
-      <DashainPopup />
       <Navbar />
 
       <Section>
