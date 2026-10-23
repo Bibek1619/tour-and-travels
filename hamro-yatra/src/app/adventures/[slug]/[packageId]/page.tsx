@@ -218,9 +218,53 @@ export default async function AdventurePackageDetailPage({
                 </div>
               </div>
 
-              {/* About Section */}
-              <div className="bg-white rounded-xl p-8 shadow-sm">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              {/* Mobile-Only Quick Booking Section - Below Photos */}
+              <div className="lg:hidden bg-white rounded-xl p-3 sm:p-4 shadow max-w-sm mx-auto">
+                {/* Price at top */}
+                <div className="text-center mb-3 pb-3 border-b border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">Starting from</p>
+                  <div className="flex items-baseline justify-center gap-1.5">
+                    <span className="text-xl sm:text-2xl font-bold text-orange-600">
+                      NPR {price.toLocaleString()}
+                    </span>
+                    <span className="text-xs sm:text-sm text-gray-500">/person</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">USD ${Math.round(price / 130)}</p>
+                </div>
+
+                {/* Enquiry Button - Compact & Responsive */}
+                <div className="mb-3">
+                  <AdventureEnquiryButton
+                    packageName={pkg.name}
+                    packageId={pkg._id}
+                    packageType="adventure"
+                  />
+                </div>
+
+                {/* Contact Info - Everything on single lines */}
+                <div className="space-y-1.5 text-[10px] sm:text-xs text-gray-700">
+                  <div className="flex items-center gap-1 whitespace-nowrap overflow-x-auto">
+                    <MessageCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
+                    <span className="font-medium">WhatsApp/Call:</span>
+                    <a href="tel:+9779856006671" className="text-orange-600 hover:underline flex-shrink-0">
+                      +977 9856006671
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-1 overflow-hidden">
+                    <Mail className="w-3 h-3 text-orange-600 flex-shrink-0" />
+                    <a 
+                      href="mailto:hamroyatraadventure@gmail.com"
+                      className="text-orange-600 hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
+                    >
+                      hamroyatraadventure@gmail.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* About Section - No box, plain like blog */}
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold text-gray-900">
                   About This Adventure
                 </h2>
                 <MarkdownContent content={pkg.description || ""} />
@@ -240,9 +284,9 @@ export default async function AdventurePackageDetailPage({
                 )}
               </div>
 
-              {/* FAQ */}
+              {/* FAQ - No box */}
               {pkg.faqs && pkg.faqs.length > 0 && (
-                <div className="bg-white rounded-xl p-8 shadow-sm">
+                <div className="mt-8">
                   <FaqSection
                     title="Frequently Asked Questions"
                     items={pkg.faqs}
@@ -254,33 +298,33 @@ export default async function AdventurePackageDetailPage({
             {/* Sidebar */}
             <div className="lg:col-span-1 min-w-0">
               <div className="lg:sticky lg:top-4 space-y-4">
-                {/* Booking Card */}
-                <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-lg border border-orange-100">
-                  <div className="text-center mb-6 pb-6 border-b border-orange-200">
-                    <p className="text-sm text-gray-600 mb-2">Starting from</p>
+                {/* Booking Card - Responsive sizing */}
+                <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-4 lg:p-6 shadow-lg border border-orange-100">
+                  <div className="text-center mb-4 lg:mb-6 pb-4 lg:pb-6 border-b border-orange-200">
+                    <p className="text-xs lg:text-sm text-gray-600 mb-1 lg:mb-2">Starting from</p>
                     <div className="flex flex-col items-center gap-1">
-                      <div className="flex items-baseline justify-center gap-2">
-                        <span className="text-4xl sm:text-5xl font-bold text-orange-600">
+                      <div className="flex items-baseline justify-center gap-1 lg:gap-2">
+                        <span className="text-2xl lg:text-4xl xl:text-5xl font-bold text-orange-600">
                           NPR {price.toLocaleString()}
                         </span>
                       </div>
-                      <div className="text-xl text-gray-600">
+                      <div className="text-base lg:text-xl text-gray-600">
                         USD ${Math.round(price / 130)}
                       </div>
-                      <span className="text-sm text-gray-500">/person</span>
+                      <span className="text-xs lg:text-sm text-gray-500">/person</span>
                     </div>
                   </div>
 
-                  <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  <div className="text-center mb-3 lg:mb-4">
+                    <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-1">
                       Ready to Book?
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs lg:text-sm text-gray-600">
                       Contact us for instant booking
                     </p>
                   </div>
 
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-2 lg:space-y-3 mb-4 lg:mb-6">
                     <AdventureEnquiryButton
                       packageName={pkg.name}
                       packageId={pkg._id}
@@ -291,39 +335,39 @@ export default async function AdventurePackageDetailPage({
                       href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 lg:py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2 lg:gap-3 group text-sm lg:text-base"
                     >
-                      <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <MessageCircle className="w-4 h-4 lg:w-5 lg:h-5 group-hover:scale-110 transition-transform" />
                       <span>Book via WhatsApp</span>
                     </a>
                   </div>
 
-                  <div className="bg-white rounded-lg p-4 space-y-3">
-                    <div className="text-center text-xs text-gray-500 mb-3">
+                  <div className="bg-white rounded-lg p-3 lg:p-4 space-y-2 lg:space-y-3">
+                    <div className="text-center text-xs text-gray-500 mb-2 lg:mb-3">
                       Or reach us directly
                     </div>
                     <a
                       href="tel:+9779856006671"
-                      className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
+                      className="flex items-center gap-2 lg:gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                     >
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-5 h-5 text-orange-600" />
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="text-xs text-gray-500">Call us</div>
-                        <div className="font-semibold">+977 9856006671</div>
+                        <div className="font-semibold text-sm lg:text-base">+977 9856006671</div>
                       </div>
                     </a>
                     <a
                       href="mailto:hamroyatraadventure@gmail.com"
-                      className="flex items-center gap-3 text-gray-700 hover:text-orange-600 transition-colors"
+                      className="flex items-center gap-2 lg:gap-3 text-gray-700 hover:text-orange-600 transition-colors"
                     >
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-5 h-5 text-orange-600" />
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
                       </div>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <div className="text-xs text-gray-500">Email us</div>
-                        <div className="font-semibold text-sm">
+                        <div className="font-semibold text-xs lg:text-sm break-all">
                           hamroyatraadventure@gmail.com
                         </div>
                       </div>

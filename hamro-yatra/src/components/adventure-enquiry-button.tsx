@@ -21,9 +21,9 @@ export default function AdventureEnquiryButton({
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
+        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2.5 sm:py-3 lg:py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2 sm:gap-3 group text-sm sm:text-base"
       >
-        <Send className="w-5 h-5 group-hover:scale-110 transition-transform" />
+        <Send className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
         <span>Send Enquiry</span>
       </button>
 
