@@ -245,15 +245,20 @@ export function vehicleJsonLd({
   rating?: number;
   ratingCount?: number;
 }): JsonLdObject {
+  const vehicleName = name || `${brand || ""} ${model || "Vehicle"}`.trim();
+  const vehicleDesc = description || `${vehicleName} available for rental in Nepal with experienced driver.`;
+  const vehicleImage = image ? abs(image) : `${SITE_URL}/carhero1%20(1).jpg`;
+  
   return {
     "@context": "https://schema.org",
-    "@type": "Vehicle",
-    name: name || `${brand || ""} ${model || "Vehicle"}`.trim(),
-    description: description || name,
-    image: image ? [abs(image)] : undefined,
+    "@type": "Product",
+    name: vehicleName,
+    description: vehicleDesc,
+    image: vehicleImage,
     url: `${SITE_URL}${url}`,
-    brand: brand || undefined,
+    brand: brand ? { "@type": "Brand", name: brand } : undefined,
     model: model || undefined,
+    category: category || "Vehicle",
     vehicleModelDate: undefined,
     fuelType: fuelType || undefined,
     vehicleSeatingCapacity: capacity || undefined,
@@ -268,14 +273,13 @@ export function vehicleJsonLd({
           },
         }
       : {}),
-    ...(rating
+    ...(rating && ratingCount
       ? {
           aggregateRating: {
             "@type": "AggregateRating",
-            ratingValue: Math.min(rating, 5).toString(),
+            ratingValue: Math.min(rating, 5).toFixed(1),
             bestRating: "5",
-            // Required by Google, otherwise the rich result is dropped.
-            reviewCount: ratingCount || 1,
+            reviewCount: ratingCount,
           },
         }
       : {}),
@@ -392,15 +396,48 @@ export function scorpioRouteJsonLd({
   totalReviews?: number;
 }): JsonLdObject {
   const canonical = `${SITE_URL}${url}`;
+  const absoluteImage = image ? abs(image) : `${SITE_URL}/carhero1%20(1).jpg`;
+  
+  // Vehicle Product entity (separate from Service)
+  const vehicle: JsonLdObject = {
+    "@type": "Product",
+    "@id": `${canonical}#product`,
+    name: vehicleName || "Mahindra Scorpio",
+    description: `7-seater ${vehicleName || "Scorpio"} SUV available for hire from ${origin} to ${destination}. Comfortable, spacious, and well-maintained vehicle with experienced driver.`,
+    image: absoluteImage,
+    brand: {
+      "@type": "Brand",
+      name: "Mahindra",
+    },
+    vehicleSeatingCapacity: capacity || 7,
+    offers: {
+      "@type": "Offer",
+      price,
+      priceCurrency: "NPR",
+      availability: "https://schema.org/InStock",
+      url: canonical,
+    },
+    ...(rating && totalReviews
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: Math.min(rating, 5).toFixed(1),
+            reviewCount: totalReviews,
+            bestRating: "5",
+          },
+        }
+      : {}),
+  };
   
   // Service entity for the rental service
   const service: JsonLdObject = {
     "@type": "Service",
+    "@id": `${canonical}#service`,
     name: `${route} Scorpio Hire`,
-    serviceType: "Scorpio jeep rental with driver",
-    description: `Hire a Scorpio jeep with an experienced driver from ${origin} to ${destination}, Nepal. One-way and round-trip rates with a professional local driver included.`,
+    serviceType: "Vehicle rental with driver",
+    description: `Hire a Scorpio with an experienced driver from ${origin} to ${destination}, Nepal. One-way and round-trip rates with professional local driver included.`,
     url: canonical,
-    image: image ? [abs(image)] : undefined,
+    image: absoluteImage,
     provider: {
       "@type": "TravelAgency",
       name: SITE_NAME,
@@ -442,38 +479,11 @@ export function scorpioRouteJsonLd({
       availability: "https://schema.org/InStock",
       url: canonical,
     },
-    ...(rating
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: Math.min(rating, 5).toString(),
-            reviewCount: totalReviews || 1,
-            bestRating: "5",
-          },
-        }
-      : {}),
   };
-
-  // Separate Vehicle entity with proper offers
-  const vehicle: JsonLdObject | null = vehicleName
-    ? {
-        "@type": "Vehicle",
-        name: vehicleName,
-        ...(capacity ? { vehicleSeatingCapacity: capacity } : {}),
-        // Add offers to Vehicle to fix Google Search Console error
-        offers: {
-          "@type": "Offer",
-          price,
-          priceCurrency: "NPR",
-          availability: "https://schema.org/InStock",
-          url: canonical,
-        },
-      }
-    : null;
 
   return {
     "@context": "https://schema.org",
-    "@graph": [service, ...(vehicle ? [vehicle] : [])],
+    "@graph": [vehicle, service],
   };
 }
 
@@ -521,7 +531,7 @@ export function reviewJsonLd({
   reviewCount,
 }: {
   itemName: string;
-  itemType?: string;
+  itemType?: "Product" | "Service" | "LocalBusiness";
   rating: number;
   reviewBody: string;
   author: string;
@@ -530,26 +540,26 @@ export function reviewJsonLd({
   avgRating?: number;
   reviewCount?: number;
 }): JsonLdObject {
+  const itemReviewed: JsonLdObject = {
+    "@type": itemType,
+    name: itemName,
+    ...(itemUrl ? { url: `${SITE_URL}${itemUrl}` } : {}),
+  };
+
+  // Only add aggregateRating if we have both avgRating and reviewCount
+  if (avgRating && reviewCount) {
+    itemReviewed.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: Math.min(avgRating, 5).toFixed(1),
+      bestRating: "5",
+      reviewCount: reviewCount,
+    };
+  }
+
   return {
     "@context": "https://schema.org",
     "@type": "Review",
-    itemReviewed: {
-      "@type": itemType,
-      name: itemName,
-      ...(itemUrl ? { url: `${SITE_URL}${itemUrl}` } : {}),
-      // Google requires an aggregateRating carrying a count on the reviewed
-      // item, otherwise the Review snippet is dropped as a critical error.
-      ...(avgRating
-        ? {
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: Math.min(avgRating, 5).toString(),
-              bestRating: "5",
-              reviewCount: reviewCount || 1,
-            },
-          }
-        : {}),
-    },
+    itemReviewed,
     reviewRating: {
       "@type": "Rating",
       ratingValue: Math.min(rating, 5).toString(),

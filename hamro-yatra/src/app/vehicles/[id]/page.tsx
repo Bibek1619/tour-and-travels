@@ -332,7 +332,7 @@ export default async function VehicleDetailPage({
             itemName: scorpioRoute
               ? `${scorpioRoute.route} Scorpio Hire`
               : (vehicle.name ?? "Vehicle"),
-            itemType: scorpioRoute ? "Service" : "Vehicle",
+            itemType: "Product", // Always use Product for vehicle reviews
             rating: review.rating ?? 0,
             reviewBody: review.review ?? "",
             author: review.name ?? "Verified customer",
