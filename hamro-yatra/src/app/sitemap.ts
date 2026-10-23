@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/db";
 import { TourPackage } from "@/models/tourPackage";
 import { Adventure } from "@/models/adventure";
 import { Vehicle } from "@/models/vehicle";
+import { Blog } from "@/models/blog";
 import { getTrekRegions } from "@/lib/regions";
 import { SITE_URL } from "@/lib/seo";
 import { scorpioRoutes, scorpioRouteSlugSet } from "@/lib/scorpio-routes";
@@ -17,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/tours`, changeFrequency: "weekly", priority: 0.9 }, // Second priority
     { url: `${base}/trek-packages`, changeFrequency: "weekly", priority: 0.85 }, // Third priority
     { url: `${base}/adventures`, changeFrequency: "weekly", priority: 0.8 }, // Fourth priority
+    { url: `${base}/blog`, changeFrequency: "daily", priority: 0.8 }, // Blog listing
     { url: `${base}/about`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/contact`, changeFrequency: "monthly", priority: 0.7 }, // Higher - leads to bookings
   ];
@@ -35,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [...staticRoutes, ...scorpioRouteUrls];
   }
 
-  const [tours, treks, regions, adventures, vehicles] = await Promise.all([
+  const [tours, treks, regions, adventures, vehicles, blogs] = await Promise.all([
     TourPackage.find({ category: "tour", status: "published" })
       .select("slug updatedAt")
       .lean(),
@@ -47,6 +49,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("_id category updatedAt")
       .lean(),
     Vehicle.find({}).select("_id slug updatedAt").lean(),
+    Blog.find({ status: "published" })
+      .select("slug updatedAt")
+      .lean(),
   ]);
 
   const lastmodFor = (doc: { updatedAt?: unknown }) =>
@@ -103,6 +108,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9, // HIGHEST - Main business
     }));
 
+  const blogRoutes = blogs.map((b) => ({
+    url: `${base}/blog/${b.slug}`,
+    lastModified: lastmodFor(b),
+    changeFrequency: "weekly" as const,
+    priority: 0.7, // Good for SEO and content marketing
+  }));
+
   return [
     ...staticRoutes,
     ...scorpioRouteUrls,
@@ -112,5 +124,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryRoutes,
     ...adventureRoutes,
     ...vehicleRoutes,
+    ...blogRoutes, // Blog posts added to main sitemap
   ];
 }
