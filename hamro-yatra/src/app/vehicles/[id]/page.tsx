@@ -118,8 +118,8 @@ export async function generateMetadata({
 
   if (isScorpio) {
     return buildMetadata({
-      title: "Scorpio Rent in Pokhara | 4WD Scorpio Jeep Hire Nepal",
-      description: "Rent a 4WD Scorpio jeep in Pokhara with an experienced driver. Scorpio jeep hire prices for Pokhara to Kathmandu, Chitwan, Lumbini & across Nepal. Tours, treks & adventure. Book online 24/7.",
+      title: "Scorpio Rent Pokhara ₹6500/Day | 4WD Jeep Hire with Driver",
+      description: "Book Scorpio jeep in Pokhara from ₹6500/day! 7-seater 4WD with expert driver. Instant booking for Kathmandu, Chitwan, Ghorepani, treks & tours. 26+ years trusted. Free quote! ✓ 24/7 Support ✓ Best Rates",
       path: `/vehicles/${canonicalSlug}`,
       keywords: [
         "scorpio rent in Pokhara",

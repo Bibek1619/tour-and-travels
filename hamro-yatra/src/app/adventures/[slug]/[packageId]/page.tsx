@@ -6,27 +6,24 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import {
-  Clock,
-  Users,
   Star,
   ChevronLeft,
   MapPin,
   MessageCircle,
   Mail,
-  Send,
   Phone,
   Mountain,
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getAdventureCategory } from "@/lib/adventure-categories";
-import ReviewSection from "@/components/reviews/review-section";
 import FaqSection from "@/components/faq-section";
 import { buildMetadata } from "@/lib/seo";
+import MarkdownContent from "@/components/markdown-content";
+import AdventureEnquiryButton from "@/components/adventure-enquiry-button";
 import { getHeroImage } from "@/lib/cloudinary";
 import JsonLd from "@/components/json-ld";
 import { adventureJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
-import { getEntityReviews } from "@/lib/review-helpers";
 
 export const revalidate = 3600;
 
@@ -115,8 +112,6 @@ export default async function AdventurePackageDetailPage({
     );
   }
 
-  const reviewData = await getEntityReviews("adventure", packageId);
-
   const images =
     pkg.images && pkg.images.length > 0 ? pkg.images : [category.image];
   const price = pkg.price || 0;
@@ -140,7 +135,7 @@ export default async function AdventurePackageDetailPage({
           duration: pkg.duration,
           price,
           rating: pkg.rating,
-          ratingCount: reviewData.total,
+          ratingCount: pkg.reviewsCount || 0,
           faqs: pkg.faqs,
         })}
       />
@@ -188,28 +183,9 @@ export default async function AdventurePackageDetailPage({
                   {pkg.name}
                 </h1>
                 <div className="flex flex-wrap items-center gap-4 text-sm">
-                  {(pkg.rating ?? 0) > 0 && (
-                    <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
-                      <span className="font-bold">{pkg.rating}</span>
-                      <span className="text-gray-500">
-                        ({pkg.reviewsCount || 0} reviews)
-                      </span>
-                    </div>
-                  )}
                   <div className="flex items-center gap-2 text-gray-600">
                     <MapPin className="w-4 h-4" />
                     <span>{pkg.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Clock className="w-4 h-4" />
-                    <span>{pkg.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Users className="w-4 h-4" />
-                    <span>
-                      {pkg.groupSize?.min || 1}-{pkg.groupSize?.max || 10} people
-                    </span>
                   </div>
                   {pkg.difficulty && (
                     <span className="px-2.5 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-semibold">
@@ -247,9 +223,7 @@ export default async function AdventurePackageDetailPage({
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
                   About This Adventure
                 </h2>
-                <p className="text-gray-700 leading-relaxed text-lg">
-                  {pkg.description}
-                </p>
+                <MarkdownContent content={pkg.description || ""} />
 
                 {pkg.safetyInfo && (
                   <div className="mt-6 bg-red-50 border border-red-100 rounded-lg p-4">
@@ -284,11 +258,16 @@ export default async function AdventurePackageDetailPage({
                 <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-lg border border-orange-100">
                   <div className="text-center mb-6 pb-6 border-b border-orange-200">
                     <p className="text-sm text-gray-600 mb-2">Starting from</p>
-                    <div className="flex items-baseline justify-center gap-2 flex-wrap">
-                      <span className="text-4xl sm:text-5xl font-bold text-orange-600 break-all">
-                        ${price}
-                      </span>
-                      <span className="text-gray-500">/person</span>
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="flex items-baseline justify-center gap-2">
+                        <span className="text-4xl sm:text-5xl font-bold text-orange-600">
+                          NPR {price.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="text-xl text-gray-600">
+                        USD ${Math.round(price / 130)}
+                      </div>
+                      <span className="text-sm text-gray-500">/person</span>
                     </div>
                   </div>
 
@@ -302,13 +281,11 @@ export default async function AdventurePackageDetailPage({
                   </div>
 
                   <div className="space-y-3 mb-6">
-                    <Link
-                      href="/contact"
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
-                    >
-                      <Send className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                      <span>Send Enquiry</span>
-                    </Link>
+                    <AdventureEnquiryButton
+                      packageName={pkg.name}
+                      packageId={pkg._id}
+                      packageType="adventure"
+                    />
 
                     <a
                       href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
@@ -355,18 +332,6 @@ export default async function AdventurePackageDetailPage({
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="mt-10">
-            <ReviewSection
-              key={`adventure-${pkg._id}`}
-              entityType="adventure"
-              entityId={pkg._id}
-              entityTitle={pkg.name}
-              initialReviews={reviewData.data}
-              initialTotal={reviewData.total}
-              initialAvgRating={reviewData.avgRating}
-            />
           </div>
         </div>
       </div>

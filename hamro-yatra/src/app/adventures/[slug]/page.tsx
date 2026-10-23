@@ -6,10 +6,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import {
   ArrowLeft,
-  Clock,
-  Users,
-  MapPin,
   Star,
+  MapPin,
 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -30,9 +28,52 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const category = await getAdventureCategory(slug);
+  
+  // Custom compelling metadata for high-value categories
+  if (slug === "bungee") {
+    return buildMetadata({
+      title: "Kushma Bungee Jump ₹8K | Nepal's Highest 228m Cliff Jump Tickets",
+      description: "Book Kushma Bungee ₹8,000! Nepal's highest 228m jump. ✓ Couple swing ₹13,500 ✓ Same-day repeat 50% OFF ✓ Video package ₹1,500 ✓ Pokhara transfer ₹1K. Instant tickets! Weight: 45-100kg. Book NOW!",
+      path: `/adventures/${slug}`,
+      keywords: [
+        "bungee jumping Nepal",
+        "kushma bungee jump price",
+        "cliff Nepal jump tickets",
+        "book couple swing in Nepal",
+        "kushma sky gliding",
+        "bungee jumping Nepal Kushma",
+        "Nepal highest bungee",
+        "tandem swing Nepal",
+        "bungee jump booking Nepal",
+        "couple bungee swing Nepal",
+        "extreme adventures Nepal 2026",
+        "Kushma bungee cost",
+      ],
+      images: [category.image],
+    });
+  }
+  
+  if (slug === "paragliding") {
+    return buildMetadata({
+      title: "Paragliding Pokhara ₹7000+ | Best Price Tandem Flight Booking",
+      description: "₹7000+ Paragliding in Pokhara with lake & mountain views! Tandem flights, professional pilots, GoPro videos. Book NOW & fly above Fewa Lake. ✓ Safety certified ✓ 26+ years ✓ Best rates",
+      path: `/adventures/${slug}`,
+      keywords: [
+        "paragliding Pokhara",
+        "paragliding Pokhara price",
+        "paragliding cost Pokhara",
+        "tandem paragliding Nepal",
+        "Pokhara paragliding booking",
+        "best paragliding Pokhara",
+        "Fewa Lake paragliding",
+      ],
+      images: [category.image],
+    });
+  }
+  
   return buildMetadata({
-    title: `${category.name} in Nepal - Adventure Packages & Booking`,
-    description: category.description,
+    title: `${category.name} Nepal - Book Online | Best Price & Expert Guides`,
+    description: `Experience thrilling ${category.name.toLowerCase()} in Nepal. Professional guides, safety certified, instant booking. ${category.description} Book your adventure today!`,
     path: `/adventures/${slug}`,
     keywords: [
       `${category.name.toLowerCase()} in Nepal`,
@@ -166,23 +207,9 @@ export default async function AdventureDetailPage({
                     </h3>
 
                     {/* Location */}
-                    <div className="flex items-center gap-2 mb-3 text-gray-600">
+                    <div className="flex items-center gap-2 mb-5 text-gray-600">
                       <MapPin className="w-4 h-4" />
                       <span className="text-sm">{pkg.location}</span>
-                    </div>
-
-                    {/* Details */}
-                    <div className="flex items-center gap-4 mb-5 text-sm text-gray-500">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-4 h-4" />
-                        <span>{pkg.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Users className="w-4 h-4" />
-                        <span>
-                          {pkg.groupSize?.min || 1}-{pkg.groupSize?.max || 10} people
-                        </span>
-                      </div>
                     </div>
 
                     {/* Short Description */}
@@ -198,18 +225,12 @@ export default async function AdventureDetailPage({
                             From
                           </span>
                           <div className="text-2xl font-bold text-gray-900">
-                            ${(pkg.price || 0).toLocaleString()}
+                            NPR {(pkg.price || 0).toLocaleString()}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            USD ${Math.round((pkg.price || 0) / 130)}
                           </div>
                         </div>
-                        {(pkg.rating ?? 0) > 0 && (
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
-                            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                            <span className="font-semibold">{pkg.rating}</span>
-                            <span className="text-gray-400">
-                              ({pkg.reviewsCount || 0})
-                            </span>
-                          </div>
-                        )}
                       </div>
                       <Link
                         href={`/adventures/${slug}/${pkg._id}`}

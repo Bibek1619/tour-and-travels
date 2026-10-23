@@ -22,6 +22,7 @@ import { formatDuration, formatSeason, type Tour } from "@/lib/types";
 import { getCardImage, getHeroImage } from "@/lib/cloudinary";
 import ReviewSection from "@/components/reviews/review-section";
 import FaqSection from "@/components/faq-section";
+import TrekEnquiryButton from "@/components/trek-enquiry-button";
 import JsonLd from "@/components/json-ld";
 import { tripJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import type { ReviewView } from "@/lib/review-helpers";
@@ -563,13 +564,11 @@ export default function TrekDetailClient({
                 </div>
 
                 <div className="space-y-3 mb-6">
-                  <a
-                    href="/contact"
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
-                  >
-                    <Send className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span>Send Enquiry</span>
-                  </a>
+                  <TrekEnquiryButton 
+                    packageName={trek.title}
+                    packageId={trek._id}
+                    packageType="trek"
+                  />
                   <a
                     href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
                     target="_blank"

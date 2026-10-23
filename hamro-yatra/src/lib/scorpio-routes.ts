@@ -183,8 +183,8 @@ export const scorpioRoutes: ScorpioRoute[] = [
     usd: 85,
     distance: "55",
     time: "3-4",
-    seoTitle: "Pokhara to Ghorepani Scorpio Hire | Jeep Rental",
-    seoDescription: "Rent a 4WD Scorpio jeep from Pokhara to Ghorepani with driver. One-way NPR 11,000 (USD 85). 55 km, ~3–4 hrs. Best for Poon Hill trek. Book online 24/7.",
+    seoTitle: "Pokhara to Ghorepani Jeep Hire ₹11K | Scorpio for Poon Hill Trek",
+    seoDescription: "Book 4WD Scorpio jeep Pokhara to Ghorepani ₹11,000! Perfect for Poon Hill trek start. 3-4 hrs, expert driver, one-way/return options. ✓ Book now ✓ Trek ready ✓ Best route",
     highlights: [
       { label: "Distance", value: "55 km" },
       { label: "Drive time", value: "Approx. 3 to 4 hours" },

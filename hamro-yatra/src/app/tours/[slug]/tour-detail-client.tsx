@@ -22,6 +22,7 @@ import FaqSection from "@/components/faq-section";
 import JsonLd from "@/components/json-ld";
 import { tripJsonLd, breadcrumbJsonLd } from "@/lib/jsonld";
 import type { ReviewView } from "@/lib/review-helpers";
+import TourEnquiryButton from "@/components/tour-enquiry-button";
 
 export default function TourDetailClient({
   tour,
@@ -326,13 +327,11 @@ export default function TourDetailClient({
                 </div>
 
                 <div className="space-y-3 mb-6">
-                  <a
-                    href="/contact"
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-3 group"
-                  >
-                    <Send className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span>Send Enquiry</span>
-                  </a>
+                  <TourEnquiryButton 
+                    packageName={tour.title}
+                    packageId={tour._id}
+                    packageType="tour"
+                  />
                   <a
                     href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
                     target="_blank"

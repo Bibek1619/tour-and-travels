@@ -15,9 +15,9 @@ import { breadcrumbJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Adventure Activities Nepal 2026 – Paragliding, Bungee, Rafting & More",
+  title: "Nepal Adventure 2026 🎉 Paragliding ₹7K | Bungee Jump ₹8K | Book Now",
   description:
-    "Book thrilling adventure activities in Nepal: paragliding in Pokhara, bungee jumping in Kushma, white water rafting, ziplining & canyoning. Expert guides, safety certified. Book online today!",
+    "Paragliding Pokhara ₹7K+ ✓ Kushma Bungee 228m ₹8K ✓ Couple Swing ₹13.5K ✓ Rafting, Zipline, Canyoning. Expert guides, safety certified, 26+ yrs. Instant tickets & transfers from Pokhara!",
   path: "/adventures",
   keywords: [
     "adventure activities Nepal",

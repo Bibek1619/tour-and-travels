@@ -26,9 +26,9 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Scorpio Jeep Rental Pokhara | Nepal Tours",
+  title: "Scorpio Jeep Rent Pokhara ₹6500 | Book Nepal Tours & Trekking Now",
   description:
-    "Rent a 4WD Scorpio jeep in Pokhara with an experienced driver. 26+ years Nepal tour operator offering Scorpio jeep hire from Pokhara to Kathmandu, Chitwan, Lumbini & across Nepal. Tours, treks & adventure. Book online 24/7.",
+    "Book 4WD Scorpio jeep in Pokhara from ₹6500/day! Expert driver, instant booking. ABC trek packages, Ghorepani tours, Kathmandu trips. 26+ yrs trusted operator. ✓ Best rates ✓ Free quote ✓ 24/7",
   path: "/",
   keywords: [
     // PRIMARY: Scorpio & Vehicle Rental (Main Business)
