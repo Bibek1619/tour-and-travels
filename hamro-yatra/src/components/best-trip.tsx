@@ -6,7 +6,7 @@ import { ArrowRight, Check, Clock, MapPin, MessageCircle } from "lucide-react";
 import { asList } from "@/lib/icon-map";
 import type { Tour } from "@/lib/types";
 import type { BestTripContent } from "@/lib/page-content/types";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const DEFAULT_IMAGE = "/manangfeatured.jpg";
 
@@ -27,40 +27,42 @@ function digitsOnly(value: string): string {
 }
 
 /* ─── animation variants ─── */
-const stagger = {
+const smoothEase = [0.25, 0.46, 0.45, 0.94] as const;
+
+const stagger: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.55, ease: smoothEase },
   },
 };
 
-const fadeUpSlow = {
+const fadeUpSlow: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 },
+    transition: { duration: 0.6, ease: smoothEase, delay: 0.15 },
   },
 };
 
-const imageReveal = {
+const imageReveal: Variants = {
   hidden: { opacity: 0, scale: 0.94, x: 30 },
   visible: {
     opacity: 1,
     scale: 1,
     x: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.7, ease: smoothEase },
   },
 };
 
-const lineGrow = {
+const lineGrow: Variants = {
   hidden: { scaleX: 0 },
   visible: {
     scaleX: 1,
