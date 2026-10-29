@@ -195,7 +195,8 @@ export default function TourDetailClient({
                       <p className="text-gray-700 leading-relaxed mb-4">
                         {tour.shortOverview}
                       </p>
-                      {tour.fullOverview?.intro && (
+                      {tour.fullOverview?.intro &&
+                        tour.fullOverview.intro.trim() !== tour.shortOverview?.trim() && (
                         <p className="text-gray-700 leading-relaxed">
                           {tour.fullOverview.intro}
                         </p>
@@ -204,16 +205,18 @@ export default function TourDetailClient({
                     {tour.highlights && tour.highlights.length > 0 && (
                       <div>
                         <h3 className="text-xl font-bold text-gray-800 mb-4">
-                          Highlights
+                          Trip Highlights
                         </h3>
-                        <ul className="grid md:grid-cols-2 gap-3">
+                        <ul className="grid sm:grid-cols-2 gap-3">
                           {tour.highlights.map((highlight, idx) => (
                             <li
                               key={idx}
-                              className="flex items-start gap-2"
+                              className="flex items-center gap-3 rounded-xl border border-green-100 bg-green-50/50 p-3 text-sm sm:text-base font-medium text-gray-800 transition-colors hover:bg-green-50"
                             >
-                              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                              <span className="text-gray-700">
+                              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-600 shadow-sm shadow-green-600/20">
+                                <Check className="h-3.5 w-3.5 text-white stroke-[2.5]" />
+                              </span>
+                              <span>
                                 {highlight}
                               </span>
                             </li>

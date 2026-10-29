@@ -8,11 +8,19 @@ import { Region } from "@/models/region";
 import { Review } from "@/models/review";
 import { getPageContent } from "@/lib/page-content";
 import type { HomePageContent } from "@/lib/page-content/types";
+import { DEFAULT_CARDS } from "@/lib/destination-cards";
+
+const FEATURED_TOUR_FALLBACK_SLUG =
+  DEFAULT_CARDS.find((card) => card.id === "manang")?.href
+    .split("/")
+    .filter(Boolean)
+    .pop() ?? "manang-trip";
 
 export type HomePageData = {
   storedContent: Record<string, unknown> | null;
   allPublished: Record<string, unknown>[];
   popularTours: Record<string, unknown>[];
+  featuredTour: Record<string, unknown> | null;
   reviews: Record<string, unknown>[];
   reviewStats: { avgRating: number; total: number };
   homePageContent: HomePageContent;
@@ -71,11 +79,24 @@ async function fetchHomePageData(): Promise<HomePageData> {
     PageContentModel.findOne({ slug: "home" }).select("content").lean(),
   ]);
 
+  const featuredHref = homePageContent?.sections?.bestTrip?.ctaHref ?? "";
+  const featuredSlug =
+    /^\/tours\/([^/?#]+)/.exec(featuredHref)?.[1] ||
+    FEATURED_TOUR_FALLBACK_SLUG;
+  const featuredTour = featuredSlug
+    ? await TourPackage.findOne({
+        slug: featuredSlug,
+        category: "tour",
+        status: "published",
+      }).lean()
+    : null;
+
   const statsRow = reviewStatsAgg[0] || { avg: 0, total: 0 };
   const data: HomePageData = {
     storedContent: storedContent as Record<string, unknown> | null,
     allPublished: allPublished as Record<string, unknown>[],
     popularTours: popularTours as Record<string, unknown>[],
+    featuredTour: featuredTour as Record<string, unknown> | null,
     reviews: reviews as Record<string, unknown>[],
     reviewStats: {
       avgRating: Math.round((statsRow.avg || 0) * 10) / 10,
@@ -89,7 +110,7 @@ async function fetchHomePageData(): Promise<HomePageData> {
   return JSON.parse(JSON.stringify(data)) as HomePageData;
 }
 
-export const getHomePageData = unstable_cache(fetchHomePageData, ["home-page"], {
+export const getHomePageData = unstable_cache(fetchHomePageData, ["home-page-v2"], {
   revalidate: 3600,
-  tags: [CACHE_TAGS.tours, CACHE_TAGS.reviews],
+  tags: [CACHE_TAGS.tours, CACHE_TAGS.reviews, CACHE_TAGS.pageContent],
 });

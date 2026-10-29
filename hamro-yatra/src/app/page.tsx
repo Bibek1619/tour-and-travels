@@ -12,6 +12,7 @@ import type {
 import { Navbar } from "@/components/navbar";
 import HeroSection from "@/components/hero-section";
 import IntroSection from "@/components/intro-section";
+import BestTrip from "@/components/best-trip";
 import BestSellingPackages from "@/components/best-selling-packages";
 import DestinationAccordion from "@/components/destination-accordion";
 import DestinationsSection from "@/components/destinations-section";
@@ -26,7 +27,7 @@ import { travelAgencyJsonLd } from "@/lib/jsonld";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: "Scorpio Jeep Rent Pokhara ₹6500 | Book Nepal Tours & Trekking Now",
+  title: "Scorpio Jeep Rent Pokhara | Book Nepal Tours & Trekking Now",
   description:
     "Book 4WD Scorpio jeep in Pokhara from ₹6500/day! Expert driver, instant booking. ABC trek packages, Ghorepani tours, Kathmandu trips. 26+ yrs trusted operator. ✓ Best rates ✓ Free quote ✓ 24/7",
   path: "/",
@@ -90,6 +91,7 @@ export default async function Home() {
     storedContent,
     allPublished,
     popularTours,
+    featuredTour,
     reviews,
     reviewStats,
     homePageContent,
@@ -133,6 +135,13 @@ export default async function Home() {
       </Section>
       <Section>
         <IntroSection content={content.intro} />
+      </Section>
+
+      <Section>
+        <BestTrip
+          content={homeSections.bestTrip}
+          tour={featuredTour as Tour | null}
+        />
       </Section>
 
       <Section>

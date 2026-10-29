@@ -10,7 +10,6 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Section from "@/components/section";
 import ContactForm from "@/components/contact/contact-form";
-import FaqAccordion from "@/components/contact/faq-accordion";
 import { buildMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { serializeJsonLd } from "@/lib/jsonld";
 import { getPageContent } from "@/lib/page-content";
@@ -75,14 +74,59 @@ function YoutubeIcon({ className }: { className?: string }) {
   );
 }
 
-const socialIcons: Record<
+const socialBrandConfig: Record<
   string,
-  ComponentType<{ className?: string }>
+  {
+    icon: ComponentType<{ className?: string }>;
+    accentColor: string;
+    bgHover: string;
+    iconBg: string;
+    borderHover: string;
+    badgeText: string;
+    handle: string;
+    description: string;
+  }
 > = {
-  Facebook: FacebookIcon,
-  Instagram: InstagramIcon,
-  YouTube: YoutubeIcon,
-  TikTok: TikTokIcon,
+  Facebook: {
+    icon: FacebookIcon,
+    accentColor: "text-[#1877F2]",
+    bgHover: "hover:bg-blue-50/50 hover:shadow-blue-500/10",
+    iconBg: "bg-[#1877F2] text-white shadow-md shadow-blue-500/25",
+    borderHover: "hover:border-[#1877F2]/40",
+    badgeText: "Follow Page",
+    handle: "Hamro Yatra Adventure",
+    description: "Official community updates & travel stories",
+  },
+  Instagram: {
+    icon: InstagramIcon,
+    accentColor: "text-[#E1306C]",
+    bgHover: "hover:bg-pink-50/50 hover:shadow-pink-500/10",
+    iconBg: "bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white shadow-md shadow-pink-500/25",
+    borderHover: "hover:border-[#DD2A7B]/40",
+    badgeText: "Photos & Reels",
+    handle: "@hamro_yatra_adventure",
+    description: "Himalayan photos, videos & stories",
+  },
+  YouTube: {
+    icon: YoutubeIcon,
+    accentColor: "text-[#FF0000]",
+    bgHover: "hover:bg-red-50/50 hover:shadow-red-500/10",
+    iconBg: "bg-[#FF0000] text-white shadow-md shadow-red-500/25",
+    borderHover: "hover:border-[#FF0000]/40",
+    badgeText: "Subscribe",
+    handle: "Hamro Yatra Adventure",
+    description: "Full tour vlogs & route walkthroughs",
+  },
+  TikTok: {
+    icon: TikTokIcon,
+    accentColor: "text-slate-900",
+    bgHover: "hover:bg-slate-50 hover:shadow-slate-500/10",
+    iconBg: "bg-slate-950 text-white shadow-md shadow-black/25",
+    borderHover: "hover:border-slate-400",
+    badgeText: "Short Videos",
+    handle: "@hamroyatraadventucher",
+    description: "Quick clips, off-road & scenery",
+  },
 };
 
 const defaultInfoItems = [
@@ -142,11 +186,23 @@ export default async function Contact() {
   }));
 
   const socials = (social.items as { label: string; href: string }[]).map(
-    (s) => ({
-      icon: socialIcons[s.label] ?? FacebookIcon,
-      label: s.label,
-      href: s.href,
-    })
+    (s) => {
+      const brand = socialBrandConfig[s.label] ?? {
+        icon: FacebookIcon,
+        accentColor: "text-orange-600",
+        bgHover: "hover:bg-orange-50",
+        iconBg: "bg-orange-600 text-white shadow-md shadow-orange-600/20",
+        borderHover: "hover:border-orange-300",
+        badgeText: "Follow",
+        handle: s.label,
+        description: "Connect with us",
+      };
+      return {
+        ...brand,
+        label: s.label,
+        href: s.href,
+      };
+    }
   );
 
   return (
@@ -221,86 +277,130 @@ dangerouslySetInnerHTML={{
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-8">
-        {/* CONTACT INFO + MAP */}
-        <section className="grid md:grid-cols-2 gap-12 py-20 border-b border-gray-100">
-          <div className="space-y-6">
-            {contactInfo.map((item) => (
-              <div key={item.label} className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-                  <item.icon className="w-4 h-4 text-emerald-700" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                    {item.label}
-                  </p>
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      className="text-gray-900 font-medium text-sm hover:text-emerald-700 transition-colors"
-                    >
-                      {item.value}
-                    </a>
-                  ) : (
-                    <p className="text-gray-900 font-medium text-sm">
-                      {item.value}
-                    </p>
-                  )}
-                </div>
+      {/* CONTACT FORM (ENCLOSED BOX WITH SOFT WARM BACKGROUND) */}
+      <section className="bg-gradient-to-b from-orange-50/50 via-white to-gray-50/30 py-16 md:py-24 border-b border-gray-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <Section>
+            <div className="rounded-3xl border border-orange-100/90 bg-white p-6 sm:p-12 shadow-xl shadow-orange-500/5">
+              <div className="mb-8">
+                <span className="inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-orange-600 font-sans">
+                  Send An Enquiry
+                </span>
+                <h2 className="mt-2 text-2xl sm:text-4xl font-bold font-display text-gray-900 tracking-tight">
+                  {form.title}
+                </h2>
+                <p className="mt-2 text-gray-600 text-sm sm:text-base font-sans max-w-2xl">
+                  {form.subtitle}
+                </p>
               </div>
-            ))}
-          </div>
 
-          <div className="rounded-xl overflow-hidden border border-gray-100 h-72 md:h-auto">
-            <iframe
-              src={content.mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0, minHeight: 280 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Hamro Yatra Adventure Location - Pokhara"
-            />
-          </div>
-        </section>
+              <ContactForm />
+            </div>
+          </Section>
+        </div>
+      </section>
 
-        {/* CONTACT FORM */}
-        <section className="py-20 border-b border-gray-100">
+      <div className="max-w-6xl mx-auto px-6 md:px-8">
+        {/* CONTACT INFO + MAP (SAME DESIGN AS ABOUT PAGE) */}
+        <section className="py-20 md:py-24 border-b border-gray-100">
           <Section>
-            <h2 className="text-2xl font-bold mb-1">{form.title}</h2>
-            <p className="text-gray-500 text-sm mb-10">{form.subtitle}</p>
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div>
+                <span className="text-sm font-semibold uppercase tracking-widest text-orange-600 font-sans">
+                  Find Us
+                </span>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl font-display">
+                  Visit Our Office in Pokhara
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-gray-600 font-sans">
+                  We are conveniently located in Ram Bazar, Pokhara. Stop by for travel advice, customized trekking itineraries, or instant Scorpio jeep bookings.
+                </p>
+                <ul className="mt-8 space-y-5 font-sans">
+                  {contactInfo.map((item) => (
+                    <li key={item.label} className="flex items-start gap-4">
+                      <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-orange-100">
+                        <item.icon className="h-6 w-6 text-orange-600" />
+                      </span>
+                      <div>
+                        <p className="font-semibold text-gray-900">{item.label}</p>
+                        {item.link ? (
+                          <a
+                            href={item.link}
+                            className="text-gray-600 transition-colors hover:text-orange-600 text-base"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="text-gray-600 text-base">{item.value}</p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <ContactForm />
+              <div className="overflow-hidden rounded-3xl border border-gray-200 shadow-sm">
+                <iframe
+                  src={content.mapEmbedUrl}
+                  title="Map of Hamro Yatra Adventure Pokhara Office"
+                  width="100%"
+                  height="480"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="block min-h-[420px] w-full"
+                />
+              </div>
+            </div>
           </Section>
         </section>
 
-        {/* FAQ + SOCIAL */}
-        <section className="grid md:grid-cols-2 gap-16 py-20">
+        {/* FOLLOW US (BEST UI WITH MODERN BRAND COLORS) */}
+        <section className="py-20 md:py-24">
           <Section>
-            <h2 className="text-2xl font-bold mb-8">{faq.title}</h2>
-            <FaqAccordion items={faq.items as { q: string; a: string }[]} />
-          </Section>
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="text-sm font-semibold uppercase tracking-widest text-orange-600 font-sans">
+                Social Media
+              </span>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl font-display">
+                {social.title || "Follow & Connect With Us"}
+              </h2>
+              <p className="mt-3 text-base sm:text-lg text-gray-600 font-sans">
+                {social.subtitle || "Stay connected for breathtaking Himalayan travel photos, video reels, and tour updates."}
+              </p>
+            </div>
 
-          <Section>
-            <h2 className="text-2xl font-bold mb-2">{social.title}</h2>
-            <p className="text-gray-500 text-sm mb-8">{social.subtitle}</p>
-            <div className="space-y-3">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 font-sans">
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-3.5 rounded-lg border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50 transition-all group"
+                  className={`group relative flex flex-col justify-between rounded-2xl border border-gray-200/80 bg-white p-6 shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl ${s.borderHover} ${s.bgHover}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <s.icon className="w-4 h-4 text-gray-500 group-hover:text-emerald-700 transition-colors" />
-                    <span className="text-sm font-medium text-gray-800">
-                      {s.label}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${s.iconBg} transition-transform duration-300 group-hover:scale-110`}>
+                      <s.icon className="w-6 h-6" />
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-gray-400 group-hover:text-gray-700 transition-colors">
+                      {s.badgeText}
+                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-600 transition-colors" />
+
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-gray-900 group-hover:text-gray-950">
+                      {s.label}
+                    </h3>
+                    <p className="text-xs font-semibold text-gray-700 mt-1 truncate">
+                      {s.handle}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">
+                      {s.description}
+                    </p>
+                  </div>
                 </a>
               ))}
             </div>

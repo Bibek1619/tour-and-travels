@@ -1,151 +1,282 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import {
-  ArrowRight,
-  Check,
-} from "lucide-react";
+import { ArrowRight, Check, Clock, MapPin, MessageCircle } from "lucide-react";
 import { asList } from "@/lib/icon-map";
+import type { Tour } from "@/lib/types";
 import type { BestTripContent } from "@/lib/page-content/types";
+import { motion } from "framer-motion";
 
-const DEFAULT_IMAGE =
-  "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1600&q=80";
+const DEFAULT_IMAGE = "/manangfeatured.jpg";
 
 const DEFAULT_HIGHLIGHTS = [
-  "Panoramic Annapurna II & Gangapurna views",
-  "Turquoise Gangapurna Glacier Lake",
-  "Ancient Braga Monastery & Manangi culture",
-  "High-altitude yak pastures & trails",
+  "Gangapurna Glacier Lake",
+  "Ice Lake (Kicho Tal)",
+  "Blue Lake & Green Lake",
+  "Scenic Manang Valley",
+  "Octopus Waterfall",
+  "Chame Hot Spring",
 ];
 
-export function BestTrip({ content }: { content: BestTripContent }) {
-  const image = content?.image || DEFAULT_IMAGE;
-  const title = content?.title || "Manang Valley";
-  const location = content?.location || "Annapurna, Nepal";
-  const ctaHref = content?.ctaHref || "/tours";
-  const ctaText = content?.ctaText || "Discover Journey";
-  const highlights = asList(content?.highlights);
-  const highlightList = highlights.length > 0 ? highlights : DEFAULT_HIGHLIGHTS;
-  
-  // Extract duration from stats (look for "Duration" or "Clock" icon)
-  const durationStat = content?.stats?.find(
-    (s) => s.label.toLowerCase().includes('duration') || s.icon === 'Clock'
+const DEFAULT_WHATSAPP = "9779856006671";
+const FALLBACK_CTA = "/tours/manang-trip";
+
+function digitsOnly(value: string): string {
+  return value.replace(/\D/g, "");
+}
+
+/* ─── animation variants ─── */
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const fadeUpSlow = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 },
+  },
+};
+
+const imageReveal = {
+  hidden: { opacity: 0, scale: 0.94, x: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    x: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const lineGrow = {
+  hidden: { scaleX: 0 },
+  visible: {
+    scaleX: 1,
+    transition: { duration: 0.5, ease: "easeOut", delay: 0.05 },
+  },
+};
+
+export function BestTrip({
+  content,
+  tour,
+}: {
+  content: BestTripContent;
+  tour?: Tour | null;
+}) {
+  const title = tour?.title?.trim() || content.title?.trim() || "Manang Trip";
+  const location =
+    tour?.location?.trim() ||
+    content.location?.trim() ||
+    "Manang, Annapurna Region, Nepal";
+  const description =
+    "Discover Manang on a scenic jeep tour from Pokhara. Travel through the beautiful Marsyangdi Valley and enjoy amazing views of the Annapurna and Gangapurna mountains, clear glacial lakes, waterfalls, and traditional mountain villages along the way.";
+
+  const image = DEFAULT_IMAGE;
+  const ctaHref = tour?.slug
+    ? `/tours/${tour.slug}`
+    : content.ctaHref?.trim() || FALLBACK_CTA;
+  const ctaText = content.ctaText?.trim() || "View Manang Package";
+
+  const tourHighlights = (tour?.highlights ?? [])
+    .map((highlight) => highlight.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+  const contentHighlights = asList(content.highlights)
+    .map((highlight) => highlight.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+
+  const rawHighlights =
+    tourHighlights.length > 0 && !tourHighlights.some((h) => h.includes("Panoramic Annapurna II"))
+      ? tourHighlights
+      : contentHighlights.length > 0 && !contentHighlights.some((h) => h.includes("Panoramic Annapurna II"))
+        ? contentHighlights
+        : DEFAULT_HIGHLIGHTS;
+
+  const highlights = rawHighlights;
+
+  const statValue = (needle: string) =>
+    content.stats
+      ?.find((stat) => stat.label?.toLowerCase().includes(needle))
+      ?.value?.trim();
+
+  const duration =
+    tour?.durationText?.trim() ||
+    (tour?.durationDays ? `${tour.durationDays} Days` : "") ||
+    statValue("duration") ||
+    (content.stats?.find((stat) => stat.icon === "Clock")?.value ?? "").trim();
+
+  const price =
+    typeof tour?.price === "number" &&
+    Number.isFinite(tour.price) &&
+    tour.price > 0
+      ? tour.price
+      : null;
+
+  const whatsappNumber = digitsOnly(
+    content.whatsappNumber?.trim() || DEFAULT_WHATSAPP
   );
-  const duration = durationStat?.value || "8 Days";
+  const whatsappMessage =
+    content.whatsappMessage?.trim() ||
+    `Hi, I am interested in the ${title} package.`;
+  const whatsappHref = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        whatsappMessage
+      )}`
+    : "";
 
   return (
-    <section className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      
-      {/* Subtle animated background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400 rounded-full mix-blend-screen filter blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-      </div>
+    <section className="relative overflow-hidden bg-gradient-to-b from-orange-50/50 via-white to-white py-16 md:py-20">
+      <motion.div
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+      >
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* ── Text Column ── */}
+          <motion.div variants={stagger} className="order-2 lg:order-1">
+            {/* Eyebrow */}
+            <motion.div variants={fadeUp} className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-orange-200/60 bg-orange-50/80 px-3 py-1 shadow-xs">
+              <span className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-orange-600 font-sans">
+                Featured Journey
+              </span>
+            </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Simple Badge */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full">
-            <span className="text-xs font-semibold">Featured Destination</span>
-          </div>
-        </div>
-
-        {/* Split Screen Layout */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
-          
-          {/* LEFT SIDE - Content */}
-          <div className="space-y-6 lg:pr-6">
-            
             {/* Title */}
-            <div className="space-y-2">
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                {title}
-              </h2>
-              <div className="flex items-center gap-3">
-                <p className="text-lg sm:text-xl text-gray-400">
-                  {location}
-                </p>
-                <span className="text-gray-500">•</span>
-                <p className="text-lg sm:text-xl text-orange-400 font-semibold">
+            <motion.h2
+              variants={fadeUp}
+              className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-[1.15]"
+            >
+              {title}
+            </motion.h2>
+
+            {/* Location & Duration */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-3.5 flex flex-wrap items-center gap-2.5 text-xs sm:text-sm font-sans"
+            >
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1 font-medium text-slate-700">
+                <MapPin aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
+                {location}
+              </span>
+              {duration && (
+                <span className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200/60 bg-orange-50 px-3 py-1 font-semibold text-orange-700">
+                  <Clock aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
                   {duration}
-                </p>
-              </div>
-            </div>
+                </span>
+              )}
+            </motion.div>
 
-            {/* Simple line separator */}
-            <div className="w-16 h-0.5 bg-orange-500 rounded-full" />
+            {/* Description */}
+            {description && (
+              <motion.p
+                variants={fadeUpSlow}
+                className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal font-sans"
+              >
+                {description}
+              </motion.p>
+            )}
 
-            {/* Highlights List */}
-            <div className="space-y-3">
-              {highlightList.map((highlight, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-2.5 group"
+            {/* Highlights */}
+            <motion.ul className="mt-6 grid gap-2.5 sm:grid-cols-2 font-sans" variants={stagger}>
+              {highlights.map((highlight, index) => (
+                <motion.li
+                  key={`${highlight}-${index}`}
+                  variants={fadeUp}
+                  className="group flex items-center gap-3 rounded-xl border border-green-100 bg-green-50/50 p-2.5 sm:p-3 shadow-xs transition-all duration-200 hover:bg-green-50 hover:border-green-200"
                 >
-                  <div className="flex-shrink-0 w-5 h-5 bg-orange-500/20 rounded-md flex items-center justify-center mt-0.5">
-                    <Check className="w-3.5 h-3.5 text-orange-400" />
-                  </div>
-                  <span className="text-gray-300 text-sm leading-relaxed group-hover:text-white transition-colors">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-600 shadow-sm shadow-green-600/25">
+                    <Check aria-hidden="true" className="h-3.5 w-3.5 text-white stroke-[2.5]" />
+                  </span>
+                  <span className="text-sm font-medium text-gray-800 group-hover:text-gray-900">
                     {highlight}
                   </span>
-                </div>
+                </motion.li>
               ))}
-            </div>
+            </motion.ul>
 
-            {/* CTA Button - Simpler */}
-            <div className="pt-2">
+            {/* Price */}
+            {price !== null && (
+              <motion.div variants={fadeUp} className="mt-6 flex items-baseline gap-2 font-sans">
+                <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">
+                  Starting from
+                </span>
+                <span className="font-display text-2xl sm:text-3xl font-bold text-slate-900">
+                  NPR {price.toLocaleString("en-IN")}
+                </span>
+                <span className="text-xs font-medium text-slate-500">/ person</span>
+              </motion.div>
+            )}
+
+            {/* CTAs */}
+            <motion.div
+              variants={fadeUp}
+              className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center font-sans"
+            >
               <Link
                 href={ctaHref}
-                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/30"
+                className="group/btn inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-orange-600/20 transition-all duration-300 hover:bg-orange-700 hover:shadow-lg hover:shadow-orange-600/30 active:scale-[0.98]"
               >
                 {ctaText}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
               </Link>
-            </div>
-          </div>
+              {whatsappHref && (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-white px-6 py-3.5 text-sm font-semibold text-green-700 shadow-xs transition-all duration-300 hover:bg-green-50/80 hover:border-green-300 active:scale-[0.98]"
+                >
+                  <MessageCircle aria-hidden="true" className="h-4 w-4 text-green-600" />
+                  Ask on WhatsApp
+                </a>
+              )}
+            </motion.div>
+          </motion.div>
 
-          {/* RIGHT SIDE - Image */}
-          <div className="relative animate-[float_4s_ease-in-out_infinite]">
-            
-            {/* Subtle glow elements */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 bg-orange-500/10 rounded-full blur-2xl" />
-            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-blue-500/10 rounded-full blur-2xl" />
-
-            {/* Main image container */}
-            <div className="relative group">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl shadow-black/40 transition-all duration-500 group-hover:shadow-orange-500/20 group-hover:-translate-y-1">
-                
-                {/* Image */}
-                <div className="relative aspect-[4/5]">
+          {/* ── Image Column ── */}
+          <motion.div variants={imageReveal} className="order-1 lg:order-2">
+            <div className="group relative">
+              {/* Decorative accent behind image */}
+              <div
+                aria-hidden
+                className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-orange-200/40 blur-2xl"
+              />
+              <div className="relative overflow-hidden rounded-2xl shadow-xl shadow-gray-200/60">
+                <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5]">
                   <Image
                     src={image}
-                    alt={title}
+                    alt={`${title} — ${location}`}
                     fill
+                    priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   />
-                  
-                  {/* Subtle overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                  
-                  {/* Available badge */}
-                  <div className="absolute top-4 right-4">
-                    <div className="bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-lg">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-xs font-semibold text-gray-900">Open Year-Round</span>
-                      </div>
-                    </div>
-                  </div>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent"
+                  />
                 </div>
               </div>
-
-              {/* Subtle shadow */}
-              <div className="absolute inset-0 bg-orange-500/5 rounded-xl blur-xl -z-10 translate-y-3" />
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

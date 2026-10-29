@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle, Phone, MessageCircle } from "lucide-react";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -115,19 +115,56 @@ export default function ContactForm() {
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={sending}
-        className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white text-sm font-semibold px-7 py-3 rounded-lg transition-colors"
-      >
-        {sending ? (
-          "Sending…"
-        ) : (
-          <>
-            <Send className="w-4 h-4" /> Send Message
-          </>
-        )}
-      </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+        <button
+          type="submit"
+          disabled={sending}
+          className="inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white text-sm font-semibold px-7 py-3 rounded-lg transition-colors shadow-xs"
+        >
+          {sending ? (
+            "Sending…"
+          ) : (
+            <>
+              <Send className="w-4 h-4" /> Send Message
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Faster Response Notice */}
+      <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-emerald-200/80 bg-emerald-50/60 p-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-700 text-white shadow-xs">
+            <Phone className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+              For faster response:
+            </p>
+            <p className="text-sm font-medium text-gray-700">
+              WhatsApp or call us directly on our official number
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <a
+            href="tel:+9779856006671"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-gray-800 shadow-xs hover:border-emerald-600 hover:text-emerald-700 transition-colors"
+          >
+            <Phone className="h-3.5 w-3.5 text-emerald-700" />
+            +977 9856006671
+          </a>
+          <a
+            href="https://wa.me/9779856006671?text=Hi%2C%20I%20would%20like%20to%20inquire%20about%20your%20tours%20and%20vehicle%20rentals."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-green-600 px-3.5 py-2 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-green-700 transition-colors"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            WhatsApp Now
+          </a>
+        </div>
+      </div>
     </form>
   );
 }

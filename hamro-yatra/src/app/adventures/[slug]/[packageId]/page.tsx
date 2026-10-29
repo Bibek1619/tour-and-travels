@@ -148,237 +148,142 @@ export default async function AdventurePackageDetailPage({
         ])}
       />
       <Navbar />
-      <div className="min-h-screen bg-gray-50">
-        {/* Breadcrumb */}
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-              <Link href="/" className="hover:text-orange-600">
-                Home
-              </Link>
-              <ChevronLeft className="w-4 h-4 rotate-180" />
-              <Link href="/adventures" className="hover:text-orange-600">
-                Adventures
-              </Link>
-              <ChevronLeft className="w-4 h-4 rotate-180" />
-              <Link
-                href={`/adventures/${slug}`}
-                className="hover:text-orange-600"
-              >
-                {category.name}
-              </Link>
-              <ChevronLeft className="w-4 h-4 rotate-180" />
-              <span className="text-gray-800 font-medium">{pkg.name}</span>
-            </div>
-          </div>
-        </div>
+      
+      {/* Hero Section - BestTrip Style */}
+      <section className="bg-gray-50 py-8 md:py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <article className="overflow-hidden rounded-3xl bg-white shadow-lg">
+            <div className="grid lg:grid-cols-12">
+              {/* Image */}
+              <div className="relative min-h-[320px] sm:min-h-[420px] lg:col-span-7 lg:min-h-[600px]">
+                <Image
+                  src={images[0]}
+                  alt={`${pkg.name} — ${pkg.location}`}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm backdrop-blur">
+                  <MapPin className="h-4 w-4 text-orange-600" />
+                  {pkg.location}
+                </div>
+                {pkg.duration && (
+                  <div className="absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm">
+                    <MessageCircle className="h-4 w-4" />
+                    {pkg.duration}
+                  </div>
+                )}
+                {pkg.difficulty && (
+                  <div className="absolute left-5 top-5 inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+                    {pkg.difficulty}
+                  </div>
+                )}
+              </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Main Column */}
-            <div className="lg:col-span-2 space-y-6 min-w-0">
-              {/* Title & Rating */}
-              <div className="bg-white rounded-xl p-4 sm:p-6 shadow">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 break-words">
+              {/* Content */}
+              <div className="flex flex-col justify-center p-6 sm:p-10 lg:col-span-5 lg:p-12">
+                <p className="text-sm font-semibold text-orange-600">
+                  {category.name}
+                </p>
+                <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight text-gray-900 sm:text-4xl xl:text-5xl">
                   {pkg.name}
                 </h1>
-                <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <MapPin className="w-4 h-4" />
-                    <span>{pkg.location}</span>
+                {pkg.shortDescription && (
+                  <p className="mt-4 max-w-prose text-base leading-relaxed text-gray-600">
+                    {pkg.shortDescription}
+                  </p>
+                )}
+
+                <div className="mt-8 flex items-end justify-between gap-4 border-t border-gray-200 pt-6">
+                  <div>
+                    <p className="text-sm text-gray-600">Starting from</p>
+                    <p className="text-3xl font-semibold tracking-tight text-gray-900">
+                      NPR {price.toLocaleString("en-IN")}
+                      <span className="ml-1 text-sm font-normal text-gray-600">
+                        per person
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      USD ${Math.round(price / 130)}
+                    </p>
                   </div>
-                  {pkg.difficulty && (
-                    <span className="px-2.5 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-semibold">
-                      {pkg.difficulty}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Photo Gallery */}
-              <div className="rounded-xl overflow-hidden shadow-lg">
-                <div className="grid grid-cols-2 gap-4">
-                  {images.map((img, idx) => (
-                    <div
-                      key={idx}
-                      className={`relative rounded-xl overflow-hidden h-[300px] ${
-                        images.length === 1 ? "col-span-2" : ""
-                      }`}
-                    >
-                      <Image
-                        src={img}
-                        alt={`${pkg.name} ${idx + 1}`}
-                        fill
-                        sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        fetchPriority={idx === 0 ? "high" : "low"}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile-Only Quick Booking Section - Below Photos */}
-              <div className="lg:hidden bg-white rounded-xl p-3 sm:p-4 shadow max-w-sm mx-auto">
-                {/* Price at top */}
-                <div className="text-center mb-3 pb-3 border-b border-gray-200">
-                  <p className="text-xs text-gray-500 mb-1">Starting from</p>
-                  <div className="flex items-baseline justify-center gap-1.5">
-                    <span className="text-xl sm:text-2xl font-bold text-orange-600">
-                      NPR {price.toLocaleString()}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-500">/person</span>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-0.5">USD ${Math.round(price / 130)}</p>
                 </div>
 
-                {/* Enquiry Button - Compact & Responsive */}
-                <div className="mb-3">
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                   <AdventureEnquiryButton
                     packageName={pkg.name}
                     packageId={pkg._id}
                     packageType="adventure"
                   />
+                  <a
+                    href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-900 transition-colors hover:border-gray-900"
+                  >
+                    <MessageCircle className="h-4 w-4 text-green-600" />
+                    Chat on WhatsApp
+                  </a>
                 </div>
 
-                {/* Contact Info - Everything on single lines */}
-                <div className="space-y-1.5 text-[10px] sm:text-xs text-gray-700">
-                  <div className="flex items-center gap-1 whitespace-nowrap overflow-x-auto">
-                    <MessageCircle className="w-3 h-3 text-green-600 flex-shrink-0" />
-                    <span className="font-medium">WhatsApp/Call:</span>
-                    <a href="tel:+9779856006671" className="text-orange-600 hover:underline flex-shrink-0">
+                {/* Contact Info - Mobile Only */}
+                <div className="lg:hidden mt-6 pt-6 border-t border-gray-200 space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <Phone className="w-4 h-4 text-orange-600" />
+                    <a href="tel:+9779856006671" className="hover:text-orange-600">
                       +977 9856006671
                     </a>
                   </div>
-                  <div className="flex items-center gap-1 overflow-hidden">
-                    <Mail className="w-3 h-3 text-orange-600 flex-shrink-0" />
-                    <a 
-                      href="mailto:hamroyatraadventure@gmail.com"
-                      className="text-orange-600 hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
-                    >
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <Mail className="w-4 h-4 text-orange-600" />
+                    <a href="mailto:hamroyatraadventure@gmail.com" className="hover:text-orange-600 text-xs break-all">
                       hamroyatraadventure@gmail.com
                     </a>
                   </div>
                 </div>
               </div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-              {/* About Section - No box, plain like blog */}
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  About This Adventure
-                </h2>
-                <MarkdownContent content={pkg.description || ""} />
-
-                {pkg.safetyInfo && (
-                  <div className="mt-6 bg-red-50 border border-red-100 rounded-lg p-4">
-                    <h3 className="font-bold text-red-800 mb-2">Safety Info</h3>
-                    <p className="text-red-700 text-sm">{pkg.safetyInfo}</p>
-                  </div>
-                )}
-
-                {pkg.bestSeason && (
-                  <div className="mt-4 bg-blue-50 border border-blue-100 rounded-lg p-4">
-                    <h3 className="font-bold text-blue-800 mb-1">Best Season</h3>
-                    <p className="text-blue-700 text-sm">{pkg.bestSeason}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* FAQ - No box */}
-              {pkg.faqs && pkg.faqs.length > 0 && (
-                <div className="mt-8">
-                  <FaqSection
-                    title="Frequently Asked Questions"
-                    items={pkg.faqs}
-                  />
-                </div>
-              )}
+      {/* Description & Details */}
+      <div className="bg-white py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Adventure</h2>
+              <MarkdownContent content={pkg.description || ""} />
             </div>
 
-            {/* Sidebar */}
-            <div className="lg:col-span-1 min-w-0">
-              <div className="lg:sticky lg:top-4 space-y-4">
-                {/* Booking Card - Responsive sizing */}
-                <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-4 lg:p-6 shadow-lg border border-orange-100">
-                  <div className="text-center mb-4 lg:mb-6 pb-4 lg:pb-6 border-b border-orange-200">
-                    <p className="text-xs lg:text-sm text-gray-600 mb-1 lg:mb-2">Starting from</p>
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="flex items-baseline justify-center gap-1 lg:gap-2">
-                        <span className="text-2xl lg:text-4xl xl:text-5xl font-bold text-orange-600">
-                          NPR {price.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="text-base lg:text-xl text-gray-600">
-                        USD ${Math.round(price / 130)}
-                      </div>
-                      <span className="text-xs lg:text-sm text-gray-500">/person</span>
-                    </div>
-                  </div>
-
-                  <div className="text-center mb-3 lg:mb-4">
-                    <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-1">
-                      Ready to Book?
-                    </h3>
-                    <p className="text-xs lg:text-sm text-gray-600">
-                      Contact us for instant booking
-                    </p>
-                  </div>
-
-                  <div className="space-y-2 lg:space-y-3 mb-4 lg:mb-6">
-                    <AdventureEnquiryButton
-                      packageName={pkg.name}
-                      packageId={pkg._id}
-                      packageType="adventure"
-                    />
-
-                    <a
-                      href={`https://wa.me/9779856006671?text=${whatsappMessage}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 lg:py-4 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2 lg:gap-3 group text-sm lg:text-base"
-                    >
-                      <MessageCircle className="w-4 h-4 lg:w-5 lg:h-5 group-hover:scale-110 transition-transform" />
-                      <span>Book via WhatsApp</span>
-                    </a>
-                  </div>
-
-                  <div className="bg-white rounded-lg p-3 lg:p-4 space-y-2 lg:space-y-3">
-                    <div className="text-center text-xs text-gray-500 mb-2 lg:mb-3">
-                      Or reach us directly
-                    </div>
-                    <a
-                      href="tel:+9779856006671"
-                      className="flex items-center gap-2 lg:gap-3 text-gray-700 hover:text-orange-600 transition-colors"
-                    >
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-xs text-gray-500">Call us</div>
-                        <div className="font-semibold text-sm lg:text-base">+977 9856006671</div>
-                      </div>
-                    </a>
-                    <a
-                      href="mailto:hamroyatraadventure@gmail.com"
-                      className="flex items-center gap-2 lg:gap-3 text-gray-700 hover:text-orange-600 transition-colors"
-                    >
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Mail className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="text-xs text-gray-500">Email us</div>
-                        <div className="font-semibold text-xs lg:text-sm break-all">
-                          hamroyatraadventure@gmail.com
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                </div>
+            {pkg.safetyInfo && (
+              <div className="bg-red-50 border border-red-100 rounded-lg p-4">
+                <h3 className="font-bold text-red-800 mb-2">Safety Info</h3>
+                <p className="text-red-700 text-sm">{pkg.safetyInfo}</p>
               </div>
-            </div>
+            )}
+
+            {pkg.bestSeason && (
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                <h3 className="font-bold text-blue-800 mb-1">Best Season</h3>
+                <p className="text-blue-700 text-sm">{pkg.bestSeason}</p>
+              </div>
+            )}
+
+            {pkg.faqs && pkg.faqs.length > 0 && (
+              <div className="mt-8">
+                <FaqSection
+                  title="Frequently Asked Questions"
+                  items={pkg.faqs}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );

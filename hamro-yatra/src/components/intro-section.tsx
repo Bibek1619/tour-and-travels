@@ -185,11 +185,17 @@ export function IntroSection({ content }: { content: IntroContent }) {
             className="space-y-6"
           >
             <div className="space-y-5 text-lg leading-relaxed">
-              <p className="text-gray-700">
-                <KeywordHighlight text={intro.description1} />
-              </p>
-              <p className="text-gray-700">{intro.description2}</p>
-              <p className="text-gray-700">{intro.description3}</p>
+              {intro.description1 && (
+                <p className="text-gray-700">
+                  <KeywordHighlight text={intro.description1} />
+                </p>
+              )}
+              {intro.description2 && (
+                <p className="text-gray-700">{intro.description2}</p>
+              )}
+              {intro.description3 && (
+                <p className="text-gray-700">{intro.description3}</p>
+              )}
             </div>
 
             <Link
