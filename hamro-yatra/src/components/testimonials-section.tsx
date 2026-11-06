@@ -160,7 +160,7 @@ export function TestimonialsSection({
     "/images-5.jpg";
 
   return (
-    <section className="bg-gray-50 py-20 px-4">
+    <section className="bg-gray-50 py-12 sm:py-16 md:py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -168,29 +168,29 @@ export function TestimonialsSection({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-8 sm:mb-12"
         >
-          <span className="inline-block bg-orange-100 text-orange-600 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-block bg-orange-100 text-orange-600 text-xs sm:text-sm font-semibold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full mb-3 sm:mb-4">
             {section.badge}
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
             What Our{" "}
             <span className="text-orange-600">{section.highlight}</span> Say
           </h2>
         </motion.div>
 
         {/* Main Grid */}
-        <div className="grid lg:grid-cols-[2fr_3fr] gap-8 items-start">
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-6 sm:gap-8 items-start">
           {/* ── LEFT — video + big quote ── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {/* Video */}
-            <div className="relative rounded-2xl overflow-hidden shadow-lg group bg-black">
+            <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-lg group bg-black">
               {playing ? (
                 <video
                   ref={videoRef}
@@ -199,7 +199,7 @@ export function TestimonialsSection({
                   controls
                   autoPlay
                   playsInline
-                  className="w-full h-[200px] md:h-[240px] object-cover"
+                  className="w-full h-[180px] sm:h-[200px] md:h-[240px] object-cover"
                 />
               ) : (
                 <>
@@ -208,7 +208,7 @@ export function TestimonialsSection({
                     alt="Video testimonial"
                     width={800}
                     height={480}
-                    className="w-full h-[200px] md:h-[240px] object-cover"
+                    className="w-full h-[180px] sm:h-[200px] md:h-[240px] object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
                   <button
@@ -220,7 +220,7 @@ export function TestimonialsSection({
                       <Play className="w-5 h-5 text-orange-600 ml-0.5" />
                     </div>
                   </button>
-                  <div className="absolute bottom-3 left-3 right-3">
+                  <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-2 sm:right-3">
                     <p className="text-white text-xs font-medium drop-shadow-lg">
                       &ldquo;It really made us experience Nepal like never
                       before.&rdquo;
@@ -231,18 +231,18 @@ export function TestimonialsSection({
             </div>
 
             {/* Big Quote card */}
-            <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100">
-              <Quote className="w-7 h-7 text-orange-200 mb-3" />
+            <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg border border-gray-100">
+              <Quote className="w-6 h-6 sm:w-7 sm:h-7 text-orange-200 mb-2 sm:mb-3" />
               <div className="mb-2">
                 <StarRow rating={featured.rating} />
               </div>
-              <p className="text-lg md:text-xl font-bold text-gray-900 leading-snug mb-4">
+              <p className="text-base sm:text-lg md:text-xl font-bold text-gray-900 leading-snug mb-3 sm:mb-4">
                 &ldquo;{featured.review}&rdquo;
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <Avatar name={featured.name} size="sm" />
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">
+                  <p className="font-semibold text-gray-900 text-xs sm:text-sm">
                     {featured.name}
                     {featured.location && (
                       <span className="text-gray-500 font-normal">
@@ -250,7 +250,7 @@ export function TestimonialsSection({
                       </span>
                     )}
                   </p>
-                  <p className="text-xs text-gray-500">{featured.title}</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">{featured.title}</p>
                 </div>
               </div>
             </div>
@@ -262,7 +262,7 @@ export function TestimonialsSection({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="grid sm:grid-cols-2 gap-6"
+            className="grid sm:grid-cols-2 gap-4 sm:gap-6"
           >
             {cards.map((t, i) => (
               <motion.div
@@ -271,18 +271,18 @@ export function TestimonialsSection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 * i }}
-                className="bg-white rounded-2xl p-7 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+                className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-7 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300"
               >
-                <p className="text-gray-600 text-base leading-relaxed mb-4">
+                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4">
                   &ldquo;{t.review}&rdquo;
                 </p>
-                <div className="mb-3">
+                <div className="mb-2 sm:mb-3">
                   <StarRow rating={t.rating} />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <Avatar name={t.name} size="lg" />
                   <div>
-                    <p className="font-semibold text-gray-900">
+                    <p className="font-semibold text-gray-900 text-xs sm:text-sm">
                       {t.name}
                       {t.location && (
                         <span className="text-gray-500 font-normal">
@@ -290,7 +290,7 @@ export function TestimonialsSection({
                         </span>
                       )}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-[10px] sm:text-xs text-gray-500">
                       {entityLabel(t) || t.title}
                     </p>
                   </div>
