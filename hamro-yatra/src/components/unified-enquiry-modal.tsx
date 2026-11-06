@@ -122,7 +122,7 @@ export default function UnifiedEnquiryModal({
             <div>
               <h2 className="text-xl font-bold text-gray-900">Send Enquiry</h2>
               <p className="text-sm text-gray-500 mt-1">
-                We'll respond within 24 hours
+                We&apos;ll respond within 24 hours
               </p>
             </div>
             <button

@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     if (!body.slug && body.title) {
-      let base = slugify(body.title);
+      const base = slugify(body.title);
       let slug = base;
       let n = 1;
       while (await TourPackage.findOne({ slug })) {

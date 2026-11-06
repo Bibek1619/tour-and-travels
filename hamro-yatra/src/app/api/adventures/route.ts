@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     if (!body.slug && body.name) {
-      let base = slugify(body.name);
+      const base = slugify(body.name);
       let slug = base;
       let n = 1;
       while (await Adventure.findOne({ slug })) {

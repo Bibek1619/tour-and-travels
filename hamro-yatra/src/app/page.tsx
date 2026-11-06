@@ -168,9 +168,6 @@ export default async function Home() {
         />
       </Section>
       <Section>
-        <Whyus content={content.whyUs} />
-      </Section>
-      <Section>
         <div className="max-w-7xl mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">
             <FaqSection

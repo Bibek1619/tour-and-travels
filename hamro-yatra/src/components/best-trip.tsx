@@ -195,7 +195,7 @@ export function BestTrip({
             )}
 
             {/* Highlights */}
-            <motion.ul className="mt-6 grid gap-2.5 sm:grid-cols-2 font-sans" variants={stagger}>
+            <motion.ul className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3 font-sans" variants={stagger}>
               {highlights.map((highlight, index) => (
                 <motion.li
                   key={`${highlight}-${index}`}

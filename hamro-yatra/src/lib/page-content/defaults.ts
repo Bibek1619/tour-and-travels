@@ -476,9 +476,14 @@ export const DEFAULT_PAGE_CONTENT: PageContentMap = {
     },
     popularAdventures: {
       title: "Popular Adventures",
-      auto: true,
+      auto: false,
       limit: 4,
-      items: [],
+      items: [
+        { label: "Paragliding", href: "/adventures/paragliding" },
+        { label: "Bungee Jumping", href: "/adventures/bungee" },
+        { label: "Ziplining", href: "/adventures/zipline" },
+        { label: "Canyoning", href: "/adventures/canyoning" },
+      ],
     },
     contact: {
       title: "Contact Us",

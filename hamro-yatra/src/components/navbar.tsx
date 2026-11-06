@@ -69,12 +69,13 @@ export function Navbar() {
 
   // Search with debounce
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
     const timer = setTimeout(async () => {
+      if (!searchQuery.trim()) {
+        setSearchResults([]);
+        setSearching(false);
+        return;
+      }
+
       setSearching(true);
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
@@ -279,7 +280,7 @@ export function Navbar() {
                     </div>
                   ) : searchResults.length === 0 ? (
                     <div className="px-4 py-8 text-center text-sm text-gray-500">
-                      <p>No results for "{searchQuery}"</p>
+                      <p>No results for &quot;{searchQuery}&quot;</p>
                     </div>
                   ) : (
                     <>

@@ -30,12 +30,14 @@ export const revalidate = 3600;
 export async function generateStaticParams() {
   await connectDB();
   const adventures = await Adventure.find({ status: "published" })
-    .select("_id category")
+    .select("_id slug category")
     .lean();
-  return adventures.map((a) => ({
-    slug: String(a.category),
-    packageId: String(a._id),
-  }));
+  return adventures.flatMap((a) => {
+    const slug = String(a.category);
+    const params = [{ slug, packageId: String(a._id) }];
+    if (a.slug) params.push({ slug, packageId: String(a.slug) });
+    return params;
+  });
 }
 
 export async function generateMetadata({
@@ -73,8 +75,11 @@ async function getPackage(
   packageId: string
 ): Promise<AdventureType | null> {
   await connectDB();
+  // The package segment can be either a MongoDB ObjectId (used by internal
+  // links) or a slug (used by older/SEO-friendly links and the footer).
+  const isObjectId = /^[0-9a-fA-F]{24}$/.test(packageId);
   const adventure = await Adventure.findOne({
-    _id: packageId,
+    ...(isObjectId ? { _id: packageId } : { slug: packageId }),
     category: slug,
     status: "published",
   } as unknown as Parameters<typeof Adventure.findOne>[0]).lean();

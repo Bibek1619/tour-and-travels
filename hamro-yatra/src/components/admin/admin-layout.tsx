@@ -68,11 +68,16 @@ const navigation = [
   { name: "Reviews", href: "/admin/reviews", icon: Star },
 ];
 
-export function AdminLayout({ children }: { children: ReactNode }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
-
-  const Sidebar = ({ mobile = false }: { mobile?: boolean }) => (
+function Sidebar({
+  pathname,
+  mobile = false,
+  onNavigate,
+}: {
+  pathname: string;
+  mobile?: boolean;
+  onNavigate?: () => void;
+}) {
+  return (
     <div className="flex h-full flex-col">
       {/* Logo */}
       <Link href="/" className="flex h-16 items-center gap-3 border-b px-6">
@@ -99,7 +104,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <Link
               key={item.name}
               href={item.href}
-              onClick={() => mobile && setMobileOpen(false)}
+              onClick={() => mobile && onNavigate?.()}
               className={`
                 group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all
                 ${
@@ -126,12 +131,17 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       <AdminUserBox />
     </div>
   );
+}
+
+export function AdminLayout({ children }: { children: ReactNode }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col border-r bg-white">
-        <Sidebar />
+        <Sidebar pathname={pathname} />
       </aside>
 
       {/* Mobile Header */}
@@ -158,7 +168,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
       {/* Mobile Sidebar */}
       {mobileOpen && (
         <div className="fixed inset-y-0 left-0 z-50 w-72 border-r bg-white lg:hidden">
-          <Sidebar mobile />
+          <Sidebar
+            pathname={pathname}
+            mobile
+            onNavigate={() => setMobileOpen(false)}
+          />
         </div>
       )}
 

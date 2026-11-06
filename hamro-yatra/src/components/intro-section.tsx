@@ -254,38 +254,37 @@ export function IntroSection({ content }: { content: IntroContent }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="grid md:grid-cols-3 gap-8"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8"
         >
           {/* Dynamic Stats */}
           {intro.stats.map((stat, index) => {
             const StatIcon = statIconMap[stat.icon] || Users;
-            const bgColor = index % 2 === 0 ? "bg-orange-100" : "bg-green-100";
             const iconColor = index % 2 === 0 ? "text-orange-600" : "text-green-600";
             return (
               <div
                 key={index}
-                className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-4 md:p-6 md:bg-white md:rounded-2xl md:shadow-lg md:hover:shadow-xl md:transition-all md:duration-300 md:transform md:hover:-translate-y-1"
               >
-                <div className={`${bgColor} p-4 rounded-xl`}>
-                  <StatIcon className={`w-10 h-10 ${iconColor}`} />
+                <div className="md:bg-orange-100 md:p-4 md:rounded-xl">
+                  <StatIcon className={`w-8 h-8 md:w-10 md:h-10 ${iconColor}`} />
                 </div>
-                <div>
-                  <p className="text-3xl font-bold text-gray-900">
+                <div className="text-center md:text-left">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">
                     <CountUp value={stat.value} />
                   </p>
-                  <p className="text-gray-600 font-medium">{stat.label}</p>
+                  <p className="text-xs md:text-base text-gray-600 font-medium">{stat.label}</p>
                 </div>
               </div>
             );
           })}
 
           {/* Affiliations */}
-          <div className="flex flex-col justify-center p-6 bg-white rounded-2xl shadow-lg">
-            <p className="text-sm text-gray-600 font-semibold mb-3 uppercase tracking-wider">
+          <div className="col-span-2 md:col-span-1 flex flex-col justify-center items-center md:p-6 md:bg-white md:rounded-2xl md:shadow-lg py-4">
+            <p className="text-xs md:text-sm text-gray-600 font-semibold mb-3 uppercase tracking-wider">
               Certified &amp; Affiliated
             </p>
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className="relative h-14 w-20">
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              <div className="relative h-10 w-16 md:h-14 md:w-20">
                 <Image
                   src="/nepal-tourism-board.png"
                   alt="Nepal Tourism Board Certified"
@@ -297,7 +296,7 @@ export function IntroSection({ content }: { content: IntroContent }) {
                   }}
                 />
               </div>
-              <div className="relative h-14 w-20">
+              <div className="relative h-10 w-16 md:h-14 md:w-20">
                 <Image
                   src="/taan.png"
                   alt="TAAN Member"
@@ -309,7 +308,7 @@ export function IntroSection({ content }: { content: IntroContent }) {
                   }}
                 />
               </div>
-              <div className="relative h-14 w-20">
+              <div className="relative h-10 w-16 md:h-14 md:w-20">
                 <Image
                   src="/nma.png"
                   alt="Nepal Mountaineering Association"

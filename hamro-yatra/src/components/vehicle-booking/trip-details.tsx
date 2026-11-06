@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronLeft, Calendar, MapPin, Home } from "lucide-react";
 
 interface TripDetailsProps {
@@ -35,32 +35,22 @@ export default function TripDetails({
     includeDriver: true,
     specialRequests: "",
   });
-  const [days, setDays] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const days =
+    formData.startDate && formData.endDate
+      ? Math.max(
+          0,
+          Math.ceil(
+            (new Date(formData.endDate).getTime() -
+              new Date(formData.startDate).getTime()) /
+              (1000 * 60 * 60 * 24)
+          )
+        )
+      : 0;
 
-  useEffect(() => {
-    if (formData.startDate && formData.endDate) {
-      const start = new Date(formData.startDate);
-      const end = new Date(formData.endDate);
-      const diff = Math.ceil(
-        (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      if (diff > 0) {
-        setDays(diff);
-        let total = diff * bookingData.dailyRate;
-        if (formData.includeDriver) total += diff * 2000;
-        setTotalPrice(total);
-      } else {
-        setDays(0);
-        setTotalPrice(0);
-      }
-    }
-  }, [
-    formData.startDate,
-    formData.endDate,
-    formData.includeDriver,
-    bookingData.dailyRate,
-  ]);
+  const totalPrice =
+    days > 0
+      ? days * bookingData.dailyRate + (formData.includeDriver ? days * 2000 : 0)
+      : 0;
 
   const destinations = ["Inside Valley", "Outside Valley"];
   const pickupLocations = [

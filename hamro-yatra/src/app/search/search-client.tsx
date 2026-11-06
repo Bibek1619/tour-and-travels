@@ -44,6 +44,13 @@ export default function SearchClient() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState(query);
+  const [prevQuery, setPrevQuery] = useState(query);
+
+  // Keep the search box in sync with URL changes without an effect.
+  if (query !== prevQuery) {
+    setPrevQuery(query);
+    setSearchTerm(query);
+  }
 
   // Perform search
   useEffect(() => {
@@ -70,11 +77,7 @@ export default function SearchClient() {
   }, [searchTerm]);
 
   // Update search term from URL params
-  useEffect(() => {
-    if (query) {
-      setSearchTerm(query);
-    }
-  }, [query]);
+  // (handled during render above)
 
   // Group results by category
   const groupedResults = results.reduce((acc, result) => {

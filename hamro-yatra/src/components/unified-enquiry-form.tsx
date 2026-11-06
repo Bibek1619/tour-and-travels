@@ -145,7 +145,7 @@ export default function UnifiedEnquiryForm({
         <div>
           <h3 className="text-xl font-bold text-gray-900">Send Enquiry</h3>
           <p className="text-sm text-gray-500 mt-1">
-            Get in touch and we'll respond within 24 hours
+            Get in touch and we&apos;ll respond within 24 hours
           </p>
         </div>
         {onClose && (

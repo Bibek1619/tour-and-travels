@@ -287,10 +287,6 @@ export default function AdventureForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (initial?.images?.length) setImages(initial.images);
-  }, [initial]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {

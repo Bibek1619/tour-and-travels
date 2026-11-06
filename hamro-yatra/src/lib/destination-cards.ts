@@ -16,8 +16,8 @@ export const DEFAULT_CARDS: DestinationCardData[] = [
     category: "Tour Package",
     country: "Manang, Annapurna Region, Nepal",
     badge: "2N/3D",
-    image: "/manang.jpg",
-    hoverImage: "/manang.jpg",
+    image: "/manangfeatured.jpg",
+    hoverImage: "/manangfeatured.jpg",
     href: "/tours/manang-trip",
   },
   {

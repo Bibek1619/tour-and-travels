@@ -45,27 +45,37 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [prevOpen, setPrevOpen] = useState(isOpen);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  // Reset state when the modal opens, without an effect.
+  if (isOpen !== prevOpen) {
+    setPrevOpen(isOpen);
+    if (isOpen) {
+      setQuery("");
+      setResults([]);
+      setSelectedIndex(0);
+    }
+  }
 
   // Focus input when modal opens
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-      setQuery("");
-      setResults([]);
-      setSelectedIndex(0);
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
   // Search with debounce
   useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-
     const timer = setTimeout(async () => {
+      if (!query.trim()) {
+        setResults([]);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
@@ -169,12 +179,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <Search className="w-12 h-12 mx-auto mb-3 text-gray-300" />
               <p className="text-sm">Search for destinations, tours, treks, or vehicles</p>
               <p className="text-xs mt-2 text-gray-400">
-                Try "Ghandruk", "Kathmandu", "Scorpio", "Everest"
+                Try &quot;Ghandruk&quot;, &quot;Kathmandu&quot;, &quot;Scorpio&quot;, &quot;Everest&quot;
               </p>
             </div>
           ) : results.length === 0 && !loading ? (
             <div className="px-6 py-12 text-center text-gray-500">
-              <p className="text-sm">No results found for "{query}"</p>
+              <p className="text-sm">No results found for &quot;{query}&quot;</p>
               <p className="text-xs mt-2 text-gray-400">
                 Try different keywords or browse our{" "}
                 <Link href="/tours" className="text-orange-600 hover:underline">
