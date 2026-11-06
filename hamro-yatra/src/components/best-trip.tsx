@@ -8,7 +8,7 @@ import type { Tour } from "@/lib/types";
 import type { BestTripContent } from "@/lib/page-content/types";
 import { motion, type Variants } from "framer-motion";
 
-const DEFAULT_IMAGE = "/manangfeatured.jpg";
+const DEFAULT_IMAGE = "/pkr-manangfix.png";
 
 const DEFAULT_HIGHLIGHTS = [
   "Gangapurna Glacier Lake",
@@ -53,12 +53,20 @@ const fadeUpSlow: Variants = {
 };
 
 const imageReveal: Variants = {
-  hidden: { opacity: 0, scale: 0.94, x: 30 },
+  hidden: { opacity: 0, scale: 0.92, x: 40 },
   visible: {
     opacity: 1,
     scale: 1,
     x: 0,
-    transition: { duration: 0.7, ease: smoothEase },
+    transition: { duration: 0.8, ease: smoothEase, delay: 0.2 },
+  },
+};
+
+const shimmer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: [0, 1, 0],
+    transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
   },
 };
 
@@ -140,7 +148,10 @@ export function BestTrip({
     : "";
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-orange-50/50 via-white to-white py-16 md:py-20">
+    <section className="relative overflow-hidden bg-white py-12 md:py-16 font-sans">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
       <motion.div
         className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         variants={stagger}
@@ -148,39 +159,55 @@ export function BestTrip({
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
       >
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* ── Text Column ── */}
           <motion.div variants={stagger} className="order-2 lg:order-1">
-            {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-orange-200/60 bg-orange-50/80 px-3 py-1 shadow-xs">
-              <span className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-wider text-orange-600 font-sans">
-                Featured Journey
-              </span>
+            {/* Badge */}
+            <motion.div 
+              variants={fadeUp} 
+              className="mb-3 inline-block"
+            >
+              <div className="inline-flex items-center gap-2 border-l-3 border-orange-600 bg-orange-50 px-3 py-1.5">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-orange-900">
+                  Featured Journey
+                </span>
+              </div>
             </motion.div>
 
             {/* Title */}
             <motion.h2
               variants={fadeUp}
-              className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl leading-[1.15]"
+              className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl mb-2"
             >
               {title}
             </motion.h2>
+            
+            {/* Decorative line */}
+            <motion.div
+              variants={lineGrow}
+              className="h-0.5 w-16 bg-orange-600 mb-4"
+            />
 
-            {/* Location & Duration */}
+            {/* Duration & Price */}
             <motion.div
               variants={fadeUp}
-              className="mt-3.5 flex flex-wrap items-center gap-2.5 text-xs sm:text-sm font-sans"
+              className="flex flex-wrap items-center gap-3 text-xs mb-4"
             >
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1 font-medium text-slate-700">
-                <MapPin aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
-                {location}
-              </span>
               {duration && (
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200/60 bg-orange-50 px-3 py-1 font-semibold text-orange-700">
-                  <Clock aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
-                  {duration}
-                </span>
+                <div className="inline-flex items-center gap-1.5 rounded-lg border border-green-100 bg-green-50/50 px-3 py-1.5 text-gray-700 transition-colors hover:bg-green-50">
+                  <Clock className="h-3.5 w-3.5 text-green-600" />
+                  <span className="font-semibold">{duration}</span>
+                </div>
+              )}
+              {price !== null && (
+                <div className="inline-flex items-center gap-2 rounded-lg border border-green-100 bg-green-50/50 px-3 py-1.5 transition-colors hover:bg-green-50">
+                  <span className="text-[10px] uppercase tracking-wider font-bold text-gray-600">
+                    From
+                  </span>
+                  <span className="text-base font-bold text-gray-900">
+                    NPR {price.toLocaleString("en-IN")}
+                  </span>
+                </div>
               )}
             </motion.div>
 
@@ -188,64 +215,54 @@ export function BestTrip({
             {description && (
               <motion.p
                 variants={fadeUpSlow}
-                className="mt-4 max-w-xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal font-sans"
+                className="text-base leading-relaxed text-gray-700 mb-5"
               >
                 {description}
               </motion.p>
             )}
 
             {/* Highlights */}
-            <motion.ul className="mt-6 grid grid-cols-2 gap-2.5 sm:gap-3 font-sans" variants={stagger}>
-              {highlights.map((highlight, index) => (
-                <motion.li
-                  key={`${highlight}-${index}`}
-                  variants={fadeUp}
-                  className="group flex items-center gap-3 rounded-xl border border-green-100 bg-green-50/50 p-2.5 sm:p-3 shadow-xs transition-all duration-200 hover:bg-green-50 hover:border-green-200"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-600 shadow-sm shadow-green-600/25">
-                    <Check aria-hidden="true" className="h-3.5 w-3.5 text-white stroke-[2.5]" />
-                  </span>
-                  <span className="text-sm font-medium text-gray-800 group-hover:text-gray-900">
-                    {highlight}
-                  </span>
-                </motion.li>
-              ))}
-            </motion.ul>
-
-            {/* Price */}
-            {price !== null && (
-              <motion.div variants={fadeUp} className="mt-6 flex items-baseline gap-2 font-sans">
-                <span className="text-xs uppercase tracking-wider font-semibold text-slate-400">
-                  Starting from
-                </span>
-                <span className="font-display text-2xl sm:text-3xl font-bold text-slate-900">
-                  NPR {price.toLocaleString("en-IN")}
-                </span>
-                <span className="text-xs font-medium text-slate-500">/ person</span>
-              </motion.div>
-            )}
+            <motion.div className="mb-5" variants={stagger}>
+              <h3 className="text-[11px] font-bold text-gray-900 uppercase tracking-wider mb-3">
+                Journey Highlights
+              </h3>
+              <ul className="grid grid-cols-2 gap-2.5">
+                {highlights.map((highlight, index) => (
+                  <motion.li
+                    key={`${highlight}-${index}`}
+                    variants={fadeUp}
+                    className="flex items-center gap-2 rounded-xl border border-green-100 bg-green-50/50 p-2.5 text-sm font-medium text-gray-800 transition-colors hover:bg-green-50"
+                  >
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-600 shadow-sm shadow-green-600/20">
+                      <Check className="h-3.5 w-3.5 text-white stroke-[2.5]" />
+                    </span>
+                    <span>{highlight}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
 
             {/* CTAs */}
             <motion.div
               variants={fadeUp}
-              className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center font-sans"
+              className="flex flex-col sm:flex-row gap-3"
             >
               <Link
                 href={ctaHref}
-                className="group/btn inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-orange-600/20 transition-all duration-300 hover:bg-orange-700 hover:shadow-lg hover:shadow-orange-600/30 active:scale-[0.98]"
+                className="group inline-flex items-center justify-center gap-2 bg-orange-600 text-white px-6 py-3 text-sm font-semibold transition-all hover:bg-orange-700"
               >
                 {ctaText}
-                <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               {whatsappHref && (
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-green-200 bg-white px-6 py-3.5 text-sm font-semibold text-green-700 shadow-xs transition-all duration-300 hover:bg-green-50/80 hover:border-green-300 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-green-600 text-green-700 px-6 py-3 text-sm font-semibold transition-all hover:bg-green-50"
                 >
-                  <MessageCircle aria-hidden="true" className="h-4 w-4 text-green-600" />
-                  Ask on WhatsApp
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp
                 </a>
               )}
             </motion.div>
@@ -253,25 +270,17 @@ export function BestTrip({
 
           {/* ── Image Column ── */}
           <motion.div variants={imageReveal} className="order-1 lg:order-2">
-            <div className="group relative">
-              {/* Decorative accent behind image */}
-              <div
-                aria-hidden
-                className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-orange-200/40 blur-2xl"
-              />
-              <div className="relative overflow-hidden rounded-2xl shadow-xl shadow-gray-200/60">
-                <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5]">
+            <div className="relative group">
+              {/* Clean image with border */}
+              <div className="relative overflow-hidden border-4 border-white shadow-2xl bg-gray-100">
+                <div className="relative aspect-[4/3]">
                   <Image
                     src={image}
-                    alt={`${title} — ${location}`}
+                    alt={`${title}`}
                     fill
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
               </div>
